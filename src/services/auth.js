@@ -1,9 +1,11 @@
 import supabase from "./supabase";
-import { createUserProfile, getUserProfileById } from "./user-profiles";
+import { createUserProfile, getUserProfileById, updateUserProfile } from "./user-profiles";
 
 let user = {
     id: null,
     email: null,
+    bio: null,
+    display_name: null,
 }
 
 let observers = [];
@@ -29,7 +31,7 @@ async function getCurrentAuthUser() {
     // }
     // notifyAll();
 
-    getCurrentUserExtendedProfile();
+    fetchCurrentUserExtendedProfile();
 
     return data.user;
 
@@ -40,7 +42,7 @@ async function getCurrentAuthUser() {
  * Carga los atos el perfil autenticado
  */
 
-async function getCurrentUserExtendedProfile() {
+async function fetchCurrentUserExtendedProfile() {
     try {
         const profile = await getUserProfileById(user.id); 
     
@@ -133,7 +135,7 @@ export async function login(email, password) {
     // }
     // notifyAll();
 
-    getCurrentUserExtendedProfile();
+    fetchCurrentUserExtendedProfile();
 
     return data.user;
 }
@@ -157,6 +159,19 @@ export async function logout() {
     //     email: null,
     // }
     // notifyAll();
+}
+
+/**
+ * @param {{bio?: string|null, display_name?: string|null}} data
+ */
+export async function updateCurrentUserProfile(data) {
+    try {
+        await updateUserProfile(user.id, data);
+    } catch (error){
+        throw error;
+    }
+
+    updateUser({...data});
 }
 
 /**

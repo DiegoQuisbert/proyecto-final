@@ -1,10 +1,12 @@
 <script>
 import MainH1 from '../components/MainH1.vue';
+import MainLabel from '../components/MainLabel.vue';
+import MainButton from '../components/MainButton.vue';
 import { login } from '../services/auth';
 
 export default {
     name: 'Login',
-    components: { MainH1 },
+    components: { MainH1, MainLabel, MainButton },
     data() {
         return {
             user: {
@@ -38,7 +40,7 @@ export default {
             class="space-y-6"
         >
             <div>
-                <label for="email" class="block text-sm font-medium text-gray-700 mb-1">Email</label>
+                <MainLabel for="email">Email</MainLabel>
                 <input 
                     v-model="user.email" 
                     type="email" 
@@ -50,7 +52,7 @@ export default {
             </div>
 
             <div>
-                <label for="password" class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                <MainLabel for="password">Contraseña</MainLabel>
                 <input 
                     v-model="user.password" 
                     type="password" 
@@ -60,12 +62,11 @@ export default {
                 >
             </div>
 
-            <button type="submit" :disabled="loading"
-                class="w-full py-3 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition">
-                <span v-if="loading"
-                    class="animate-spin inline-block mr-2 border-2 border-white border-t-transparent rounded-full w-5 h-5"></span>
+            <MainButton type="submit">
+                <!-- <span :disabled="loading" v-if="loading"
+                    class="animate-spin inline-block mr-2 border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> -->
                 Ingresar
-            </button>
+            </MainButton>
         </form>
     </div>
 </template>

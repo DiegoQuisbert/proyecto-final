@@ -16,8 +16,22 @@ export async function createUserProfile(data) {
     }
 }
 
+
+/**
+ * 
+ * @param {string} id 
+ * @param {{bio?: string|null, display:name?: string|null}} data 
+ */
 export async function updateUserProfile(id, data) {
-    
+    const {error} = await supabase
+    .from('user_profiles')
+    .update(data)
+    .eq('id', id);
+
+    if(error) {
+        console.error('[user-profiles.js updateUserProfile] Error al actualizar el perfil de usuario: ', error);
+        throw error;
+    }
 }
 
 /**

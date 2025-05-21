@@ -24,9 +24,17 @@ export default {
 </script>
 
 <template>
-    <MainH1>Mi perfil</MainH1>
+    <div class="flex-items-end gap-4">
+        <MainH1>Mi perfil</MainH1>
+        <RouterLink
+        to="/mi-perfil/editar"
+        class="mb-4 text-blue-700"
+        >
+            Editar
+        </RouterLink>
+    </div>
 
-    <div class="p-4 italic"> {{ user.bio || 'Acá va mi biografía...' }} </div>
+    <div class="p-4 italic">{{user.bio || 'Acá va mi biografía...'}}</div>
 
     <dl>
         <dt class="font-bold">Email</dt>
