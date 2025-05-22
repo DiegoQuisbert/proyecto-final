@@ -1,11 +1,12 @@
 <script>
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
+import MainButton from '../components/MainButton.vue';
 import { subscribeToAuthUserChanges, updateCurrentUserProfile } from '../services/auth';
 
 export default {
     name: 'MyProfileEdit',
-    components: { MainH1, MainLabel},
+    components: { MainH1, MainLabel, MainButton},
     data() {
         return {
             profile: {
@@ -64,7 +65,7 @@ export default {
             <MainButton type="submit">
                 <!-- <span :disabled="loading" v-if="loading"
                     class="animate-spin inline-block mr-2 border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> -->
-                Actuaizar perfi
+                Actualizar perfil
             </MainButton>
 
     </form>

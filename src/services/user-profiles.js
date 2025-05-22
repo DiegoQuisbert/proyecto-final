@@ -20,7 +20,7 @@ export async function createUserProfile(data) {
 /**
  * 
  * @param {string} id 
- * @param {{bio?: string|null, display:name?: string|null}} data 
+ * @param {{bio?: string|null, display_name?: string|null}} data 
  */
 export async function updateUserProfile(id, data) {
     const {error} = await supabase

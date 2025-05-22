@@ -29,7 +29,7 @@ export async function getLastPosts() {
     .select();
 
     if(error){
-        console.error('[posts.js savePost] Error al obtener los posts: ', error);
+        console.error('[posts.js getLastPosts] Error al obtener los posts: ', error);
         throw error; 
     }
 
@@ -47,7 +47,7 @@ export async function listenForPost (callback){
             table: 'post',
         },
         data => {
-            console.log("[posts.js savePost] El evento recibido es: ", data);
+            console.log("[posts.js listenForPost] La publicación dice: ", data);
 
             callback(data.new);
         }
@@ -56,6 +56,20 @@ export async function listenForPost (callback){
     postChannel.subscribe();
 }
 
+export async function getPostById(id) {
+    const {data, error} = await supabase
+    .from('post')
+    .select('*')
+    .eq('id', id)
+    .single()
+
+    if(error){
+        console.error('[posts.js getPostById] Error al obtener la id del post: ', error);
+        throw error;
+    }
+
+    return data;
+}
 
 
 
