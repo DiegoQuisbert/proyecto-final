@@ -4,13 +4,14 @@ import MainH1 from "../components/MainH1.vue";
 import MainLoader from "../components/MainLoader.vue";
 import MainLabel from "../components/MainLabel.vue";
 import MainPost from "../components/MainPost.vue";
+import MainButton from "../components/MainButton.vue";
 import { getLastPosts, listenForPost, savePost } from "../services/posts";
 import { subscribeToAuthUserChanges } from "../services/auth";
 import { getUserProfileById } from '../services/user-profiles.js';
 
 export default {
     name: "Posts",
-    components: { MainH1, MainLoader, MainLabel, MainPost },
+    components: { MainH1, MainLoader, MainLabel, MainPost, MainButton, },
     data() {
         return {
             user: {
@@ -72,21 +73,28 @@ export default {
 <template>
     <MainH1>Publicaciones</MainH1>
 
-    <form @submit.prevent="sendPost" class="mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
+    <form 
+        @submit.prevent="sendPost" 
+        class="mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto"
+    >
         <h2 class="mb-4 text-xl font-semibold">¿Qué vas a subir hoy?</h2>
 
         <div class="mb-4 flex items-center gap-2 text-gray-600">
             <span class="font-bold">{{ user.email }}</span>
         </div>
 
-        <textarea v-model="newPost.body" id="body" placeholder="Escribe tu post aquí..."
+        <textarea 
+            v-model="newPost.body" 
+            id="body" 
+            placeholder="Escribe tu post aquí..."
             class="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
-            rows="3"></textarea>
+            rows="3"
+        ></textarea>
 
         <div class="text-right mt-2">
-            <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-500 transition">
-                Publicar
-            </button>
+            <MainButton type="submit">
+                Subir
+            </MainButton>
         </div>
     </form>
 

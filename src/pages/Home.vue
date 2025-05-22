@@ -35,11 +35,14 @@ export default {
             </div>
 
             <div class="flex justify-center gap-6">
-                <router-link to="/iniciar-sesion"
-                    class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-transform duration-200 transform hover:scale-105">
+                <router-link 
+                    to="/iniciar-sesion"
+                    class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-transform duration-200 transform hover:scale-105"
+                >
                     Iniciar Sesión
                 </router-link>
-                <router-link to="/crear-cuenta"
+                <router-link 
+                    to="/crear-cuenta"
                     class="bg-blue-600 text-white px-6 py-3 rounded-lg shadow-lg hover:bg-blue-700 transition-transform duration-200 transform hover:scale-105">
                     Crear Cuenta
                 </router-link>

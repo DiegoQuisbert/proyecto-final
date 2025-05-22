@@ -20,7 +20,7 @@ export async function savePost(data){
 
 /**
  * 
- * @returns {Promise<{id: number, email: string, body: string, created_at: stirng}[]>}
+ * @returns {Promise<{id: number, email: string, body: string, created_at: string}[]>}
  */
 
 export async function getLastPosts() {
@@ -71,7 +71,33 @@ export async function getPostById(id) {
     return data;
 }
 
+export async function saveReply(data) {
+    const {error} = await supabase
+    .from('post_replies')
+    .insert({
+        ...data
+    });
 
+    if(error) {
+        console.error('[posts.js saveReply] Error al grabar la respuesta: ', error);
+        throw error; 
+    }
+}
+
+export async function getRepliesByPostId(postId) {
+    const {data, error} = await supabase
+    .from('post_replies')
+    .select('*')
+    .eq('post_id', postId)
+    .order('created_at', {ascending: true});
+
+    if(error) {
+        console.error('[posts.js getRepliesByPostId] Error al obtener la id de la respuesta: ', error);
+        throw error; 
+    }
+    
+    return data;
+}
 
 // const postChannel = supabase.channel("post", {
 //     config: {

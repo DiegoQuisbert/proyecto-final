@@ -1,11 +1,12 @@
 <script>
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
+import MainButton from '../components/MainButton.vue';
 import { register } from '../services/auth';
 
 export default {
     name: 'Register',
-    components: { MainH1, MainLabel },
+    components: { MainH1, MainLabel, MainButton, },
     data() {
         return {
             user: {

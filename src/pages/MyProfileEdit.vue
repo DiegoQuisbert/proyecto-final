@@ -6,7 +6,7 @@ import { subscribeToAuthUserChanges, updateCurrentUserProfile } from '../service
 
 export default {
     name: 'MyProfileEdit',
-    components: { MainH1, MainLabel, MainButton},
+    components: { MainH1, MainLabel, MainButton },
     data() {
         return {
             profile: {
@@ -18,10 +18,10 @@ export default {
     },
     methods: {
         async handleSubmit() {
-            try{
+            try {
                 this.editing = true;
-                await updateCurrentUserProfile({...this.profile});              
-            }catch(error) {
+                await updateCurrentUserProfile({ ...this.profile });
+            } catch (error) {
                 //TODO...
             }
             this.editing = false;
@@ -46,27 +46,33 @@ export default {
         @submit.prevent="handleSubmit"
     >
 
-    <div class="mb-4">
-        <MainLabel for="bio" class="block mb-2">Biografía</MainLabel>
-        <textarea 
-        v-model="profile.bio" 
-        id="bio" 
-        class="w-full p-2 border borer-gray-400 rounded"></textarea>
-    </div>
-    <div class="mb-4">
-        <MainLabel for="display_name" class="block mb-2">Nombre de usuario</MainLabel>
-        <input 
-            v-model="profile.display_name" 
-            type="text " 
-            id="display_name" 
-            class="w-full p-2 border borer-gray-400 rounded" 
-        >
-    </div>
-            <MainButton type="submit">
-                <!-- <span :disabled="loading" v-if="loading"
+        <div class="mb-4">
+            <MainLabel 
+                for="bio" 
+                class="block mb-2"
+            >Biografía</MainLabel>
+            <textarea 
+                v-model="profile.bio" 
+                id="bio" 
+                class="w-full p-2 border borer-gray-400 rounded"
+            ></textarea>
+        </div>
+        <div class="mb-4">
+            <MainLabel 
+                for="display_name" 
+                class="block mb-2"
+            >Nombre de usuario</MainLabel>
+            <input 
+                v-model="profile.display_name" 
+                type="text" 
+                id="display_name"
+                class="w-full p-2 border borer-gray-400 rounded">
+        </div>
+        <MainButton type="submit">
+            <!-- <span :disabled="loading" v-if="loading"
                     class="animate-spin inline-block mr-2 border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> -->
-                Actualizar perfil
-            </MainButton>
+            Actualizar perfil
+        </MainButton>
 
     </form>
 </template>
