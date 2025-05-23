@@ -12,6 +12,10 @@ let observers = [];
 
 getCurrentAuthUser();
 
+if(localStorage.getItem('user')) {
+    user = JSON.parse(localStorage.getItem('user'));
+}
+
 async function getCurrentAuthUser() {
     const {data, error} = await supabase.auth.getUser();
 
@@ -216,4 +220,10 @@ function updateUser(data) {
         ...data,
     }
     notifyAll();
+
+    if(user.id) {
+        localStorage.setItem('user', JSON.stringify(user));
+    } else {
+        localStorage.removeItem('user');
+    }
 }

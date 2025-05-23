@@ -30,9 +30,12 @@ export default {
 </script>
 
 <template>
-    <div v-if="!loadingUser" class="max-w-2xl mx-auto mt-10 px-6 py-8 bg-white shadow-md rounded-xl space-y-6">
+    <div 
+        v-if="!loadingUser" 
+        class="max-w-2xl mx-auto mt-10 px-6 py-8 bg-white shadow-md rounded-xl space-y-6"
+    >
         <div class="flex justify-between items-center">
-            <MainH1 class="text-2xl font-bold text-gray-800">Perfil de {{ user.display_name || user.email }}</MainH1>
+            <MainH1>Perfil de {{ user.display_name || user.email }}</MainH1>
         </div>
         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-gray-700 italic min-h-[80px]">
             {{ user.bio || 'Acá va mi biografía...' }}

@@ -56,7 +56,7 @@ export default {
                         <li>
                             <form @submit.prevent="handleLogout">
                                 <button type="submit"
-                                    class="w-full text-left py-2 px-4 rounded hover:bg-slate-700 transition">
+                                    class="cursor-pointer w-full text-left py-2 px-4 rounded hover:bg-slate-700 transition">
                                     {{ user.email }} (Cerrar sesión)
                                 </button>
                             </form>

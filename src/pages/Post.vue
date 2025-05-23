@@ -9,7 +9,7 @@ import { subscribeToAuthUserChanges } from '../services/auth';
 
 export default {
     name: "Post",
-    components: { MainH1, MainLoader, MainLabel, MainButton, },
+    components: { MainH1, MainLabel, MainLoader, MainButton, },
     data() {
         return {
             post: null,
@@ -91,7 +91,7 @@ export default {
             @submit.prevent="sendReply" 
             class="space-y-3 pt-4 border-t border-gray-200"
         >
-            <MainLabel for="reply" class="text-sm font-medium text-gray-700">Tu respuesta</MainLabel>
+            <MainLabel for="reply">Tu respuesta</MainLabel>
             <textarea 
                 v-model="newReply" 
                 id="reply" 

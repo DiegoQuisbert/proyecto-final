@@ -60,7 +60,6 @@ export default {
         <div class="mb-4">
             <MainLabel 
                 for="display_name" 
-                class="block mb-2"
             >Nombre de usuario</MainLabel>
             <input 
                 v-model="profile.display_name" 

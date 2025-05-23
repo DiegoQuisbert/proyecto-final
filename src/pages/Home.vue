@@ -17,14 +17,14 @@ export default {
         </div>
 
         <div class="mt-8 text-center px-6 max-w-5xl mx-auto">
-            <MainH1 class="mb-6">
+            <MainH1>
                 ¡Bienvenido a Bzzign!
             </MainH1>
 
             <div
                 class="flex flex-col md:flex-row justify-center gap-12 mb-8 text-gray-700 text-base md:text-lg leading-relaxed">
                 <p class="md:w-1/2 max-w-xl mx-auto text-justify">
-                    Red social hecha para <b>jóvenes artistas</b> y <b>diseñadores</b>, ¡en esta red social podrás <b>compartir tu arte
+                    Red social hecha para <b>jóvenes artistas</b> y <b>diseñadores</b>. ¡En esta red social podrás <b>compartir tu arte
                     con todo el mundo</b>! Además de tener las herramientas necesarias para facilitarte el <b>monetizar tu
                     trabajo</b>.
                 </p>
