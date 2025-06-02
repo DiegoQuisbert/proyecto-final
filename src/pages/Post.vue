@@ -97,7 +97,7 @@ export default {
                 id="reply" 
                 rows="4" 
                 placeholder="Responder..."
-                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 focus:outline-none resize-none"
+                class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 resize-none focus:border-blue-500 outline-none transition-all"
                 ></textarea>
 
             <div class="text-right">

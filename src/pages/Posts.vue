@@ -71,25 +71,19 @@ export default {
 </script>
 
 <template>
+
     <MainH1>Publicaciones</MainH1>
 
-    <form 
-        @submit.prevent="sendPost" 
-        class="mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto"
-    >
+    <form @submit.prevent="sendPost" class="mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
         <h2 class="mb-4 text-xl font-semibold">¿Qué vas a subir hoy?</h2>
 
         <div class="mb-4 flex items-center gap-2 text-gray-600">
             <span class="font-bold">{{ user.email }}</span>
         </div>
 
-        <textarea 
-            v-model="newPost.body" 
-            id="body" 
-            placeholder="Escribe tu post aquí..."
-            class="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-400"
-            rows="3"
-        ></textarea>
+        <textarea v-model="newPost.body" id="body" placeholder="Escribe tu post aquí..."
+            class="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+            rows="3"></textarea>
 
         <div class="text-right mt-2">
             <MainButton type="submit">
@@ -105,4 +99,6 @@ export default {
             <MainPost v-for="post in posts" :key="post.id" :post="post" />
         </ol>
     </section>
+
+
 </template>
