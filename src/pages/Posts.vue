@@ -5,7 +5,7 @@ import MainLoader from "../components/MainLoader.vue";
 import MainLabel from "../components/MainLabel.vue";
 import MainPost from "../components/MainPost.vue";
 import MainButton from "../components/MainButton.vue";
-import { getLastPosts, listenForPost, savePost } from "../services/posts";
+import { getLastPosts, listenForPost, savePost, deletePost } from "../services/posts";
 import { subscribeToAuthUserChanges } from "../services/auth";
 import { getUserProfileById } from '../services/user-profiles.js';
 
@@ -30,12 +30,20 @@ export default {
     methods: {
         async sendPost() {
             try {
-                savePost({
+                await savePost({
                     sender_id: this.user.id,
                     email: this.user.email,
                     body: this.newPost.body,
                 });
                 this.newPost.body = '';
+            } catch (error) {
+                //TODO...
+            }
+        },
+        async eliminarPost(id) {
+            try {
+                await deletePost(id);
+                this.posts = this.posts.filter(p => p.id !== id);
             } catch (error) {
                 //TODO...
             }
@@ -72,9 +80,7 @@ export default {
 
 <template>
 
-    <MainH1>Publicaciones</MainH1>
-
-    <form @submit.prevent="sendPost" class="mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
+    <form @submit.prevent="sendPost" class="mt-8 mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
         <h2 class="mb-4 text-xl font-semibold">¿Qué vas a subir hoy?</h2>
 
         <div class="mb-4 flex items-center gap-2 text-gray-600">
@@ -96,7 +102,7 @@ export default {
         <MainLoader v-if="loadingPost" />
 
         <ol v-else class="flex flex-col gap-4">
-            <MainPost v-for="post in posts" :key="post.id" :post="post" />
+            <MainPost v-for="post in posts" :key="post.id" :post="post" @eliminar-post="eliminarPost" />
         </ol>
     </section>
 

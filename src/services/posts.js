@@ -67,9 +67,21 @@ export async function getPostById(id) {
         console.error('[posts.js getPostById] Error al obtener la id del post: ', error);
         throw error;
     }
-
     return data;
 }
+
+export async function deletePost(id) {
+    const { error } = await supabase
+        .from('post')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        console.error('[posts.js deletePost] Error al eliminar el post: ', error);
+        throw error;
+    }
+}
+
 
 export async function saveReply(data) {
     const {error} = await supabase

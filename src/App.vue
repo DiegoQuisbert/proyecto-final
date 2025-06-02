@@ -30,7 +30,7 @@ export default {
 <template>
     <div class="flex flex-col min-h-screen">
         <div class="flex flex-1">
-            <nav class="flex flex-col w-72 bg-white text-gray-900 border-r border-gray-200 p-6 min-h-screen">
+            <nav class="sticky top-0 flex flex-col w-72 bg-white text-gray-900 border-r border-gray-200 p-6 h-screen">
                 <RouterLink class="text-3xl font-extrabold mb-10 px-2 py-2 hover:text-yellow-400 transition" to="/">
                     Bzzign
                 </RouterLink>
@@ -84,17 +84,15 @@ export default {
             </nav>
 
 
-            <main class="flex-1 w-full overflow-y-auto">
+            <main class="flex-1 w-full h-screen overflow-y-auto">
                 <RouterView />
             </main>
 
-            <aside class="w-80 border-l border-gray-200 p-6 bg-gray-50">
+            <aside class="sticky top-0 w-80 border-l border-gray-200 p-6 bg-gray-50 h-screen overflow-y-auto">
                 <SideBar />
             </aside>
         </div>
 
-        <footer class="h-16 bg-slate-900 text-white flex items-center justify-center text-sm">
-            <p>Da Vinci &copy; 2025</p>
-        </footer>
+
     </div>
 </template>
