@@ -12,6 +12,7 @@ export default {
             profile: {
                 bio: '',
                 display_name: '',
+                pronoums: '',
             },
             editing: false,
         }
@@ -32,6 +33,7 @@ export default {
             this.profile = {
                 bio: newUserState.bio,
                 display_name: newUserState.display_name,
+                pronoums: newUserState.pronoums,
             }
         });
     }
@@ -65,6 +67,16 @@ export default {
                 v-model="profile.display_name" 
                 type="text" 
                 id="display_name"
+                class="w-full p-2 border borer-gray-400 rounded">
+        </div>
+        <div class="mb-4">
+            <MainLabel 
+                for="display_name" 
+            >Pronombres</MainLabel>
+            <input 
+                v-model="profile.pronoums" 
+                type="text" 
+                id="pronoums"
                 class="w-full p-2 border borer-gray-400 rounded">
         </div>
         <MainButton type="submit">

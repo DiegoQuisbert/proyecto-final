@@ -19,6 +19,7 @@ export default {
                 email: null,
                 bio: null,
                 display_name: null,
+                pronoums: null,
             },
             posts: [],
             loadingPost: false,
@@ -30,14 +31,17 @@ export default {
     methods: {
         async sendPost() {
             try {
+                if (!this.newPost.body.trim()) return;
+
                 await savePost({
                     sender_id: this.user.id,
                     email: this.user.email,
                     body: this.newPost.body,
                 });
+
                 this.newPost.body = '';
             } catch (error) {
-                //TODO...
+                // TODO...
             }
         },
         async eliminarPost(id) {
@@ -80,7 +84,8 @@ export default {
 
 <template>
 
-    <form @submit.prevent="sendPost" class="mt-8 mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
+    <form @submit.prevent="sendPost"
+        class="mt-8 mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
         <h2 class="mb-4 text-xl font-semibold">¿Qué vas a subir hoy?</h2>
 
         <div class="mb-4 flex items-center gap-2 text-gray-600">

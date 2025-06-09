@@ -12,6 +12,7 @@ export default {
                 email: null,
                 bio: null,
                 display_name: null,
+                pronoums: null,
             },
         };
     },
@@ -42,13 +43,17 @@ export default {
         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-gray-700 italic min-h-[80px]">
             {{ user.bio || 'Acá va mi biografía...' }}
         </div>
-
+        <dl class="space-y-4 text-gray-800">
+            <div>
+                <dt class="text-sm font-semibold text-gray-500">Pronombres</dt>
+                <dd class="text-base">{{ user.pronoums }}</dd>
+            </div>
+        </dl>
         <dl class="space-y-4 text-gray-800">
             <div>
                 <dt class="text-sm font-semibold text-gray-500">Email</dt>
                 <dd class="text-base">{{ user.email }}</dd>
             </div>
-
         </dl>
 
     </div>

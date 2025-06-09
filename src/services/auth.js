@@ -6,6 +6,7 @@ let user = {
     email: null,
     bio: null,
     display_name: null,
+    pronoums: null,
 }
 
 let observers = [];
@@ -17,29 +18,25 @@ if(localStorage.getItem('user')) {
 }
 
 async function getCurrentAuthUser() {
-    const {data, error} = await supabase.auth.getUser();
+    try {
+        const { data, error } = await supabase.auth.getUser();
 
-    if(error) {
-        console.error('[auth.js getCurrentAuthUser] Error al obtener al usuario autenticado: ', error);
-        // throw error;
+        if (error) {
+            // console.error('[auth.js getCurrentAuthUser] Error al obtener al usuario autenticado: ', error);
+            return;
+        }
+
+        updateUser({
+            id: data.user.id,
+            email: data.user.email,
+        });
+
+        fetchCurrentUserExtendedProfile();
+
+        return data.user;
+    } catch (error) {
+        console.error('[auth.js getCurrentAuthUser] Error al obtener al usuario: ', error);
     }
-    updateUser({
-        id: data.user.id,
-        email: data.user.email,
-    });
-    
-    // user = {
-    //     ...user,
-    //     id: data.user.id,
-    //     email: data.user.email,
-    // }
-    // notifyAll();
-
-    fetchCurrentUserExtendedProfile();
-
-    return data.user;
-
-    // return data.user;
 }
 
 /**
@@ -53,6 +50,7 @@ async function fetchCurrentUserExtendedProfile() {
     updateUser({
         bio: profile.bio,
         display_name: profile.display_name, 
+        pronoums: profile.pronoums,
     });
 
         // user = {
@@ -156,6 +154,7 @@ export async function logout() {
         email: null,
         bio: null,
         display_name: null,
+        pronoums: null,
     });
     // user = {
     //     ...user,
