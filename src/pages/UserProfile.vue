@@ -1,33 +1,11 @@
-<script>
+<script setup>
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
-import { getUserProfileById } from '../services/user-profiles';
+import useUserProfile from '../composables/useUserProfile';
+import { useRoute } from 'vue-router';
 
-export default {
-    name: 'UserProfile',
-    components: { MainH1, MainLoader },
-    data() {
-        return {
-            user: {
-                id: null,
-                email: null,
-                bio: null,
-                display_name: null,
-                pronoums: null,
-            },
-            loadingUser: false,
-        };
-    },
-    async mounted() {
-        try {
-            this.loadingUser = true;
-            this.user = await getUserProfileById(this.$route.params.id);
-        } catch (error) {
-            //TODO...
-        }
-        this.loadingUser = false;
-    },
-};
+const route = useRoute();
+const { user, loadingUser } = useUserProfile(route.params.id);
 </script>
 
 <template>

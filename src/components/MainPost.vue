@@ -1,21 +1,19 @@
-<script>
+<script setup>
 import { RouterLink } from 'vue-router';
+import { defineProps, defineEmits } from 'vue';
 
-export default {
-    name: 'MainPost',
-    props: {
-        post: {
-            type: Object,
-            required: true
-        }
+const props = defineProps({
+    post: {
+        type: Object,
+        required: true,
     },
-    components: { RouterLink },
-    methods: {
-        eliminar() {
-            this.$emit('eliminar-post', this.post.id);
-        }
-    }
-};
+});
+
+const emit = defineEmits(['handleDeletePost']);
+
+function handleDeletePost() {
+    emit('handleDeletePost', props.post.id);
+}
 </script>
 
 <template>
@@ -29,19 +27,21 @@ export default {
             </button>
             <div
                 class="absolute right-0 mt-2 w-32 bg-white border border-gray-200 rounded-lg shadow-lg opacity-0 pointer-events-none group-focus-within:opacity-100 group-focus-within:pointer-events-auto transition-opacity z-10">
-                <button @click="eliminar"
-                    class="w-full cursor-pointer text-left px-4 py-2 hover:bg-gray-100 text-red-600">Eliminar</button>
+                <button @click="handleDeletePost"
+                    class="w-full cursor-pointer text-left px-4 py-2 hover:bg-gray-100 text-red-600">
+                    Eliminar
+                </button>
             </div>
         </div>
 
-        <RouterLink :to="`/posts/${post.id}`">
+        <RouterLink :to="`/posts/${props.post.id}`">
             <div class="mb-2">
-                <RouterLink :to="`/usuario/${post.sender_id}`" class="text-blue-700 hover:underline">
-                    <b class="text-gray-700">{{ post.display_name }} ||</b> {{ post.email }}
+                <RouterLink :to="`/usuario/${props.post.sender_id}`" class="text-blue-700 hover:underline">
+                    <b class="text-gray-700">{{ props.post.display_name }} ||</b> {{ props.post.email }}
                 </RouterLink>
-                <span class="text-gray-500 text-sm ml-2">{{ post.created_at }}</span>
+                <span class="text-gray-500 text-sm ml-2">{{ props.post.created_at }}</span>
             </div>
-            <div>{{ post.body }}</div>
+            <div>{{ props.post.body }}</div>
         </RouterLink>
     </li>
 </template>

@@ -1,30 +1,24 @@
-<script>
-import Home from './pages/Home.vue';
+<script setup>
+import { useRouter } from 'vue-router';
 import SideBar from './pages/SideBar.vue';
 import { logout, subscribeToAuthUserChanges } from './services/auth';
+import useAuthUserState from './composables/useAuthUserState';
 
-export default {
-    name: 'App',
+const router = useRouter();
+const { handleLogout } = useLogout(router);
+const { user } = useAuthUserState();
 
-    components: { Home, SideBar },
-    data() {
-        return {
-            user: {
-                id: null,
-                email: null,
-            },
-        };
-    },
-    methods: {
-        handleLogout() {
-            logout();
-            this.$router.push('/iniciar-sesion');
-        },
-    },
-    async mounted() {
-        subscribeToAuthUserChanges(newUserData => (this.user = newUserData));
-    },
-};
+function useLogout(router) {
+    function handleLogout(){
+        logout();
+        router.push('/iniciar-sesion');
+    }
+
+    return {
+        handleLogout,
+    }
+}
+
 </script>
 
 <template>

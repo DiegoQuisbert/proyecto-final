@@ -10,17 +10,19 @@ import MyProfile from "../pages/MyProfile.vue";
 import MyProfileEdit from "../pages/MyProfileEdit.vue";
 import UserProfile from "../pages/UserProfile.vue";
 import PrivateChats from "../pages/PrivateChats.vue";
+import MyProfileEditAvatar from "../pages/MyProfileEditAvatar.vue";
 
 const routes = [
     {path: '/',                        component: Home,},
     {path: '/iniciar-sesion',          component: Login,},
     {path: '/crear-cuenta',            component: Register,},
-    {path: '/posts',                   component: Posts,         meta: { requiresAuth: true, }, },
-    {path: '/posts/:id',               component: Post,          meta: { requiresAuth: true, }, },
-    {path: '/mi-perfil',               component: MyProfile,     meta: { requiresAuth: true, }, },
-    {path: '/mi-perfil/editar',        component: MyProfileEdit, meta: { requiresAuth: true, }, },
-    {path: '/usuario/:id',             component: UserProfile,   meta: { requiresAuth: true, }, },
-    {path: '/usuario/:id/chat',        component: PrivateChats,  meta: { requiresAuth: true, }, },
+    {path: '/posts',                   component: Posts,               meta: { requiresAuth: true, }, },
+    {path: '/posts/:id',               component: Post,                meta: { requiresAuth: true, }, },
+    {path: '/mi-perfil',               component: MyProfile,           meta: { requiresAuth: true, }, },
+    {path: '/mi-perfil/editar',        component: MyProfileEdit,       meta: { requiresAuth: true, }, },
+    {path: '/mi-perfil/editar/avatar', component: MyProfileEditAvatar, meta: { requiresAuth: true, }, },
+    {path: '/usuario/:id',             component: UserProfile,         meta: { requiresAuth: false, }, },
+    {path: '/usuario/:id/chat',        component: PrivateChats,        meta: { requiresAuth: true, }, },
 ];
 
 const router = createRouter({

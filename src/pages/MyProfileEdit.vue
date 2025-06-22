@@ -1,43 +1,89 @@
-<script>
+<script setup>
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
-import { subscribeToAuthUserChanges, updateCurrentUserProfile } from '../services/auth';
+import { updateCurrentUserProfile } from '../services/auth';
+import useAuthUserState from '../composables/useAuthUserState';
+import { ref, onMounted } from 'vue';
 
-export default {
-    name: 'MyProfileEdit',
-    components: { MainH1, MainLabel, MainButton },
-    data() {
-        return {
-            profile: {
-                bio: '',
-                display_name: '',
-                pronoums: '',
-            },
-            editing: false,
+const { user } = useAuthUserState();
+const { profile, editing, handleSubmit } = useProfileEditForm(user);
+
+function useProfileEditForm(user) {
+    const profile = ref({
+        bio: '',
+        pronoums: '',
+        display_name: '',
+    });
+    const editing = ref(false);
+
+    async function handleSubmit() {
+        try {
+            editing.value = true;
+            await updateCurrentUserProfile({
+                ...profile.value,
+            });
+        } catch (error) {
+            //TODO...
         }
-    },
-    methods: {
-        async handleSubmit() {
-            try {
-                this.editing = true;
-                await updateCurrentUserProfile({ ...this.profile });
-            } catch (error) {
-                //TODO...
-            }
-            this.editing = false;
-        },
-    },
-    mounted() {
-        subscribeToAuthUserChanges(newUserState => {
-            this.profile = {
-                bio: newUserState.bio,
-                display_name: newUserState.display_name,
-                pronoums: newUserState.pronoums,
-            }
-        });
+        editing.value = false;
+    }
+
+    onMounted(() => {
+        profile.value = {
+            bio: user.value.bio,
+            display_name: user.value.display_name,
+            pronoums: user.value.pronoums,
+            bio: user.value.bio,
+        }
+    })
+
+    return {
+        profile,
+        editing,
+        handleSubmit,
     }
 }
+
+// let unsubAuth = () => {}
+
+// export default {
+//     name: 'MyProfileEdit',
+//     components: { MainH1, MainLabel, MainButton },
+//     data() {
+//         return {
+//             profile: {
+//                 bio: '',
+//                 display_name: '',
+//                 pronoums: '',
+//             },
+//             editing: false,
+//         }
+//     },
+//     methods: {
+//         async handleSubmit() {
+//             try {
+//                 this.editing = true;
+//                 await updateCurrentUserProfile({ ...this.profile });
+//             } catch (error) {
+//                 //TODO...
+//             }
+//             this.editing = false;
+//         },
+//     },
+//     mounted() {
+//         unsubAuth = subscribeToAuthUserChanges(newUserState => {
+//             this.profile = {
+//                 bio: newUserState.bio,
+//                 display_name: newUserState.display_name,
+//                 pronoums: newUserState.pronoums,
+//             }
+//         });
+//     },
+//     unmounted() {
+//         unsubAuth();
+//     }
+// }
 </script>
 
 <template>

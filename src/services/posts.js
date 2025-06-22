@@ -47,8 +47,6 @@ export async function listenForPost (callback){
             table: 'post',
         },
         data => {
-            console.log("[posts.js listenForPost] La publicación dice: ", data);
-
             callback(data.new);
         }
     );
@@ -70,14 +68,14 @@ export async function getPostById(id) {
     return data;
 }
 
-export async function deletePost(id) {
+export async function handleDeletePost(id) {
     const { error } = await supabase
         .from('post')
         .delete()
         .eq('id', id);
 
     if (error) {
-        console.error('[posts.js deletePost] Error al eliminar el post: ', error);
+        console.error('[posts.js handleDeletePost] Error al eliminar el post: ', error);
         throw error;
     }
 }

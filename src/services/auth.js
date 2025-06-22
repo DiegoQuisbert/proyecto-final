@@ -1,3 +1,4 @@
+import { uploadFile } from "./storage";
 import supabase from "./supabase";
 import { createUserProfile, getUserProfileById, updateUserProfile } from "./user-profiles";
 
@@ -7,6 +8,7 @@ let user = {
     bio: null,
     display_name: null,
     pronoums: null,
+    avatar: null,
 }
 
 let observers = [];
@@ -51,6 +53,7 @@ async function fetchCurrentUserExtendedProfile() {
         bio: profile.bio,
         display_name: profile.display_name, 
         pronoums: profile.pronoums,
+        avatar: profile.avatar,
     });
 
         // user = {
@@ -155,6 +158,7 @@ export async function logout() {
         bio: null,
         display_name: null,
         pronoums: null,
+        avatar: null,
     });
     // user = {
     //     ...user,
@@ -165,7 +169,7 @@ export async function logout() {
 }
 
 /**
- * @param {{bio?: string|null, display_name?: string|null}} data
+ * @param {{bio?: string|null, display_name?: string|null, avatar?: string|null}} data
  */
 export async function updateCurrentUserProfile(data) {
     try {
@@ -178,16 +182,39 @@ export async function updateCurrentUserProfile(data) {
 }
 
 /**
+ * 
+ * @param {file} file 
+ */
+
+export async function updateCurrentUserAvatar(file) {
+    try {
+        const photoName = `${user.id}/${crypto.randomUUID()}.jpg`;
+
+        await uploadFile(photoName, file, 'avatars');
+
+        await updateCurrentUserProfile({avatar: photoName});
+    } catch (error) {
+        //TODO...
+    }
+}
+
+/**
  * Registra un observer para recibir los cambios del estado del usuario autenticado.
  * Este observer debe ser una función que va a recibir como parámetro los datos del usuario.
  * 
  * @param {() => {}} callback 
+ * @returns {() => void}
  */
 
 export function subscribeToAuthUserChanges(callback) {
+    
     observers.push(callback);
 
     notify(callback);
+
+    return () => {
+        observers = observers.filter(obs => obs != callback);
+    }
 }
 
 /**

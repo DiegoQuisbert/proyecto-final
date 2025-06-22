@@ -1,84 +1,91 @@
-<script>
-import { nextTick } from "vue";
+<script setup>
+import { nextTick, onMounted, ref } from "vue";
 import MainH1 from "../components/MainH1.vue";
 import MainLoader from "../components/MainLoader.vue";
 import MainLabel from "../components/MainLabel.vue";
 import MainPost from "../components/MainPost.vue";
 import MainButton from "../components/MainButton.vue";
-import { getLastPosts, listenForPost, savePost, deletePost } from "../services/posts";
+import { getLastPosts, listenForPost, savePost, handleDeletePost } from "../services/posts";
 import { subscribeToAuthUserChanges } from "../services/auth";
 import { getUserProfileById } from '../services/user-profiles.js';
+import useAuthUserState from "../composables/useAuthUserState.js";
 
-export default {
-    name: "Posts",
-    components: { MainH1, MainLoader, MainLabel, MainPost, MainButton, },
-    data() {
-        return {
-            user: {
-                id: null,
-                email: null,
-                bio: null,
-                display_name: null,
-                pronoums: null,
-            },
-            posts: [],
-            loadingPost: false,
-            newPost: {
-                body: '',
-            },
-        };
-    },
-    methods: {
-        async sendPost() {
-            try {
-                if (!this.newPost.body.trim()) return;
+const { user } = useAuthUserState();
+const { newPost, sendPost } = usePostsForm(user);
+const { posts, loadingPost, deletePostById } = usePosts();
 
-                await savePost({
-                    sender_id: this.user.id,
-                    email: this.user.email,
-                    body: this.newPost.body,
-                });
+function usePosts() {
+    const posts = ref([]);
+    const loadingPost = ref(false);
 
-                this.newPost.body = '';
-            } catch (error) {
-                // TODO...
-            }
-        },
-        async eliminarPost(id) {
-            try {
-                await deletePost(id);
-                this.posts = this.posts.filter(p => p.id !== id);
-            } catch (error) {
-                //TODO...
-            }
-        },
-    },
-    async mounted() {
-        subscribeToAuthUserChanges(newUserState => this.user = newUserState);
-
-        listenForPost(async receivedPost => {
-            const userProfile = await getUserProfileById(receivedPost.sender_id);
-            receivedPost.display_name = userProfile?.display_name || '';
-            this.posts.unshift(receivedPost);
-            await nextTick();
-        });
-
+    onMounted(async () => {
         try {
-            this.loadingPost = true;
-            let posts = await getLastPosts();
+            loadingPost.value = true;
 
-            const postsWithNames = await Promise.all(posts.map(async post => {
-                const userProfile = await getUserProfileById(post.sender_id);
-                return { ...post, display_name: userProfile?.display_name || '' };
-            }));
+            const rawPosts = await getLastPosts();
+            const postsWithNames = await Promise.all(
+                rawPosts.map(async post => {
+                    const userProfile = await getUserProfileById(post.sender_id);
+                    return {
+                        ...post,
+                        display_name: userProfile?.display_name || "",
+                    };
+                })
+            );
 
-            this.posts = postsWithNames.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-            this.loadingPost = false;
+            posts.value = postsWithNames.sort(
+                (a, b) => new Date(b.created_at) - new Date(a.created_at)
+            );
+            loadingPost.value = false;
+
+            listenForPost(async receivedPost => {
+                const userProfile = await getUserProfileById(receivedPost.sender_id);
+                receivedPost.display_name = userProfile?.display_name || '';
+                posts.value.unshift(receivedPost);
+            });
         } catch (error) {
-            //TODO...
+            // TODO: Manejar errores
+        } finally {
+            loadingPost.value = false;
+        }
+    });
+
+
+    async function deletePostById(id) {
+        try {
+            await handleDeletePost(id);
+            posts.value = posts.value.filter((p) => p.id !== id);
+        } catch (error) {
+            console.error(error);
         }
     }
 
+    return {
+        posts,
+        loadingPost,
+        deletePostById,
+    };
+}
+
+
+function usePostsForm(user) {
+    const newPost = ref({
+        body: '',
+    });
+
+    async function sendPost() {
+        if (!this.newPost.body.trim()) return;
+        savePost({
+            sender_id: user.value.id,
+            email: user.value.email,
+            body: newMessage.value.body,
+        });
+    }
+
+    return {
+        newPost,
+        sendPost,
+    }
 }
 </script>
 
@@ -107,7 +114,7 @@ export default {
         <MainLoader v-if="loadingPost" />
 
         <ol v-else class="flex flex-col gap-4">
-            <MainPost v-for="post in posts" :key="post.id" :post="post" @eliminar-post="eliminarPost" />
+            <MainPost v-for="post in posts" :key="post.id" :post="post" @handleDeletePost="deletePostById" />
         </ol>
     </section>
 

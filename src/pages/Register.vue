@@ -1,32 +1,33 @@
-<script>
+<script setup>
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
 import { register } from '../services/auth';
+import { ref } from 'vue';
 
-export default {
-    name: 'Register',
-    components: { MainH1, MainLabel, MainButton, },
-    data() {
-        return {
-            user: {
-                email: '',
-                password: '',
-            },
-            loading: false,
-        }
-    },
-    methods: {
-        async handleSubmit() {
+const { user, loading, handleSubmit } = useRegisterForm();
 
-            try {
-                this.loading = true;
-                await register(this.user.email, this.user.password);
-                this.loading = false;
-            } catch (error) {
-                //TODO...
-            }
+function useRegisterForm() {
+    const user = ref({
+        email: '',
+        password: '',
+    });
+    const loading = ref(false);
+
+    async function handleSubmit() {
+        try {
+            loading.value = true;
+            await register(user.value.email, user.value.password);
+        } catch (error) {
+            //TODO...
         }
+        loading.value = false;
+    }
+
+    return  {
+        user,
+        loading,
+        handleSubmit,
     }
 }
 </script>

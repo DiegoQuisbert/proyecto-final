@@ -1,0 +1,2 @@
+en app, saco las barras laterales y agregarlas como componente layout
+
