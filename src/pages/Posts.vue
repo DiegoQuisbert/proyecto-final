@@ -1,14 +1,12 @@
 <script setup>
-import { nextTick, onMounted, ref } from "vue";
-import MainH1 from "../components/MainH1.vue";
+import { onMounted, ref } from "vue";
 import MainLoader from "../components/MainLoader.vue";
-import MainLabel from "../components/MainLabel.vue";
 import MainPost from "../components/MainPost.vue";
 import MainButton from "../components/MainButton.vue";
 import { getLastPosts, listenForPost, savePost, handleDeletePost } from "../services/posts";
-import { subscribeToAuthUserChanges } from "../services/auth";
 import { getUserProfileById } from '../services/user-profiles.js';
 import useAuthUserState from "../composables/useAuthUserState.js";
+import Layout from "../components/Layout.vue";
 
 const { user } = useAuthUserState();
 const { newPost, sendPost } = usePostsForm(user);
@@ -91,32 +89,33 @@ function usePostsForm(user) {
 
 <template>
 
-    <form @submit.prevent="sendPost"
-        class="mt-8 mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
-        <h2 class="mb-4 text-xl font-semibold">¿Qué vas a subir hoy?</h2>
+    <Layout>
+        <form @submit.prevent="sendPost"
+            class="mt-8 mb-8 border border-gray-300 rounded p-4 bg-white shadow max-w-xl mx-auto">
+            <h2 class="mb-4 text-xl font-semibold">¿Qué vas a subir hoy?</h2>
 
-        <div class="mb-4 flex items-center gap-2 text-gray-600">
-            <span class="font-bold">{{ user.email }}</span>
-        </div>
+            <div class="mb-4 flex items-center gap-2 text-gray-600">
+                <span class="font-bold">{{ user.email }}</span>
+            </div>
 
-        <textarea v-model="newPost.body" id="body" placeholder="Escribe tu post aquí..."
-            class="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-            rows="3"></textarea>
+            <textarea v-model="newPost.body" id="body" placeholder="Escribe tu post aquí..."
+                class="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
+                rows="3"></textarea>
 
-        <div class="text-right mt-2">
-            <MainButton type="submit">
-                Subir
-            </MainButton>
-        </div>
-    </form>
+            <div class="text-right mt-2">
+                <MainButton type="submit">
+                    Subir
+                </MainButton>
+            </div>
+        </form>
 
-    <section class="max-w-xl mx-auto">
-        <MainLoader v-if="loadingPost" />
+        <section class="max-w-xl mx-auto">
+            <MainLoader v-if="loadingPost" />
 
-        <ol v-else class="flex flex-col gap-4">
-            <MainPost v-for="post in posts" :key="post.id" :post="post" @handleDeletePost="deletePostById" />
-        </ol>
-    </section>
+            <ol v-else class="flex flex-col gap-4">
+                <MainPost v-for="post in posts" :key="post.id" :post="post" @handleDeletePost="deletePostById" />
+            </ol>
+        </section>
 
-
+    </Layout>
 </template>

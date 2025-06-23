@@ -5,6 +5,7 @@ import MainButton from '../components/MainButton.vue';
 import { updateCurrentUserProfile } from '../services/auth';
 import useAuthUserState from '../composables/useAuthUserState';
 import { ref, onMounted } from 'vue';
+import Layout from '../components/Layout.vue';
 
 const { user } = useAuthUserState();
 const { profile, editing, handleSubmit } = useProfileEditForm(user);
@@ -13,6 +14,7 @@ function useProfileEditForm(user) {
     const profile = ref({
         bio: '',
         pronoums: '',
+        location: '',
         display_name: '',
     });
     const editing = ref(false);
@@ -35,6 +37,7 @@ function useProfileEditForm(user) {
             display_name: user.value.display_name,
             pronoums: user.value.pronoums,
             bio: user.value.bio,
+            location: user.value.location
         }
     })
 
@@ -87,49 +90,49 @@ function useProfileEditForm(user) {
 </script>
 
 <template>
-    <MainH1>Editar mi perfil</MainH1>
 
-    <form 
-        action="#" 
-        @submit.prevent="handleSubmit"
-    >
+    <Layout>
+        <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+            <MainH1>Editar mi perfil</MainH1>
 
-        <div class="mb-4">
-            <MainLabel 
-                for="bio" 
-                class="block mb-2"
-            >Biografía</MainLabel>
-            <textarea 
-                v-model="profile.bio" 
-                id="bio" 
-                class="w-full p-2 border borer-gray-400 rounded"
-            ></textarea>
-        </div>
-        <div class="mb-4">
-            <MainLabel 
-                for="display_name" 
-            >Nombre de usuario</MainLabel>
-            <input 
-                v-model="profile.display_name" 
-                type="text" 
-                id="display_name"
-                class="w-full p-2 border borer-gray-400 rounded">
-        </div>
-        <div class="mb-4">
-            <MainLabel 
-                for="display_name" 
-            >Pronombres</MainLabel>
-            <input 
-                v-model="profile.pronoums" 
-                type="text" 
-                id="pronoums"
-                class="w-full p-2 border borer-gray-400 rounded">
-        </div>
-        <MainButton type="submit">
-            <!-- <span :disabled="loading" v-if="loading"
-                    class="animate-spin inline-block mr-2 border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> -->
-            Actualizar perfil
-        </MainButton>
+            <form action="#" @submit.prevent="handleSubmit" class="space-y-5 mt-4">
+                <div>
+                    <MainLabel for="bio" class="block text-gray-700 font-semibold">Biografía</MainLabel>
+                    <textarea v-model="profile.bio" id="bio"
+                        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
 
-    </form>
+                <div>
+                    <MainLabel for="display_name" class="block text-gray-700 font-semibold">Nombre de usuario
+                    </MainLabel>
+                    <input v-model="profile.display_name" id="display_name" type="text"
+                        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <div>
+                    <MainLabel for="pronoums" class="block text-gray-700 font-semibold">Pronombres</MainLabel>
+                    <input v-model="profile.pronoums" id="pronoums" type="text"
+                        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <div>
+                    <MainLabel for="location" class="block text-gray-700 font-semibold">Ubicación</MainLabel>
+                    <input v-model="profile.location" id="location" type="text"
+                        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                </div>
+
+                <div class="text-right">
+                    <RouterLink to="/mi-perfil/editar/avatar"
+                        class="text-sm text-blue-600 font-semibold hover:underline">
+                        Editar imagen
+                    </RouterLink>
+                </div>
+
+                <MainButton type="submit" class="w-full py-3">
+                    Actualizar perfil
+                </MainButton>
+            </form>
+        </div>
+    </Layout>
+
 </template>

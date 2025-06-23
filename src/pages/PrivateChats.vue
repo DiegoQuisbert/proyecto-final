@@ -8,6 +8,7 @@ import { getPrivateChatLastMessages, listenForPrivateChatMessages, savePrivateCh
 import useUserProfile from '../composables/useUserProfile';
 import useAuthUserState from '../composables/useAuthUserState';
 import { useRoute } from 'vue-router';
+import Layout from '../components/Layout.vue';
 
 const route = useRoute();
 const { user: userAuth } = useAuthUserState();
@@ -74,37 +75,39 @@ function usePrivateChatForm(userAuth, userChat) {
 </script>
 
 <template>
-    <template v-if="!loadingUser">
-        <MainH1>Conversación privada con {{ userChat.display_name }}</MainH1>
+    <Layout>
+        <template v-if="!loadingUser">
+            <MainH1>Conversación privada con {{ userChat.display_name }}</MainH1>
 
-        <div ref="chatContainer"
-            class="overflow-y-auto h-[60vh] p-4 mb-6 border border-gray-300 rounded-lg bg-white shadow-inner scroll-smooth">
-            <h2 class="sr-only">Lista de mensajes</h2>
+            <div ref="chatContainer"
+                class="overflow-y-auto h-[60vh] p-4 mb-6 border border-gray-300 rounded-lg bg-white shadow-inner scroll-smooth">
+                <h2 class="sr-only">Lista de mensajes</h2>
 
-            <ol v-if="!loadingMessages" class="flex flex-col gap-4">
-                <li v-for="message in messages" :key="message.created_at"
-                    class="flex flex-col gap-1 p-3 rounded-xl max-w-[75%] shadow-sm" :class="{
-                        'self-end bg-blue-100 text-right': message.sender_id == userAuth.id,
-                        'self-start bg-gray-100 text-left': message.sender_id != userAuth.id,
-                    }">
-                    <div class="text-base text-gray-800">{{ message.body }}</div>
-                    <div class="text-xs text-gray-500">{{ message.created_at }}</div>
-                </li>
-            </ol>
+                <ol v-if="!loadingMessages" class="flex flex-col gap-4">
+                    <li v-for="message in messages" :key="message.created_at"
+                        class="flex flex-col gap-1 p-3 rounded-xl max-w-[75%] shadow-sm" :class="{
+                            'self-end bg-blue-100 text-right': message.sender_id == userAuth.id,
+                            'self-start bg-gray-100 text-left': message.sender_id != userAuth.id,
+                        }">
+                        <div class="text-base text-gray-800">{{ message.body }}</div>
+                        <div class="text-xs text-gray-500">{{ message.created_at }}</div>
+                    </li>
+                </ol>
 
-            <MainLoader v-else />
-        </div>
-
-        <h2 class="sr-only">Enviar un mensaje</h2>
-        <form action="#" class="flex items-end gap-4" @submit.prevent="() => sendMessage()">
-            <div class="w-full">
-                <MainLabel for="body" class="sr-only">Mensaje</MainLabel>
-                <textarea v-model="newMessage.body" id="body" rows="3" placeholder="Escribe tu mensaje..."
-                    class="w-full p-3 border border-gray-400 rounded-md shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                <MainLoader v-else />
             </div>
-            <MainButton type="submit" class="h-fit self-end">Enviar</MainButton>
-        </form>
-    </template>
 
-    <MainLoader v-else />
+            <h2 class="sr-only">Enviar un mensaje</h2>
+            <form action="#" class="flex items-end gap-4" @submit.prevent="() => sendMessage()">
+                <div class="w-full">
+                    <MainLabel for="body" class="sr-only">Mensaje</MainLabel>
+                    <textarea v-model="newMessage.body" id="body" rows="3" placeholder="Escribe tu mensaje..."
+                        class="w-full p-3 border border-gray-400 rounded-md shadow-sm resize-none focus:outline-none focus:ring-2 focus:ring-blue-300"></textarea>
+                </div>
+                <MainButton type="submit" class="h-fit self-end">Enviar</MainButton>
+            </form>
+        </template>
+
+        <MainLoader v-else />
+    </Layout>
 </template>

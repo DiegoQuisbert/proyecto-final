@@ -13,6 +13,7 @@ export default function useUserProfile(id) {
         bio: null,
         display_name: null,
         pronoums: null,
+        location: null,
         avatar: null,
     });
 

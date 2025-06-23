@@ -8,6 +8,7 @@ let user = {
     bio: null,
     display_name: null,
     pronoums: null,
+    location: null,
     avatar: null,
 }
 
@@ -31,6 +32,7 @@ async function getCurrentAuthUser() {
         updateUser({
             id: data.user.id,
             email: data.user.email,
+            display_name: data.user.display_name,
         });
 
         fetchCurrentUserExtendedProfile();
@@ -53,6 +55,7 @@ async function fetchCurrentUserExtendedProfile() {
         bio: profile.bio,
         display_name: profile.display_name, 
         pronoums: profile.pronoums,
+        location: profile.location,
         avatar: profile.avatar,
     });
 
@@ -73,7 +76,7 @@ async function fetchCurrentUserExtendedProfile() {
  * @param {string} password 
  */
 
-export async function register(email, password) {
+export async function register(email, password, display_name) {
     const {data, error } = await supabase.auth.signUp({
         email,
         password,
@@ -88,6 +91,7 @@ export async function register(email, password) {
         await createUserProfile({
             id: data.user.id,
             email,
+            display_name,
         });
     } catch (error) {
         //TODO...
@@ -98,6 +102,7 @@ export async function register(email, password) {
     updateUser({
         id: data.user.id, 
         email: data.user.email,
+        display_name,
     });
 
     // user = {
@@ -158,6 +163,7 @@ export async function logout() {
         bio: null,
         display_name: null,
         pronoums: null,
+        location: null,
         avatar: null,
     });
     // user = {
@@ -174,6 +180,7 @@ export async function logout() {
 export async function updateCurrentUserProfile(data) {
     try {
         await updateUserProfile(user.id, data);
+        updateUser(data);
     } catch (error){
         throw error;
     }

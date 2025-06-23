@@ -10,7 +10,7 @@ const props = defineProps({
 });
 
 const buttonColor = computed(() => {
-    switch(props.buttonStyle) {
+    switch (props.buttonStyle) {
         case 'secondary':
             return "bg-gray-600 hover:bg-gray-500 focus:bg-gray-500 active:bg-gray-700";
         case 'danger':

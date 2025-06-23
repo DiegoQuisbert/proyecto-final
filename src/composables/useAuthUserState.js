@@ -10,6 +10,7 @@ export default function useAuthUserState() {
         bio: null,
         display_name: null,
         pronoums: null,
+        location: null,
         avatar: null,
         avatarURL: null,
     });

@@ -11,6 +11,13 @@ import MyProfileEdit from "../pages/MyProfileEdit.vue";
 import UserProfile from "../pages/UserProfile.vue";
 import PrivateChats from "../pages/PrivateChats.vue";
 import MyProfileEditAvatar from "../pages/MyProfileEditAvatar.vue";
+import MyProfileMultimedia from "../pages/MyProfileMultimedia.vue";
+import MyProfilePortFolio from "../pages/MyProfilePortFolio.vue";
+import MyProfileReplies from "../pages/MyProfileReplies.vue";
+import Notifications from "../pages/Notifications.vue";
+import PrivateChatList from "../pages/PrivateChatList.vue";
+import Bookmarks from "../pages/Bookmarks.vue";
+import Configuration from "../pages/Configuration.vue";
 
 const routes = [
     {path: '/',                        component: Home,},
@@ -19,10 +26,17 @@ const routes = [
     {path: '/posts',                   component: Posts,               meta: { requiresAuth: true, }, },
     {path: '/posts/:id',               component: Post,                meta: { requiresAuth: true, }, },
     {path: '/mi-perfil',               component: MyProfile,           meta: { requiresAuth: true, }, },
+    {path: '/mi-perfil/multimedia',    component: MyProfileMultimedia, meta: { requiresAuth: true, }, },
+    {path: '/mi-perfil/portfolio',     component: MyProfilePortFolio,  meta: { requiresAuth: true, }, },
+    {path: '/mi-perfil/respuestas',    component: MyProfileReplies,    meta: { requiresAuth: true, }, },
     {path: '/mi-perfil/editar',        component: MyProfileEdit,       meta: { requiresAuth: true, }, },
     {path: '/mi-perfil/editar/avatar', component: MyProfileEditAvatar, meta: { requiresAuth: true, }, },
     {path: '/usuario/:id',             component: UserProfile,         meta: { requiresAuth: false, }, },
     {path: '/usuario/:id/chat',        component: PrivateChats,        meta: { requiresAuth: true, }, },
+    {path: '/notificaciones',          component: Notifications,       meta: { requiresAuth: true, }, },
+    {path: '/mensajes',                component: PrivateChatList,     meta: { requiresAuth: true, }, },
+    {path: '/guardados',               component: Bookmarks,           meta: { requiresAuth: true, }, },
+    {path: '/configuraciones',         component: Configuration,       meta: { requiresAuth: true, }, },
 ];
 
 const router = createRouter({

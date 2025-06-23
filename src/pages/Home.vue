@@ -1,62 +1,63 @@
 <script setup>
-import MainH1 from '../components/MainH1.vue';
-
-
-import bannerImg from '../assets/images/banner.png';
+import MainH1 from "../components/MainH1.vue";
+import { RouterLink } from "vue-router";
+import fondo from "../assets/images/fondo.png";
 </script>
 
-
 <template>
-    <div class="h-[600px] relative bg-gray-900 hover:bg-gray-800 transition-transform duration-200">
-        <div class="absolute inset-0 z-[1]">
-            <div class="h-full w-full"></div>
-            <!-- TODO cuando pueda agregar un banner:
-        <img class="h-full w-full object-cover object-center" src="URL" alt="Fondo" />
-        -->
-        </div>
+    <div class="relative min-h-screen flex">
+        <div class="absolute inset-0 bg-cover bg-center" :style="{ backgroundImage: `url(${fondo})` }"></div>
 
+        <div class="relative z-10 flex w-full">
+            <div class="w-1/2 flex items-center justify-center"></div>
 
-        <div class="relative z-[2] px-6 md:px-8 lg:px-10 max-w-6xl mx-auto h-full flex items-center">
-            <div class="w-full space-y-6 text-gray-50">
+            <div class="w-1/2 flex flex-col items-center justify-center p-8 space-y-5">
+                <div class="flex flex-col items-center text-center space-y-3">
+                    <MainH1 class="text-yellow-400">¡Diseñá, expresate y compartí en Bzzign!</MainH1>
+                    <h2 class="text-3x1 font-bold text-purple-200">¿Qué esperás para unirte?</h2>
+                </div>
 
+                <div class="flex flex-col gap-3 items-center">
+                    <button type="button"
+                        class="w-56 cursor-pointer flex items-center justify-center text-gray-800 bg-[#dcdaed] hover:bg-[#dcdaed]/90 focus:ring-4 focus:outline-none focus:ring-[#dcdaed]/50 font-medium rounded-full text-sm px-5 py-2.5">
+                        <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 18 19">
+                            <path fill-rule="evenodd"
+                                d="M8.842 18.083a8.8 8.8 0 0 1-8.65-8.948 8.841 8.841 0 0 1 8.8-8.652h.153a8.464 8.464 0 0 1 5.7 2.257l-2.193 2.038A5.27 5.27 0 0 0 9.09 3.4a5.882 5.882 0 0 0-.2 11.76h.124a5.091 5.091 0 0 0 5.248-4.057L14.3 11H9V8h8.34c.066.543.095 1.09.088 1.636-.086 5.053-3.463 8.449-8.4 8.449l-.186-.002Z"
+                                clip-rule="evenodd" />
+                        </svg>
+                        Iniciá con Google
+                    </button>
 
-                <MainH1 class="text-yellow-400">
-                    ¡Bienvenido a Bzzign!
-                </MainH1>
-
-
-                <div class="space-y-6 md:space-y-0 md:flex md:gap-12 text-base md:text-lg leading-relaxed">
-                    <p
-                        class="relative before:content-[''] before:absolute before:w-px before:h-full before:left-0 before:top-0 before:-translate-x-4 before:bg-gray-500 md:w-1/2 text-justify font-light ml-4">
-                        Red social hecha para <b>jóvenes artistas</b> y <b>diseñadores</b>. ¡En esta red social podrás
-                        <b>compartir tu arte con todo el mundo</b>! Además de tener las herramientas necesarias para
-                        facilitarte el
-                        <b>monetizar tu trabajo</b>.
-                    </p>
-                    <p
-                        class="relative before:content-[''] before:absolute before:w-px before:h-full before:left-0 before:top-0 before:-translate-x-4 before:bg-gray-500 md:w-1/2 text-justify font-light ml-4">
-                        Nuestra misión es que puedas contar con un <b>espacio cómodo y seguro</b> para que puedas
-                        <b>expresarte como quieras</b>, enseñar tu arte, avances, obras terminadas y un largo etc.
-                    </p>
+                    <button type="button"
+                        class="w-56 cursor-pointer flex items-center justify-center text-gray-800 bg-[#dcdaed] hover:bg-[#dcdaed]/90 focus:ring-4 focus:outline-none focus:ring-[#dcdaed]/50 font-medium rounded-full text-sm px-5 py-2.5">
+                        <svg class="w-5 h-5 mr-3 scale-125" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
+                            viewBox="0 0 30 30">
+                            <path
+                                d="M 6 4 C 4.895 4 4 4.895 4 6 L 4 24 C 4 25.105 4.895 26 6 26 L 24 26 C 25.105 26 26 25.105 26 24 L 26 6 C 26 4.895 25.105 4 24 4 L 6 4 z M 8.6484375 9 L 13.259766 9 L 15.951172 12.847656 L 19.28125 9 L 20.732422 9 L 16.603516 13.78125 L 21.654297 21 L 17.042969 21 L 14.056641 16.730469 L 10.369141 21 L 8.8945312 21 L 13.400391 15.794922 L 8.6484375 9 z M 10.878906 10.183594 L 17.632812 19.810547 L 19.421875 19.810547 L 12.666016 10.183594 L 10.878906 10.183594 z">
+                            </path>
+                        </svg>
+                        Iniciá con X
+                    </button>
                 </div>
 
 
-                <div class="flex flex-col md:flex-row gap-4 pt-6">
-                    <router-link to="/iniciar-sesion"
-                        class="inline-block text-base font-medium px-12 py-3 bg-blue-600 text-white rounded-lg shadow-md hover:bg-blue-700 transition-transform duration-200 transform hover:scale-105">
-                        Iniciar Sesión
-                    </router-link>
-                    <router-link to="/crear-cuenta"
-                        class="inline-block text-base font-medium px-12 py-3 border border-yellow-500 text-yellow-400 rounded-lg bg-white/10 backdrop-blur-3xl hover:bg-white/20 transition-transform duration-200 transform hover:scale-105">
-                        Crear Cuenta
-                    </router-link>
+                <hr class="h-px my-8 bg-gray-300 border-0 w-48" />
+
+                <div class="flex flex-col gap-3 items-center">
+                    <RouterLink
+                        class="w-56 py-2.5 px-5 text-sm font-medium text-gray-900 bg-[#dcdaed] rounded-full border border-gray-300 hover:bg-[#dcdaed]/90 focus:ring-4 focus:ring-gray-100"
+                        to="crear-cuenta">
+                        Crear cuenta
+                    </RouterLink>
+                    <h2 class="text-3x1 text-purple-200 font-bold">¿Ya tenés una cuenta?</h2>
+                    <RouterLink
+                        class="w-56 text-yellow-400 hover:text-white border border-yellow-400 hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center"
+                        to="iniciar-sesion">
+                        Iniciá sesión
+                    </RouterLink>
                 </div>
             </div>
         </div>
     </div>
-
-
-    <footer class="h-16 bg-slate-900 text-white flex items-center justify-center text-sm">
-        <p>Da Vinci &copy; 2025</p>
-    </footer>
 </template>

@@ -4,32 +4,33 @@ import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import { updateCurrentUserAvatar } from '../services/auth';
+import Layout from '../components/Layout.vue';
 
 const { avatar, editing, handleFileChange, handleSubmit } = useProfileEditAvatarForm();
 
-function useProfileEditAvatarForm(){
+function useProfileEditAvatarForm() {
     const avatar = ref({
         file: null,
         preview: null,
     });
     const editing = ref(false);
 
-    async function handleSubmit(){
+    async function handleSubmit() {
         try {
             editing.value = true;
             await updateCurrentUserAvatar(avatar.value.file);
         } catch (error) {
-            
+
         }
         editing.value = false;
     }
 
-    function handleFileChange(event){
+    function handleFileChange(event) {
         const selectedFile = event.target.files[0];
         console.log(event.target.file);
 
-        if(!selectedFile) {
-            if(avatar.value.preview) URL.revokeObjectURL(avatar.value.preview);
+        if (!selectedFile) {
+            if (avatar.value.preview) URL.revokeObjectURL(avatar.value.preview);
 
             avatar.value = {
                 file: null,
@@ -43,9 +44,9 @@ function useProfileEditAvatarForm(){
         avatar.value.preview = URL.createObjectURL(avatar.value.file);
     }
 
-    onUnmounted(() => (avatar.value.preview) ? URL.revokeObjectURL(avatar.value.preview) : null )
+    onUnmounted(() => (avatar.value.preview) ? URL.revokeObjectURL(avatar.value.preview) : null)
 
-    return({
+    return ({
         avatar,
         editing,
         handleFileChange,
@@ -55,32 +56,32 @@ function useProfileEditAvatarForm(){
 
 </script>
 <template>
-    <MainH1>Editar mi imágen de perfil</MainH1>
 
-    <form 
-        action="#"
-        class="flex gap-4"
-        @submit.prevent="handleSubmit"
-    >
-        <div class="w-1/2">
-            <div class="mb-4">
-                <MainLabel for="avatar">Nueva imágen</MainLabel>
-                <input 
-                    type="file"
-                    id="avatar"
-                    class="w-full p-2 border border-gray-500 rounded"
-                    @change="handleFileChange"
-                >
-            </div>
-            <MainButton>Actualizar mi imágen de perfil</MainButton>
+    <Layout>
+        <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
+            <MainH1>Editar mi imagen de perfil</MainH1>
+
+            <form action="#" class="flex flex-col md:flex-row gap-6 mt-4" @submit.prevent="handleSubmit">
+                <div class="md:w-1/2">
+                    <div class="mb-4">
+                        <MainLabel for="avatar" class="block text-gray-700 font-semibold">Nueva imagen</MainLabel>
+                        <input id="avatar" type="file"
+                            class="w-full p-3 cursor-pointer border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+                            @change="handleFileChange" />
+                    </div>
+                    <MainButton
+                        class="w-full py-3 font-bold rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                        Actualizar mi imagen de perfil
+                    </MainButton>
+                </div>
+
+                <div class="md:w-1/2 flex flex-col items-center justify-center">
+                    <h2 class="sr-only">Previsualización de la imagen seleccionada</h2>
+                    <img v-if="avatar.preview" :src="avatar.preview" alt="Previsualización de la imagen"
+                        class="w-32 h-32 rounded-full object-cover border border-gray-300" />
+                </div>
+            </form>
         </div>
-        <div class="w-1/2">
-            <h2 class="sr-only">Previsualización de la imágen seleccionada</h2>
-            <img 
-                v-if="avatar.preview"
-                :src="avatar.preview" 
-                alt=""
-            >
-        </div>
-    </form>
+    </Layout>
+
 </template>
