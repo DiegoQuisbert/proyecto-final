@@ -5,10 +5,12 @@ import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import { updateCurrentUserAvatar } from '../services/auth';
 import Layout from '../components/Layout.vue';
+import { RouterLink, useRouter } from "vue-router";
 
 const { avatar, editing, handleFileChange, handleSubmit } = useProfileEditAvatarForm();
 
 function useProfileEditAvatarForm() {
+    const router = useRouter();
     const avatar = ref({
         file: null,
         preview: null,
@@ -19,6 +21,7 @@ function useProfileEditAvatarForm() {
         try {
             editing.value = true;
             await updateCurrentUserAvatar(avatar.value.file);
+            router.push("/mi-perfil");
         } catch (error) {
 
         }
@@ -60,7 +63,12 @@ function useProfileEditAvatarForm() {
     <Layout>
         <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
             <MainH1>Editar mi imagen de perfil</MainH1>
-
+            <div>
+                    <RouterLink to="/mi-perfil/editar"
+                        class="text-sm text-blue-600 font-semibold hover:underline">
+                        <- volver
+                    </RouterLink>
+                </div>
             <form action="#" class="flex flex-col md:flex-row gap-6 mt-4" @submit.prevent="handleSubmit">
                 <div class="md:w-1/2">
                     <div class="mb-4">

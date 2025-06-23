@@ -60,7 +60,10 @@ function useLoginForm() {
 
         <div class="relative max-w-lg w-full p-12 bg-[#2d3c7d] rounded-lg shadow-md">
             <MainH1 class="text-center text-yellow-400">Ingresar a mi cuenta</MainH1>
-
+            <RouterLink to="/"
+                        class="text-sm text-yellow-400 font-semibold hover:underline">
+                        <- volver
+                    </RouterLink>
             <form @submit.prevent="handleSubmit" class="space-y-6">
                 <div>
                     <MainLabel for="email" class="text-purple-200">Email</MainLabel>

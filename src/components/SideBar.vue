@@ -1,4 +1,5 @@
 <script setup>
+import MainLabel from './MainLabel.vue';
 </script>
 
 <template>

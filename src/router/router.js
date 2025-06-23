@@ -6,7 +6,7 @@ import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
 import Posts from '../pages/Posts.vue';
 import Post from "../pages/Post.vue";
-import MyProfile from "../pages/MyProfile.vue";
+import MyProfile from "../pages/MyProfileHome.vue";
 import MyProfileEdit from "../pages/MyProfileEdit.vue";
 import UserProfile from "../pages/UserProfile.vue";
 import PrivateChats from "../pages/PrivateChats.vue";

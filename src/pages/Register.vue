@@ -71,7 +71,10 @@ function useRegisterForm() {
 
         <div class="relative max-w-md w-full p-12 bg-[#2d3c7d] rounded-lg shadow-md">
             <MainH1 class="text-center text-yellow-400">Crear una cuenta</MainH1>
-
+            <RouterLink to="/"
+                        class="text-sm text-yellow-400 font-semibold hover:underline">
+                        <- volver
+                    </RouterLink>
             <form @submit.prevent="handleSubmit" class="space-y-6">
                 <div>
                     <MainLabel class="text-purple-200" for="display_name">Nombre</MainLabel>

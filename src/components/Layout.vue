@@ -11,7 +11,7 @@ const { user } = useAuthUserState();
 function useLogout(router) {
     function handleLogout() {
         logout();
-        router.push('/iniciar-sesion');
+        router.push('/');
     }
 
     return {
@@ -23,7 +23,7 @@ function useLogout(router) {
 <template>
     <div class="flex min-h-screen">
         <nav class="sticky top-0 flex flex-col w-72 bg-[#2d3c7d] text-gray-900 border-r border-gray-200 p-6 h-screen">
-            <RouterLink class="font-[Clear_Sans] text-3xl font-extrabold mb-10 px-2 py-2 text-purple-200 hover:text-yellow-400 transition"
+            <RouterLink class="text-3xl font-bold mb-10 px-2 py-2 text-purple-200 hover:text-yellow-400 transition"
                 to="/posts">
                 Bzzign
             </RouterLink>
@@ -70,10 +70,16 @@ function useLogout(router) {
                 <li>
                     <form @submit.prevent="handleLogout">
                         <button type="submit"
-                            class="w-full text-left px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition cursor-pointer">
-                            {{ user.email }} (Cerrar sesión)
+                            class="w-full text-left px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/25 text-purple-200 hover:text-yellow-400 transition cursor-pointer">
+                            Cerrar sesión
                         </button>
                     </form>
+                </li>
+                <li>
+                    <RouterLink to="/mi-perfil"
+                        class="block px-4 py-3 rounded-lg bg-[#dcdaed] hover:bg-[#eaa944] text-[#eaa944] text-gray-800 hover:text-[#2d3c7d] transition">
+                        {{ user.display_name }}
+                    </RouterLink>
                 </li>
                 <!-- </template> -->
 
