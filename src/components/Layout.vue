@@ -23,7 +23,7 @@ function useLogout(router) {
 <template>
     <div class="flex min-h-screen">
         <nav class="sticky top-0 flex flex-col w-72 bg-[#2d3c7d] text-gray-900 border-r border-gray-200 p-6 h-screen">
-            <RouterLink class="text-3xl font-extrabold mb-10 px-2 py-2 text-purple-200 hover:text-yellow-400 transition"
+            <RouterLink class="font-[Clear_Sans] text-3xl font-extrabold mb-10 px-2 py-2 text-purple-200 hover:text-yellow-400 transition"
                 to="/posts">
                 Bzzign
             </RouterLink>
