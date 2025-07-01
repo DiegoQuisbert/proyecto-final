@@ -8,12 +8,15 @@ import MainLabel from '../components/MainLabel.vue';
 import MainLoader from '../components/MainLoader.vue';
 import MainButton from '../components/MainButton.vue';
 import Layout from '../components/Layout.vue';
+import Dropdown from '../components/Dropdown.vue';
 
 import { getPostById, saveReply, getRepliesByPostId } from "../services/posts";
 import { getUserProfileById } from "../services/user-profiles";
 import { subscribeToAuthUserChanges } from '../services/auth';
+import { useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 
 const post = ref(null);
 const replies = ref([]);
@@ -37,6 +40,15 @@ function handleReplyFileChange(event) {
 onUnmounted(() => {
     if (replyImageFile.value.preview) URL.revokeObjectURL(replyImageFile.value.preview);
 });
+
+async function onDeletePost(postId) {
+    try {
+        await handleDeletePost(postId);
+        router.push('/posts');
+    } catch (error) {
+        console.error("Error eliminando post:", error);
+    }
+}
 
 async function sendReply() {
     if (!newReply.value.trim()) return;
@@ -110,18 +122,21 @@ onMounted(async () => {
 <template>
     <Layout>
         <div class="max-w-2xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-xl shadow-lg space-y-6">
-            <div>
-                <RouterLink to="/posts">
-                    <- volver
-                    <MainH1>
-                        Post
-                    </MainH1>
-                </RouterLink>
-        </div>
+
+            <div class="flex items-center justify-between mb-3">
+                <div class="flex items-center gap-2">
+                    <RouterLink to="/posts" class="text-blue-600 hover:underline font-medium mb-3">
+                        <- volver </RouterLink>
+                            <MainH1>Post</MainH1>
+                </div>
+
+                <Dropdown v-if="post && user.id" :post="post" :currentUserId="user.id" @deletePost="onDeletePost" />
+            </div>
+
 
             <MainLoader v-if="loading" />
 
-            <div v-else-if="post" class="space-y-3">
+            <div v-else-if="post" class="space-y-3 relative">
                 <p class="text-gray-800 text-lg leading-relaxed whitespace-pre-line">
                     {{ post.body }}
                 </p>
@@ -134,53 +149,32 @@ onMounted(async () => {
                 <div class="text-sm text-gray-500">
                     <span>{{ new Date(post.created_at).toLocaleString() }}</span>
                 </div>
-
-                <div class="flex justify-between items-center text-gray-500 text-sm mt-4">
-                    <div class="flex gap-8 items-center">
-                        <div class="relative">
-                            <button class="text-gray-600 hover:text-gray-800 focus:outline-none">
-                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                                    stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
-                                    <circle cx="12" cy="12" r="1.5" />
-                                    <circle cx="12" cy="5" r="1.5" />
-                                    <circle cx="12" cy="19" r="1.5" />
-                                </svg>
-                            </button>
-                            <div class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-36">
-                                <ul class="py-1">
-                                    <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Editar</li>
-                                    <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Eliminar</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                </div>
             </div>
-
             <form @submit.prevent="sendReply" class="space-y-4 pt-4 border-t border-gray-200">
                 <MainLabel for="reply">Tu respuesta</MainLabel>
-                <textarea v-model="newReply" id="reply" rows="4" placeholder="Responder..."
-                    class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 resize-none focus:border-blue-500 outline-none transition-all"></textarea>
+                <textarea v-model="newReply" id="reply" rows="2" placeholder="Responder..."
+                    class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 resize-y focus:border-blue-500 outline-none transition-all leading-normal text-sm"></textarea>
+
+                <div class="flex items-center justify-between">
+                    <label for="replyFileInput" class="cursor-pointer inline-block text-gray-700 hover:text-blue-600"
+                        title="Adjuntar imagen">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                            <circle cx="8.5" cy="8.5" r="1.5" />
+                            <polyline points="21 15 16 10 5 21" />
+                        </svg>
+                    </label>
+
+                    <MainButton type="submit">Enviar respuesta</MainButton>
+                </div>
 
                 <input type="file" id="replyFileInput" class="hidden" accept="image/*"
                     @change="handleReplyFileChange" />
 
-                <label for="replyFileInput" class="cursor-pointer inline-block text-gray-700 hover:text-blue-600">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                        stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
-                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                        <circle cx="8.5" cy="8.5" r="1.5" />
-                        <polyline points="21 15 16 10 5 21" />
-                    </svg>
-                </label>
-
                 <div v-if="replyImageFile.preview" class="mt-2">
                     <img :src="replyImageFile.preview" alt="Vista previa de la imagen"
                         class="max-h-48 rounded border border-gray-300 object-contain" />
-                </div>
-
-                <div class="text-right">
-                    <MainButton type="submit">Enviar respuesta</MainButton>
                 </div>
             </form>
 
@@ -189,28 +183,12 @@ onMounted(async () => {
 
                 <ul class="space-y-4">
                     <li v-for="reply in replies" :key="reply.id"
-                        class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg space-y-3">
-                        
+                        class="border border-gray-300 rounded p-4 shadow bg-white relative">
                         <div class="relative flex justify-between items-center">
                             <div>
                                 <span class="text-sm font-medium text-gray-700">{{ reply.email }}</span>
-                                <span class="text-xs text-gray-500">{{ new Date(reply.created_at).toLocaleString() }}</span>
-                            </div>
-                            <div class="relative">
-                                <button class="text-gray-600 hover:text-gray-800 focus:outline-none">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                                        stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
-                                        <circle cx="12" cy="12" r="1.5" />
-                                        <circle cx="12" cy="5" r="1.5" />
-                                        <circle cx="12" cy="19" r="1.5" />
-                                    </svg>
-                                </button>
-                                <div class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-36">
-                                    <ul class="py-1">
-                                        <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Editar</li>
-                                        <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Eliminar</li>
-                                    </ul>
-                                </div>
+                                <span class="text-xs text-gray-500">{{ new Date(reply.created_at).toLocaleString()
+                                }}</span>
                             </div>
                         </div>
 
@@ -223,7 +201,6 @@ onMounted(async () => {
                     </li>
                 </ul>
             </div>
-
         </div>
     </Layout>
 </template>

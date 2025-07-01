@@ -168,26 +168,26 @@ function usePostsForm(user) {
                 class="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
                 rows="3" />
 
-            <input type="file" id="fileInput" class="hidden"/>
+            <input type="file" id="fileInput" class="hidden" @change="handleFileChange" />
 
-            <label for="fileInput" class="cursor-pointer inline-block text-gray-700 hover:text-blue-600">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
-                    stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
-                    <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                    <circle cx="8.5" cy="8.5" r="1.5" />
-                    <polyline points="21 15 16 10 5 21" />
-                </svg>
-            </label>
+            <div class="flex items-center justify-between mt-4 gap-4">
+                <label for="fileInput" class="cursor-pointer text-gray-700 hover:text-blue-600">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
+                        <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
+                        <circle cx="8.5" cy="8.5" r="1.5" />
+                        <polyline points="21 15 16 10 5 21" />
+                    </svg>
+                </label>
 
+                <MainButton type="submit"> Subir </MainButton>
+            </div>
 
-            <div class="mt-2" v-if="imageFile.preview">
+            <div class="mt-4" v-if="imageFile.preview">
                 <img :src="imageFile.preview" alt="Vista previa"
                     class="max-h-60 rounded border border-gray-300 object-contain" />
             </div>
 
-            <div class="text-right mt-4">
-                <MainButton type="submit"> Subir </MainButton>
-            </div>
         </form>
 
         <section class="max-w-xl mx-auto">
