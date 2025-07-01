@@ -73,10 +73,10 @@ function toggleDropdown() {
                                 </button>
                             </li>
                             <li>
-                                <button @click="EditPost"
+                                <RouterLink :to="`/posts/${props.post.id}/editar`"
                                     class="w-full cursor-pointer text-left block px-4 py-2 hover:bg-[#DCDAED] hover:text-[#7f7f7f]">
                                     Editar
-                                </button>
+                                </RouterLink>
                             </li>
                         </template>
 

@@ -110,13 +110,14 @@ onMounted(async () => {
 <template>
     <Layout>
         <div class="max-w-2xl mx-auto mt-10 p-6 bg-white border border-gray-200 rounded-xl shadow-lg space-y-6">
-
-            <MainH1>
-                Publicación de
-                <span v-if="post">
-                    {{ post.display_name || post.email }}
-                </span>
-            </MainH1>
+            <div>
+                <RouterLink to="/posts">
+                    <- volver
+                    <MainH1>
+                        Post
+                    </MainH1>
+                </RouterLink>
+        </div>
 
             <MainLoader v-if="loading" />
 
@@ -136,7 +137,22 @@ onMounted(async () => {
 
                 <div class="flex justify-between items-center text-gray-500 text-sm mt-4">
                     <div class="flex gap-8 items-center">
-
+                        <div class="relative">
+                            <button class="text-gray-600 hover:text-gray-800 focus:outline-none">
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                                    stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="1.5" />
+                                    <circle cx="12" cy="5" r="1.5" />
+                                    <circle cx="12" cy="19" r="1.5" />
+                                </svg>
+                            </button>
+                            <div class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-36">
+                                <ul class="py-1">
+                                    <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Editar</li>
+                                    <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Eliminar</li>
+                                </ul>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -173,17 +189,36 @@ onMounted(async () => {
 
                 <ul class="space-y-4">
                     <li v-for="reply in replies" :key="reply.id"
-                        class="p-4 border border-gray-200 rounded-lg bg-gray-50 space-y-2">
+                        class="p-6 bg-white border border-gray-200 rounded-xl shadow-lg space-y-3">
+                        
+                        <div class="relative flex justify-between items-center">
+                            <div>
+                                <span class="text-sm font-medium text-gray-700">{{ reply.email }}</span>
+                                <span class="text-xs text-gray-500">{{ new Date(reply.created_at).toLocaleString() }}</span>
+                            </div>
+                            <div class="relative">
+                                <button class="text-gray-600 hover:text-gray-800 focus:outline-none">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
+                                        stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
+                                        <circle cx="12" cy="12" r="1.5" />
+                                        <circle cx="12" cy="5" r="1.5" />
+                                        <circle cx="12" cy="19" r="1.5" />
+                                    </svg>
+                                </button>
+                                <div class="absolute right-0 mt-2 bg-white border border-gray-300 rounded-lg shadow-lg w-36">
+                                    <ul class="py-1">
+                                        <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Editar</li>
+                                        <li class="px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 cursor-pointer">Eliminar</li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
                         <p class="text-gray-800 whitespace-pre-line leading-relaxed">{{ reply.body }}</p>
 
                         <div v-if="reply.mediaUrl" class="max-w-xs max-h-48 overflow-hidden rounded shadow">
                             <img :src="reply.mediaUrl" alt="Imagen de la respuesta"
                                 class="w-full h-full object-contain" />
-                        </div>
-
-                        <div class="text-xs text-gray-500">
-                            Por <span class="font-medium">{{ reply.email }}</span> •
-                            {{ new Date(reply.created_at).toLocaleString() }}
                         </div>
                     </li>
                 </ul>

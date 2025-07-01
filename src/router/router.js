@@ -18,6 +18,7 @@ import Notifications from "../pages/Notifications.vue";
 import PrivateChatList from "../pages/PrivateChatList.vue";
 import Bookmarks from "../pages/Bookmarks.vue";
 import Configuration from "../pages/Configuration.vue";
+import PostEdit from "../pages/PostEdit.vue";
 
 const routes = [
     {path: '/',                        component: Home,},
@@ -25,6 +26,7 @@ const routes = [
     {path: '/crear-cuenta',            component: Register,},
     {path: '/posts',                   component: Posts,               meta: { requiresAuth: true, }, },
     {path: '/posts/:id',               component: Post,                meta: { requiresAuth: true, }, },
+    {path: '/posts/:id/editar',        component: PostEdit,            meta: { requiresAuth: true, }, },
     {path: '/mi-perfil',               component: MyProfile,           meta: { requiresAuth: true, }, },
     {path: '/mi-perfil/multimedia',    component: MyProfileMultimedia, meta: { requiresAuth: true, }, },
     {path: '/mi-perfil/portfolio',     component: MyProfilePortFolio,  meta: { requiresAuth: true, }, },
@@ -34,7 +36,7 @@ const routes = [
     {path: '/usuario/:id',             component: UserProfile,         meta: { requiresAuth: false, }, },
     {path: '/notificaciones',          component: Notifications,       meta: { requiresAuth: true, }, },
     {path: '/mensajes',                component: PrivateChatList,     meta: { requiresAuth: true, }, },
-    {path: '/mensajes/:id/chat',        component: PrivateChats,        meta: { requiresAuth: true, }, },
+    {path: '/mensajes/:id/chat',        component: PrivateChats,       meta: { requiresAuth: true, }, },
     {path: '/guardados',               component: Bookmarks,           meta: { requiresAuth: true, }, },
     {path: '/configuraciones',         component: Configuration,       meta: { requiresAuth: true, }, },
 ];
