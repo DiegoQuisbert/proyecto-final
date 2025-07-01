@@ -9,6 +9,7 @@ import useUserProfile from '../composables/useUserProfile';
 import useAuthUserState from '../composables/useAuthUserState';
 import { useRoute } from 'vue-router';
 import Layout from '../components/Layout.vue';
+import PrivateChatList from './PrivateChatList.vue';
 
 const route = useRoute();
 const { user: userAuth } = useAuthUserState();
@@ -75,15 +76,15 @@ function usePrivateChatForm(userAuth, userChat) {
 </script>
 
 <template>
-    <Layout>
+    <PrivateChatList>
         <template v-if="!loadingUser">
             <MainH1>Conversación privada con {{ userChat.display_name }}</MainH1>
 
             <div ref="chatContainer"
-                class="overflow-y-auto h-[60vh] p-4 mb-6 border border-gray-300 rounded-lg bg-white shadow-inner scroll-smooth">
+                class="flex flex-col h-[75vh] p-4 mb-6 border border-gray-300 rounded-lg bg-white shadow-inner">
                 <h2 class="sr-only">Lista de mensajes</h2>
 
-                <ol v-if="!loadingMessages" class="flex flex-col gap-4">
+                <ol v-if="!loadingMessages" class="flex-1 overflow-y-auto flex flex-col gap-4 mb-4">
                     <li v-for="message in messages" :key="message.created_at"
                         class="flex flex-col gap-1 p-3 rounded-xl max-w-[75%] shadow-sm" :class="{
                             'self-end bg-blue-100 text-right': message.sender_id == userAuth.id,
@@ -95,10 +96,9 @@ function usePrivateChatForm(userAuth, userChat) {
                 </ol>
 
                 <MainLoader v-else />
-            </div>
 
-            <h2 class="sr-only">Enviar un mensaje</h2>
-            <form action="#" class="flex items-end gap-4" @submit.prevent="() => sendMessage()">
+            </div>
+            <form action="#" class="flex items-end gap-4" @submit.prevent="sendMessage">
                 <div class="w-full">
                     <MainLabel for="body" class="sr-only">Mensaje</MainLabel>
                     <textarea v-model="newMessage.body" id="body" rows="3" placeholder="Escribe tu mensaje..."
@@ -109,5 +109,5 @@ function usePrivateChatForm(userAuth, userChat) {
         </template>
 
         <MainLoader v-else />
-    </Layout>
+    </PrivateChatList>
 </template>

@@ -8,5 +8,6 @@ import MainH1 from '../components/MainH1.vue';
     <Layout>
         <MainH1>Guardados</MainH1>
         <p>Próximamente</p>
+
     </Layout>
 </template>

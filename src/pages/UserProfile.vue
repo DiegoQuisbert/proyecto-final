@@ -14,7 +14,7 @@ const { user, loadingUser } = useUserProfile(route.params.id);
         <div v-if="!loadingUser" class="max-w-2xl mx-auto mt-10 px-6 py-8 bg-white shadow-md rounded-xl space-y-6">
             <div class="flex justify-between items-center">
                 <MainH1>Perfil de {{ user.display_name || user.email }}</MainH1>
-                <RouterLink :to="`/usuario/${user.id}/chat`"
+                <RouterLink :to="`/mensajes/${user.id}/chat`"
                     class="py-3 px-4 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 disabled:opacity-50 cursor-pointer transition">
                     MD</RouterLink>
             </div>
@@ -32,7 +32,7 @@ const { user, loadingUser } = useUserProfile(route.params.id);
                 </div>
                 <div>
                     <dt class="text-sm font-semibold text-gray-500">Pronombres</dt>
-                    <dd class="text-base">{{ user.pronoums || 'Sin especificar' }}</dd>
+                    <dd class="text-base">{{ user.pronouns || 'Sin especificar' }}</dd>
                 </div>
             </dl>
         </div>

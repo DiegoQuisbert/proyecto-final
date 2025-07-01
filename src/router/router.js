@@ -32,9 +32,9 @@ const routes = [
     {path: '/mi-perfil/editar',        component: MyProfileEdit,       meta: { requiresAuth: true, }, },
     {path: '/mi-perfil/editar/avatar', component: MyProfileEditAvatar, meta: { requiresAuth: true, }, },
     {path: '/usuario/:id',             component: UserProfile,         meta: { requiresAuth: false, }, },
-    {path: '/usuario/:id/chat',        component: PrivateChats,        meta: { requiresAuth: true, }, },
     {path: '/notificaciones',          component: Notifications,       meta: { requiresAuth: true, }, },
     {path: '/mensajes',                component: PrivateChatList,     meta: { requiresAuth: true, }, },
+    {path: '/mensajes/:id/chat',        component: PrivateChats,        meta: { requiresAuth: true, }, },
     {path: '/guardados',               component: Bookmarks,           meta: { requiresAuth: true, }, },
     {path: '/configuraciones',         component: Configuration,       meta: { requiresAuth: true, }, },
 ];

@@ -9,7 +9,7 @@ export default function useAuthUserState() {
         email: null,
         bio: null,
         display_name: null,
-        pronoums: null,
+        pronouns: null,
         location: null,
         avatar: null,
         avatarURL: null,

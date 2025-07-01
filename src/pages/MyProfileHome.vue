@@ -30,5 +30,7 @@ import ProfileLayout from '../components/ProfileLayout.vue';
         </ul>
 
         <MainH1 class="mt-6 text-center">Posts</MainH1>
+
+        
     </ProfileLayout>
 </template>

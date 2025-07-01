@@ -46,7 +46,7 @@ const { user } = useAuthUserState();
                         <div class="w-1/2">
                             <span class="text-sm font-semibold text-gray-500">Pronombres</span>
                             <div class="text-base text-gray-800">
-                                {{ user.pronoums }}
+                                {{ user.pronouns }}
                             </div>
                         </div>
                         <div class="w-1/2">

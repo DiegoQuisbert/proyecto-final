@@ -30,5 +30,6 @@ import ProfileLayout from '../components/ProfileLayout.vue';
         </ul>
 
         <MainH1 class="mt-6 text-center">Multimedia</MainH1>
+        
     </ProfileLayout>
 </template>

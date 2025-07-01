@@ -7,7 +7,7 @@ let user = {
     email: null,
     bio: null,
     display_name: null,
-    pronoums: null,
+    pronouns: null,
     location: null,
     avatar: null,
 }
@@ -54,7 +54,7 @@ async function fetchCurrentUserExtendedProfile() {
     updateUser({
         bio: profile.bio,
         display_name: profile.display_name, 
-        pronoums: profile.pronoums,
+        pronouns: profile.pronouns,
         location: profile.location,
         avatar: profile.avatar,
     });
@@ -129,7 +129,7 @@ export async function login(email, password) {
     });
 
     if(error) {
-        console.error('[auth.js login] Error al iniciar sesión: ', error);
+        // console.error('[auth.js login] Error al iniciar sesión: ', error);
         throw error;
     }
 
@@ -162,7 +162,7 @@ export async function logout() {
         email: null,
         bio: null,
         display_name: null,
-        pronoums: null,
+        pronouns: null,
         location: null,
         avatar: null,
     });

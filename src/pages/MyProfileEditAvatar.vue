@@ -77,8 +77,10 @@ function useProfileEditAvatarForm() {
                             class="w-full p-3 cursor-pointer border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
                             @change="handleFileChange" />
                     </div>
-                    <MainButton
-                        class="w-full py-3 font-bold rounded bg-blue-600 text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    <MainButton>
+                        <template v-if="!editing">
+
+                        </template>
                         Actualizar mi imagen de perfil
                     </MainButton>
                 </div>

@@ -80,6 +80,18 @@ export async function handleDeletePost(id) {
     }
 }
 
+export async function EditPost(id, updatedData) {
+    const { error } = await supabase
+        .from('post')
+        .update(updatedData)
+        .eq('id', id);
+
+    if (error) {
+        console.error('[posts.js EditPost] Error al Actualizar el post: ', error);
+        throw error;
+    }
+}
+
 
 export async function saveReply(data) {
     const {error} = await supabase
@@ -107,6 +119,30 @@ export async function getRepliesByPostId(postId) {
     }
     
     return data;
+}
+
+export async function handleDeleteReply(id) {
+    const { error } = await supabase
+        .from('post_replies')
+        .delete()
+        .eq('id', id);
+
+    if (error) {
+        console.error('[posts.js handleDeleteReply] Error al eliminar la respuesta: ', error);
+        throw error;
+    }
+}
+
+export async function EditReply(id, updatedData) {
+    const { error } = await supabase
+        .from('post_replies')
+        .update(updatedData)
+        .eq('id', id);
+
+    if (error) {
+        console.error('[posts.js EditReplies] Error al Actualizar la respuesta: ', error);
+        throw error;
+    }
 }
 
 // const postChannel = supabase.channel("post", {

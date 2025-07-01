@@ -4,6 +4,13 @@ import { logout } from '../services/auth';
 import useAuthUserState from '../composables/useAuthUserState';
 import SideBar from './SideBar.vue';
 
+defineProps({
+    showAside: {
+        type: Boolean,
+        default: true,
+    },
+});
+
 const router = useRouter();
 const { handleLogout } = useLogout(router);
 const { user } = useAuthUserState();
@@ -32,77 +39,54 @@ function useLogout(router) {
                 <li>
                     <RouterLink to="/posts"
                         class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">
-                        Inicio
-                    </RouterLink>
+                        Inicio</RouterLink>
                 </li>
-
-                <!-- <template v-if="user.id !== null"> -->
                 <li>
                     <RouterLink to="/mi-perfil"
                         class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">
-                        Perfil
-                    </RouterLink>
+                        Perfil</RouterLink>
                 </li>
                 <li>
                     <RouterLink to="/notificaciones"
                         class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">
-                        Notificaciones
-                    </RouterLink>
+                        Notificaciones</RouterLink>
                 </li>
                 <li>
                     <RouterLink to="/mensajes"
                         class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">
-                        Mensajes
-                    </RouterLink>
+                        Mensajes</RouterLink>
                 </li>
                 <li>
                     <RouterLink to="/guardados"
                         class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">
-                        Guardados
-                    </RouterLink>
+                        Guardados</RouterLink>
                 </li>
                 <li>
                     <RouterLink to="/configuraciones"
                         class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">
-                        Configuración
-                    </RouterLink>
+                        Configuración</RouterLink>
                 </li>
                 <li>
                     <form @submit.prevent="handleLogout">
                         <button type="submit"
-                            class="w-full text-left px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/25 text-purple-200 hover:text-yellow-400 transition cursor-pointer">
-                            Cerrar sesión
-                        </button>
+                            class="w-full text-left px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/25 text-purple-200 hover:text-yellow-400 transition cursor-pointer">Cerrar
+                            sesión</button>
                     </form>
                 </li>
                 <li>
                     <RouterLink to="/mi-perfil"
                         class="block px-4 py-3 rounded-lg bg-[#dcdaed] hover:bg-[#eaa944] text-[#eaa944] text-gray-800 hover:text-[#2d3c7d] transition">
-                        {{ user.display_name }}
-                    </RouterLink>
+                        {{ user.display_name }}</RouterLink>
                 </li>
-                <!-- </template> -->
-
-                <!-- <template v-else>
-                    <li>
-                        <RouterLink to="/iniciar-sesion"
-                            class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">Login
-                        </RouterLink>
-                    </li>
-                    <li>
-                        <RouterLink to="/crear-cuenta"
-                            class="block px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition">
-                            Register</RouterLink>
-                    </li>
-                </template> -->
             </ul>
         </nav>
 
-        <main class="flex-1 w-full h-screen overflow-y-auto">
+        <main class="flex-1 w-full min-h-screen overflow-y-auto">
             <slot />
         </main>
 
-        <aside class="w-80 border-l border-gray-200 p-6 bg-gray-50 h-screen overflow-y-auto sticky top-0">
+        <aside v-if="showAside"
+            class="w-80 border-l border-gray-200 p-6 bg-gray-50 h-screen overflow-y-auto sticky top-0">
             <SideBar />
         </aside>
     </div>

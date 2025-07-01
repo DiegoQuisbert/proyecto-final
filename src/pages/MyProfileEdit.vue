@@ -2,34 +2,50 @@
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
+import MainLoader from '../components/MainLoader.vue';
+import AlertBox from '../components/AlertBox.vue';
 import { updateCurrentUserProfile } from '../services/auth';
 import useAuthUserState from '../composables/useAuthUserState';
 import { ref, onMounted } from 'vue';
 import Layout from '../components/Layout.vue';
 import { RouterLink, useRouter } from "vue-router";
+import SideBar from '../components/SideBar.vue';
 
 const { user } = useAuthUserState();
-const { profile, editing, handleSubmit } = useProfileEditForm(user);
+const { profile, editing, feedback, handleSubmit } = useProfileEditForm(user);
 
 function useProfileEditForm(user) {
     const router = useRouter();
     const profile = ref({
         bio: '',
-        pronoums: '',
+        pronouns: '',
         location: '',
         display_name: '',
     });
     const editing = ref(false);
+    const feedback = ref({
+        message: null,
+        type: 'success',
+    });
 
     async function handleSubmit() {
+        feedback.value.message = null;
+
         try {
             editing.value = true;
             await updateCurrentUserProfile({
                 ...profile.value,
             });
-            router.push("/mi-perfil");
+
+            feedback.value = {
+                message: 'La información de perfil se actualizó con éxito',
+                type: 'success',
+            }
         } catch (error) {
-            //TODO...
+            feedback.value = {
+                message: 'Ocurrió un error inesperado al tratar de actualizar la información de perfil',
+                type: 'error',
+            }
         }
         editing.value = false;
     }
@@ -38,7 +54,7 @@ function useProfileEditForm(user) {
         profile.value = {
             bio: user.value.bio,
             display_name: user.value.display_name,
-            pronoums: user.value.pronoums,
+            pronouns: user.value.pronouns,
             bio: user.value.bio,
             location: user.value.location
         }
@@ -47,6 +63,7 @@ function useProfileEditForm(user) {
     return {
         profile,
         editing,
+        feedback,
         handleSubmit,
     }
 }
@@ -57,12 +74,13 @@ function useProfileEditForm(user) {
     <Layout>
         <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
             <MainH1>Editar mi perfil</MainH1>
+
+            <AlertBox v-if="feedback.message != null" :content="feedback" />
+
             <div class>
-                    <RouterLink to="/mi-perfil"
-                        class="text-sm text-blue-600 font-semibold hover:underline">
-                        <- volver
-                    </RouterLink>
-                </div>
+                <RouterLink to="/mi-perfil" class="text-sm text-blue-600 font-semibold hover:underline">
+                    <- volver </RouterLink>
+            </div>
             <form action="#" @submit.prevent="handleSubmit" class="space-y-5 mt-4">
                 <div>
                     <MainLabel for="display_name" class="block text-gray-700 font-semibold">Nombre de usuario
@@ -79,8 +97,8 @@ function useProfileEditForm(user) {
 
 
                 <div>
-                    <MainLabel for="pronoums" class="block text-gray-700 font-semibold">Pronombres</MainLabel>
-                    <input v-model="profile.pronoums" id="pronoums" type="text"
+                    <MainLabel for="pronouns" class="block text-gray-700 font-semibold">Pronombres</MainLabel>
+                    <input v-model="profile.pronouns" id="pronouns" type="text"
                         class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
                 </div>
 
@@ -97,10 +115,14 @@ function useProfileEditForm(user) {
                 </div>
 
                 <MainButton type="submit" class="w-full py-3">
-                    Actualizar perfil
+                    <template v-if="!editing">
+                        Actualizar mi perfil
+                    </template>
+                    <MainLoader v-else />
                 </MainButton>
             </form>
         </div>
+
     </Layout>
 
 </template>
