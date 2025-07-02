@@ -11,14 +11,14 @@
                 aria-current="page">Posts</RouterLink>
         </li>
         <li class="w-full focus-within:z-10">
-            <RouterLink to="/mi-perfil/multimedia"
-                class="inline-block w-full p-4 bg-white border-r border-gray-200 light:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none light:hover:text-white light:bg-gray-800 light:hover:bg-gray-700">
-                Multimedia</RouterLink>
-        </li>
-        <li class="w-full focus-within:z-10">
             <RouterLink to="/mi-perfil/portfolio"
                 class="inline-block w-full p-4 bg-white border-r border-gray-200 light:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none light:hover:text-white light:bg-gray-800 light:hover:bg-gray-700">
                 PortFolio</RouterLink>
+        </li>
+        <li class="w-full focus-within:z-10">
+            <RouterLink to="/mi-perfil/multimedia"
+                class="inline-block w-full p-4 bg-white border-r border-gray-200 light:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none light:hover:text-white light:bg-gray-800 light:hover:bg-gray-700">
+                Multimedia</RouterLink>
         </li>
         <li class="w-full focus-within:z-10">
             <RouterLink to="/mi-perfil/respuestas"

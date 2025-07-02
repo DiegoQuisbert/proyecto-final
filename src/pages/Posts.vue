@@ -189,7 +189,7 @@ function usePostsForm(user) {
                     </svg>
                 </label>
 
-                <MainButton type="submit"> Subir </MainButton>
+                <MainButton class="w-50 rounded-3xl" type="submit"> Subir </MainButton>
             </div>
 
 

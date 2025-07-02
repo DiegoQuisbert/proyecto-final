@@ -169,7 +169,7 @@ function useLogout(router) {
         </main>
 
         <aside v-if="showAside"
-            class="w-118 border-l border-gray-200 p-6 bg-gray-50 h-screen overflow-y-auto sticky top-0">
+            class="w-102 border-l border-gray-200 p-6 bg-gray-50 h-screen overflow-y-auto sticky top-0">
             <SideBar />
         </aside>
     </div>
