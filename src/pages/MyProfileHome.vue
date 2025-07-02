@@ -1,36 +1,85 @@
 <script setup>
-    import MainH1 from '../components/MainH1.vue';
+import { ref, onMounted } from 'vue';
+import useAuthUserState from '../composables/useAuthUserState';
+
+import MainH1 from '../components/MainH1.vue';
 import ProfileLayout from '../components/ProfileLayout.vue';
+import ProfileNav from '../components/ProfileNav.vue';
+import MainPost from '../components/MainPost.vue';
+import MainLoader from '../components/MainLoader.vue';
+
+import { getPostsByUserId, handleDeletePost } from '../services/posts';
+import { getUserProfileById } from '../services/user-profiles';
+import { getFileUrl, deleteFile } from '../services/storage';
+
+const { user } = useAuthUserState();
+const posts = ref([]);
+const loading = ref(false);
+
+onMounted(async () => {
+    loading.value = true;
+
+    try {
+        const rawPosts = await getPostsByUserId(user.value.id);
+
+        const postsWithProfile = await Promise.all(
+            rawPosts.map(async (post) => {
+                const userProfile = await getUserProfileById(post.sender_id);
+
+                let avatarURL = null;
+                if (userProfile?.avatar) {
+                    avatarURL = getFileUrl(userProfile.avatar);
+                }
+
+                let mediaUrl = null;
+                if (post.multimedia) {
+                    mediaUrl = getFileUrl(`post/${post.multimedia}`, 'post-multimedia');
+                }
+
+                return {
+                    ...post,
+                    display_name: userProfile?.display_name || "",
+                    pronouns: userProfile?.pronouns || "",
+                    avatarURL,
+                    mediaUrl,
+                };
+            })
+        );
+
+        posts.value = postsWithProfile.sort(
+            (a, b) => new Date(b.created_at) - new Date(a.created_at)
+        );
+    } catch (error) {
+        console.error(error);
+    } finally {
+        loading.value = false;
+    }
+});
+
+async function deletePostById(id) {
+    try {
+        const postToDelete = posts.value.find(p => p.id === id);
+        if (postToDelete?.multimedia) {
+            await deleteFile(`post/${postToDelete.multimedia}`, 'post-multimedia');
+        }
+
+        await handleDeletePost(id);
+        posts.value = posts.value.filter(p => p.id !== id);
+    } catch (error) {
+        console.error(error);
+    }
+}
 </script>
 
 <template>
     <ProfileLayout>
-        <ul
-            class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex light:divide-gray-700 light:text-gray-400">
-            <li class="w-full focus-within:z-10">
-                <RouterLink to="/mi-perfil"
-                    class="inline-block w-full p-4 text-gray-900 bg-gray-100 border-r border-gray-200 light:border-gray-700 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none light:bg-gray-700 light:text-white"
-                    aria-current="page">Posts</RouterLink>
-            </li>
-            <li class="w-full focus-within:z-10">
-                <RouterLink to="/mi-perfil/multimedia"
-                    class="inline-block w-full p-4 bg-white border-r border-gray-200 light:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none light:hover:text-white light:bg-gray-800 light:hover:bg-gray-700">
-                    Multimedia</RouterLink>
-            </li>
-            <li class="w-full focus-within:z-10">
-                <RouterLink to="/mi-perfil/portfolio"
-                    class="inline-block w-full p-4 bg-white border-r border-gray-200 light:border-gray-700 hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:ring-blue-300 focus:outline-none light:hover:text-white light:bg-gray-800 light:hover:bg-gray-700">
-                    PortFolio</RouterLink>
-            </li>
-            <li class="w-full focus-within:z-10">
-                <RouterLink to="/mi-perfil/respuestas"
-                    class="inline-block w-full p-4 bg-white border-s-0 border-gray-200 light:border-gray-700 rounded-e-lg hover:text-gray-700 hover:bg-gray-50 focus:ring-4 focus:outline-none focus:ring-blue-300 light:hover:text-white light:bg-gray-800 light:hover:bg-gray-700">
-                    Respuestas</RouterLink>
-            </li>
-        </ul>
-
-        <MainH1 class="mt-6 text-center">Posts</MainH1>
-
-        
+        <ProfileNav class="mb-6"/>
+        <section class="max-w-xl mx-auto">
+            <MainLoader v-if="loading" />
+            <ol v-else class="flex flex-col gap-4">
+                <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"
+                    @handleDeletePost="deletePostById" />
+            </ol>
+        </section>
     </ProfileLayout>
 </template>

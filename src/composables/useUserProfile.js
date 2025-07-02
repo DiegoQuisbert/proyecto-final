@@ -1,6 +1,7 @@
 
 import { onMounted, ref } from "vue";
 import { getUserProfileById } from "../services/user-profiles";
+import { getFileUrl } from "../services/storage";
 
 /**
  * @param {string} id
@@ -15,6 +16,7 @@ export default function useUserProfile(id) {
         pronouns: null,
         location: null,
         avatar: null,
+        avatarURL: null,
     });
 
     const loadingUser = ref(false);
@@ -24,6 +26,10 @@ export default function useUserProfile(id) {
         try {
             loadingUser.value = true;
             user.value = await getUserProfileById(id);
+            
+            if (user.value.avatar) {
+                user.value.avatarURL = getFileUrl(user.value.avatar);
+            }
         } catch (error) {
             //TODO...
         }

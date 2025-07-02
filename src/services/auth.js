@@ -44,7 +44,7 @@ async function getCurrentAuthUser() {
 }
 
 /**
- * Carga los atos el perfil autenticado
+ * Carga los datos el perfil autenticado
  */
 
 async function fetchCurrentUserExtendedProfile() {

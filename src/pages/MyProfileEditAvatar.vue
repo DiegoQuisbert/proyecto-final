@@ -6,6 +6,7 @@ import MainLabel from '../components/MainLabel.vue';
 import { updateCurrentUserAvatar } from '../services/auth';
 import Layout from '../components/Layout.vue';
 import { RouterLink, useRouter } from "vue-router";
+import MainLoader from '../components/MainLoader.vue';
 
 const { avatar, editing, handleFileChange, handleSubmit } = useProfileEditAvatarForm();
 
@@ -30,7 +31,6 @@ function useProfileEditAvatarForm() {
 
     function handleFileChange(event) {
         const selectedFile = event.target.files[0];
-        console.log(event.target.file);
 
         if (!selectedFile) {
             if (avatar.value.preview) URL.revokeObjectURL(avatar.value.preview);
@@ -64,24 +64,26 @@ function useProfileEditAvatarForm() {
         <div class="max-w-2xl mx-auto mt-10 p-6 bg-white rounded-lg shadow-sm border border-gray-200">
             <MainH1>Editar mi imagen de perfil</MainH1>
             <div>
-                    <RouterLink to="/mi-perfil/editar"
-                        class="text-sm text-blue-600 font-semibold hover:underline">
-                        <- volver
-                    </RouterLink>
-                </div>
-            <form action="#" class="flex flex-col md:flex-row gap-6 mt-4" @submit.prevent="handleSubmit">
+                <RouterLink to="/mi-perfil/editar" class="text-sm text-blue-600 font-semibold hover:underline">
+                    <- volver </RouterLink>
+            </div>
+            <form action="#" class="flex flex-col md:flex-row mt-4" @submit.prevent="handleSubmit">
                 <div class="md:w-1/2">
                     <div class="mb-4">
-                        <MainLabel for="avatar" class="block text-gray-700 font-semibold">Nueva imagen</MainLabel>
-                        <input id="avatar" type="file"
-                            class="w-full p-3 cursor-pointer border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
-                            @change="handleFileChange" />
+                        <label class="block mb-2 text-sm font-medium text-gray-900 light:text-white"
+                            for="avatar">Nueva imágen</label>
+                        <input
+                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 light:text-gray-400 focus:outline-none light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400"
+                            id="avatar" type="file" @change="handleFileChange">
+
                     </div>
                     <MainButton>
-                        <template v-if="!editing">
-
+                        <template v-if="editing">
+                            <MainLoader />
                         </template>
-                        Actualizar mi imagen de perfil
+                        <template v-else>
+                            Actualizar mi imagen de perfil
+                        </template>
                     </MainButton>
                 </div>
 

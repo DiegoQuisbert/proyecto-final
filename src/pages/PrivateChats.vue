@@ -8,7 +8,6 @@ import { getPrivateChatLastMessages, listenForPrivateChatMessages, savePrivateCh
 import useUserProfile from '../composables/useUserProfile';
 import useAuthUserState from '../composables/useAuthUserState';
 import { useRoute } from 'vue-router';
-import Layout from '../components/Layout.vue';
 import PrivateChatList from './PrivateChatList.vue';
 
 const route = useRoute();
@@ -78,7 +77,7 @@ function usePrivateChatForm(userAuth, userChat) {
 <template>
     <PrivateChatList>
         <template v-if="!loadingUser">
-            <MainH1>Conversación privada con {{ userChat.display_name }}</MainH1>
+            <MainH1>Chat con {{ userChat.display_name }}</MainH1>
 
             <div ref="chatContainer"
                 class="flex flex-col h-[75vh] p-4 mb-6 border border-gray-300 rounded-lg bg-white shadow-inner">

@@ -68,6 +68,20 @@ export async function getPostById(id) {
     return data;
 }
 
+export async function getPostsByUserId(userId) {
+    const { data, error } = await supabase
+        .from('post')
+        .select()
+        .eq('sender_id', userId);
+
+    if (error) {
+        console.error('[posts.js getPostsByUserId] Error al obtener los posts del usuario: ', error);
+        throw error;
+    }
+    return data;
+}
+
+
 export async function handleDeletePost(id) {
     const { error } = await supabase
         .from('post')

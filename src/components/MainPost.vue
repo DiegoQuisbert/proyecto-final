@@ -1,6 +1,7 @@
 <script setup>
 import { RouterLink } from 'vue-router';
 import Dropdown from './Dropdown.vue';
+import MainActions from './MainActions.vue';
 
 const props = defineProps({
     post: {
@@ -42,13 +43,15 @@ function handleDeletePost(id) {
             </RouterLink>
 
             <Dropdown :post="props.post" :currentUserId="props.currentUserId" @deletePost="handleDeletePost" />
-        </div>
 
+        </div>
+        
         <RouterLink :to="`/posts/${props.post.id}`" class="block">
             <p class="text-gray-800 mb-3">{{ props.post.body }}</p>
             <div v-if="props.post.mediaUrl" class="rounded-[1vw] overflow-hidden shadow mb-3 max-h-80">
                 <img :src="props.post.mediaUrl" alt="Media" class="w-full h-80 object-cover object-center" />
             </div>
         </RouterLink>
+        <MainActions :post="props.post" :currentUserId="props.currentUserId" />
     </li>
 </template>
