@@ -34,9 +34,9 @@ function useLogout(router) {
 
 <template>
     <div class="flex">
-        <nav class="sticky top-0 flex flex-col w-82 bg-[#2d3c7d] text-gray-900 border-r border-gray-200 p-6 h-screen">
+        <nav class="sticky flex-col w-82 bg-[#2d3c7d] text-gray-900 border-gray-200 p-4 h-screen">
             <RouterLink to="/posts" class="mb-3 flex justify-center items-center w-[120px] h-[120px]">
-                <img :src="Logo" alt="Logo" class="object-contain w-[120px] h-[120px]" />
+                <img :src="Logo" alt="Logo" class="object-contain" />
             </RouterLink>
 
             <ul class="flex flex-col text-xl font-semibold">
@@ -164,12 +164,12 @@ function useLogout(router) {
             </ul>
         </nav>
 
-        <main class="flex-1 w-full min-h-screen overflow-y-auto">
+        <main class="flex-1 min-h-screen overflow-y-auto">
             <slot />
         </main>
 
         <aside v-if="showAside"
-            class="w-82 border-l border-gray-200 p-6 bg-gray-50 h-screen sticky top-0">
+            class="w-82 border-gray-200 p-3 bg-gray-50 h-screen sticky">
             <SideBar />
         </aside>
     </div>

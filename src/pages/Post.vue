@@ -161,10 +161,10 @@ onMounted(async () => {
 
             <div v-else-if="post" class="space-y-3 relative">
 
-                <div class="flex items-center gap-3 mb-3">
+                <div class="flex items-center mb-3">
                     <RouterLink :to="`/usuario/${post.sender_id}`" class="flex items-center gap-3 flex-shrink-0">
                         <div
-                            class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                            class="w-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                             <img v-if="post.avatarURL" :src="post.avatarURL" alt="Avatar"
                                 class="w-full object-cover" />
                             <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24"
@@ -173,8 +173,8 @@ onMounted(async () => {
                                 <path d="M4 20c0-4 8-4 8-4s8 0 8 4v2H4v-2z" />
                             </svg>
                         </div>
-                        <div class="flex gap-2 items-center">
-                            <span class="font-semibold hover:underline text-gray-900 text-lg">{{ post.display_name
+                        <div class="flex gap-2 hover:underline items-center">
+                            <span class="font-semibold text-gray-900 text-lg">{{ post.display_name
                                 }}</span>
                             <span class="text-gray-500 text-sm truncate max-w-xs">{{ post.email }}</span>
                         </div>
@@ -183,22 +183,22 @@ onMounted(async () => {
 
                 <p class="text-gray-800 text-lg leading-relaxed whitespace-pre-line">{{ post.body }}</p>
 
-                <div v-if="post.mediaUrl" class="w-full max-h-[80vh] overflow-hidden rounded-xl">
+                <div v-if="post.mediaUrl" class="w-full overflow-hidden rounded-xl">
                     <img :src="post.mediaUrl" alt="Imagen del post"
-                        class="w-full max-h-[50vh] object-contain mx-auto" />
+                        class="w-full h-45 object-contain mx-auto" />
                 </div>
 
                 <span class="text-gray-500 text-sm">{{ new Date(post.created_at).toLocaleString() }}</span>
             </div>
 
-            <form @submit.prevent="sendReply" class="space-y-4 pt-4 border-t border-gray-200">
+            <form @submit.prevent="sendReply" class="space-y-4 border-gray-200">
                 <MainLabel for="reply">Tu respuesta</MainLabel>
                 <textarea v-model="newReply" id="reply" rows="2" placeholder="Responder..."
                     class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 resize-y focus:border-blue-500 outline-none transition-all leading-normal text-sm"></textarea>
 
                     <div v-if="replyImageFile.preview" class="mt-2 flex justify-center">
                         <img :src="replyImageFile.preview" alt="Vista previa de la imagen"
-                            class="max-h-48 rounded border border-gray-300 object-contain" />
+                            class="max-h-[30vh] rounded border border-gray-300" />
                     </div>
                 <div class="flex items-center justify-between">
                     <label for="replyFileInput" class="cursor-pointer inline-block text-gray-700 hover:text-blue-600"
@@ -210,15 +210,16 @@ onMounted(async () => {
                             <polyline points="21 15 16 10 5 21" />
                         </svg>
                     </label>
-                    <MainButton class="w-50 rounded-3xl" type="submit">Enviar respuesta</MainButton>
+                    <MainButton type="submit">Enviar respuesta</MainButton>
                 </div>
 
                 <MainLabel for="replyFileInput" class="sr-only">Subir una imagen</MainLabel>
                 <input type="file" id="replyFileInput" class="hidden" accept="image/*"
                     @change="handleReplyFileChange" />
+                    <MainReply :replies="replies" />
             </form>
+            
 
-            <MainReply :replies="replies" />
         </div>
     </Layout>
 </template>

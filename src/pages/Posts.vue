@@ -202,7 +202,7 @@ function usePostsForm(user) {
             </li>
         </ul>
 
-        <form @submit.prevent="sendPost" class="mt-8 mb-8 rounded p-4 bg-white w-full max-w-3xl mx-auto">
+        <form @submit.prevent="sendPost" class="mt-3 mb-3 rounded p-4 bg-white max-w-3xl mx-auto">
 
             <div class="flex items-start gap-4 mb-4">
                 <div
@@ -241,12 +241,12 @@ function usePostsForm(user) {
                 <MainButton type="submit"> Subir </MainButton>
             </div>
             <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
-        </form>
 
-        <MainLoader v-if="loadingPost" />
-        <ol v-else class="flex flex-col gap-4">
-            <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"
-                @handleDeletePost="deletePostById" />
-        </ol>
+            <MainLoader v-if="loadingPost" />
+            <ul v-else class="flex flex-col gap-4">
+                <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"
+                    @handleDeletePost="deletePostById" />
+            </ul>
+        </form>
     </Layout>
 </template>

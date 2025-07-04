@@ -19,7 +19,7 @@ defineProps({
                 <div class="flex items-center gap-3 mb-3">
                     <RouterLink :to="`/usuario/${reply.sender_id}`" class="flex items-center gap-3 flex-shrink-0">
                         <div
-                            class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                            class="w-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                             <img v-if="reply.avatarURL" :src="reply.avatarURL" alt="Avatar"
                                 class="w-full h-full object-cover" />
                             <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24"
