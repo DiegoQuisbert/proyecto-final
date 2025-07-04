@@ -1,6 +1,7 @@
 <script setup>
+// Como aun no me termino de arregar con flowbite, tuve que hacer el dropdown de esta forma
+
 import { ref } from 'vue';
-import { RouterLink } from 'vue-router';
 
 const props = defineProps({
     post: { type: Object, required: true },
@@ -15,6 +16,7 @@ function toggleDropdown() {
     isOpen.value = !isOpen.value;
 }
 
+// Por ahora sin validación, Se va a implementar un modal para confirmar
 function handleDelete() {
     emit('deletePost', props.post.id);
     isOpen.value = false;

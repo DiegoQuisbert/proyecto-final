@@ -1,5 +1,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
+
 import AlertBox from '../components/AlertBox.vue';
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';

@@ -11,6 +11,7 @@ defineProps({
     <div id="alert-3" class="flex items-center p-4 m-3 rounded-lg light:text-green-400" :class="{
         'bg-green-200': content.type == 'success',
         'bg-red-200': content.type == 'error',
+        'bg-white': content.type == 'normal',
     }" role="alert">
         <svg class="shrink-0 w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
             viewBox="0 0 20 20">

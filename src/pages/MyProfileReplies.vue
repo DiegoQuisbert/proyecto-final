@@ -38,6 +38,7 @@ onMounted(async () => {
                 return {
                     ...reply,
                     display_name: userProfile?.display_name || '',
+                    pronouns: userProfile?.pronouns || '',
                     avatarURL,
                     mediaUrl,
                 };

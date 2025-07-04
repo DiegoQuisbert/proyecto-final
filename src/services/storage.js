@@ -1,6 +1,7 @@
 import supabase from "./supabase";
 
 /**
+ * Subimos un archivo en el bucket de avatars
  * 
  * @param {File} name 
  * @param {string} file 
@@ -21,6 +22,7 @@ export async function uploadFile(name, file, bucket = 'avatars'){
 }
 
 /**
+ * Obtenemos la url del archivo del bucket de avatars
  * 
  * @param {string} filename 
  * @param {string} bucket 
@@ -34,6 +36,7 @@ export function getFileUrl(filename, bucket = 'avatars') {
 }
 
 /**
+ * Borramos un archivo del bucket de avatars (No se termina de probar del todo, fata revisar las policies de supabase)
  * 
  * @param {string} filename 
  * @param {string} bucket 

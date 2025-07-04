@@ -1,7 +1,8 @@
 <script setup>
+
 import MainH1 from "../components/MainH1.vue";
-import { RouterLink } from "vue-router";
 import fondo from "../assets/images/fondo.png";
+
 </script>
 
 <template>

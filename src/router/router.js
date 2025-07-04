@@ -1,3 +1,5 @@
+//Se debe re-trabajar las rutas, especialmente con las partes para perfiles
+
 import { createRouter, createWebHistory } from "vue-router";
 import { subscribeToAuthUserChanges } from "../services/auth";
 

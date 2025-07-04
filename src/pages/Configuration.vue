@@ -1,13 +1,13 @@
 <script setup>
+//Lo único que hace por ahora es cerrar la sesión, se contempla una estructura prácticamente igual a la lista de chats y los propios chats, donde hay 5 campos/links, que llevan a sub secciones y ahí se encontrarán opciones como para cambiar contraseña, privatizar cuenta, cerrar sesión, borrar cuenta, etc etc
+
+import { useRouter } from 'vue-router';
+
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';
-import {
-    useRouter
-} from 'vue-router';
-import {
-    logout
-} from '../services/auth';
-import useAuthUserState from '../composables/useAuthUserState';
+
+import { logout } from '../services/auth';
+
 
 defineProps({
     showAside: {
@@ -20,9 +20,6 @@ const router = useRouter();
 const {
     handleLogout
 } = useLogout(router);
-const {
-    user
-} = useAuthUserState();
 
 function useLogout(router) {
     function handleLogout() {

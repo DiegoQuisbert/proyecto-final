@@ -1,10 +1,10 @@
 <script setup>
-import { nextTick, onMounted, ref, useTemplateRef } from 'vue';
+import { nextTick, onMounted, ref } from 'vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
-import { getPrivateChatLastMessages, listenForPrivateChatMessages, savePrivateChatMessage, } from '../services/private-chat';
+import { getPrivateChatLastMessages, listenForPrivateChatMessages, savePrivateChatMessage } from '../services/private-chat';
 import useUserProfile from '../composables/useUserProfile';
 import useAuthUserState from '../composables/useAuthUserState';
 import { useRoute } from 'vue-router';
@@ -20,41 +20,44 @@ const { messages, loadingMessages } = usePrivateChatMessages(userAuth, userChat)
 function usePrivateChatMessages(userAuth, userChat) {
     const messages = ref([]);
     const loadingMessages = ref(false);
-    const container = useTemplateRef('chatContainer');
+    const container = ref(null);
+
+    async function scrollToBottom() {
+        await nextTick();
+        if (container.value) {
+            container.value.scrollTop = container.value.scrollHeight;
+        }
+    }
 
     onMounted(async () => {
         try {
             loadingMessages.value = true;
             messages.value = await getPrivateChatLastMessages(userAuth.value.id, userChat.value.id);
-            loadingMessages.value = false;
-
-            await nextTick();
-            container.value.scrollTop = container.value.scrollHeight;
+            await scrollToBottom();
 
             listenForPrivateChatMessages(userAuth.value.id, userChat.value.id, async newMessage => {
                 messages.value.push(newMessage);
-                await nextTick();
-                container.value.scrollTop = container.value.scrollHeight;
+                await scrollToBottom();
             });
         } catch (error) {
-            //TODO...
+            // TODO
+        } finally {
+            loadingMessages.value = false;
         }
-        loadingMessages.value = false
     });
 
     return {
         messages,
         loadingMessages,
-    }
+        container,
+    };
 }
 
 function usePrivateChatForm(userAuth, userChat) {
-    const newMessage = ref({
-        body: '',
-    });
+    const newMessage = ref({ body: '' });
 
     async function sendMessage() {
-        if (!this.newMessage.body.trim()) return;
+        if (!newMessage.value.body.trim()) return;
         try {
             await savePrivateChatMessage(
                 userAuth.value.id,
@@ -63,23 +66,24 @@ function usePrivateChatForm(userAuth, userChat) {
             );
             newMessage.value.body = '';
         } catch (error) {
-            //TODO...
+            // TODO
         }
     }
 
     return {
         newMessage,
         sendMessage,
-    }
+    };
 }
 </script>
+
 
 <template>
     <PrivateChatList>
         <template v-if="!loadingUser">
             <div class="flex items-center gap-2">
-                <RouterLink to="/posts" class="text-blue-600 hover:underline font-medium flex items-center mb-4"
-                    aria-label="Volver a posts">
+                <RouterLink to="/mensajes" class="text-blue-600 hover:underline font-medium flex items-center mb-4"
+                    aria-label="Volver a mensajes">
                     <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#2d3c7d" class="w-7 h-7 mr-1"
                         style="flex-shrink: 0;" aria-hidden="true">
                         <path d="M224 480h640a32 32 0 1 1 0 64H224a32 32 0 0 1 0-64z" />
@@ -88,7 +92,7 @@ function usePrivateChatForm(userAuth, userChat) {
                     </svg>
                 </RouterLink>
 
-                <MainH1>Guardados</MainH1>
+                <MainH1>Chat con {{ userChat.display_name }} </MainH1>
             </div>
 
             <div ref="chatContainer"
@@ -102,7 +106,7 @@ function usePrivateChatForm(userAuth, userChat) {
                             'self-start bg-gray-100 text-left': message.sender_id != userAuth.id,
                         }">
                         <div class="text-base text-gray-800">{{ message.body }}</div>
-                        <div class="text-xs text-gray-500">{{ message.created_at }}</div>
+                        <div class="text-xs text-gray-500">{{ new Date(message.created_at).toLocaleString() }}</div>
                     </li>
                 </ol>
 

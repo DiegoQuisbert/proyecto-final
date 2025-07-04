@@ -1,12 +1,16 @@
 <script setup>
+
+import { ref } from "vue";
+import { RouterLink, useRouter } from "vue-router";
+
 import MainH1 from "../components/MainH1.vue";
 import MainLabel from "../components/MainLabel.vue";
 import MainLoader from "../components/MainLoader.vue";
-import fondoForms from "../assets/images/fondoForms.png";
-import { login } from "../services/auth";
-import { ref } from "vue";
-import { RouterLink, useRouter } from "vue-router";
 import AlertBox from "../components/AlertBox.vue";
+
+import fondoForms from "../assets/images/fondoForms.png";
+
+import { login } from "../services/auth";
 
 const router = useRouter();
 const emit = defineEmits();
@@ -77,14 +81,14 @@ function useLoginForm(router) {
                     <MainLabel for="email" class="text-purple-200">Email</MainLabel>
                     <input v-model="user.email" type="email" id="email"
                         class="w-full px-4 py-2 border bg-[#dcdaed] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        placeholder="ejemplo@correo.com" required/>
+                        placeholder="ejemplo@correo.com"/>
                 </div>
 
                 <div>
                     <MainLabel for="password" class="text-purple-200">Contraseña</MainLabel>
                     <input v-model="user.password" type="password" id="password"
                         class="w-full px-4 py-2 border bg-[#dcdaed] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
-                        placeholder="••••••••" required />
+                        placeholder="••••••••"/>
                 </div>
 
                 <button

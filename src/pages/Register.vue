@@ -1,12 +1,14 @@
 <script setup>
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+
 import MainH1 from "../components/MainH1.vue";
 import MainLabel from "../components/MainLabel.vue";
 import MainLoader from "../components/MainLoader.vue";
-import fondoForms from "../assets/images/fondoForms.png";
 import AlertBox from "../components/AlertBox.vue";
+import fondoForms from "../assets/images/fondoForms.png";
+
 import { register } from "../services/auth";
-import { ref } from "vue";
-import { RouterLink, useRouter } from "vue-router";
 
 const router = useRouter();
 const emit = defineEmits();

@@ -1,8 +1,10 @@
 <script setup>
-import { useRoute, RouterLink } from 'vue-router';
+import { useRoute } from 'vue-router';
+
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
+
 import useUserProfile from '../composables/useUserProfile';
 
 const route = useRoute();

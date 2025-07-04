@@ -1,17 +1,20 @@
 <script setup>
+import supabase from '../services/supabase';
+
 import { ref, watch } from 'vue';
 import { RouterLink } from 'vue-router';
-import supabase from '../services/supabase';
-import { getFileUrl } from '../services/storage';
+
 import MainLabel from '../components/MainLabel.vue';
 
+import { getFileUrl } from '../services/storage';
+
 const search = ref('');
-const resultados = ref([]);
+const results = ref([]);
 const loading = ref(false);
 
-watch(search, async (nuevoTexto) => {
-    if (nuevoTexto.trim() === '') {
-        resultados.value = [];
+watch(search, async (search) => {
+    if (search.trim() === '') {
+        results.value = [];
         return;
     }
 
@@ -20,14 +23,14 @@ watch(search, async (nuevoTexto) => {
     const { data, error } = await supabase
         .from('user_profiles')
         .select('id, display_name, email, avatar')
-        .or(`display_name.ilike.%${nuevoTexto}%,email.ilike.%${nuevoTexto}%`)
+        .or(`display_name.ilike.%${search}%,email.ilike.%${search}%`)
         .limit(10);
 
     if (error) {
-        console.error('Error al buscar usuarios:', error);
-        resultados.value = [];
+        console.error('Error al buscar users:', error);
+        results.value = [];
     } else {
-        resultados.value = data.map(u => ({
+        results.value = data.map(u => ({
             ...u,
             avatarURL: u.avatar ? getFileUrl(u.avatar) : null,
         }));
@@ -49,11 +52,11 @@ watch(search, async (nuevoTexto) => {
         <div v-if="loading" class="mt-2 text-sm text-gray-500">Buscando...</div>
 
         <ul v-else class="mt-4 space-y-2">
-            <li v-for="usuario in resultados" :key="usuario.id"
+            <li v-for="user in results" :key="user.id"
                 class="flex items-center gap-3 p-2 hover:bg-gray-100 rounded">
-                <RouterLink :to="`/usuario/${usuario.id}`" class="flex items-center gap-3">
+                <RouterLink :to="`/usuario/${user.id}`" class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                        <img v-if="usuario.avatarURL" :src="usuario.avatarURL" alt="avatar"
+                        <img v-if="user.avatarURL" :src="user.avatarURL" alt="avatar"
                             class="w-full h-full object-cover" />
                         <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24" class="w-6 h-6">
                             <circle cx="12" cy="8" r="4" />
@@ -62,8 +65,8 @@ watch(search, async (nuevoTexto) => {
                     </div>
 
                     <div>
-                        <div class="font-semibold">{{ usuario.display_name }}</div>
-                        <div class="text-sm text-gray-500">{{ usuario.email }}</div>
+                        <div class="font-semibold">{{ user.display_name }}</div>
+                        <div class="text-sm text-gray-500">{{ user.email }}</div>
                     </div>
                 </RouterLink>
             </li>

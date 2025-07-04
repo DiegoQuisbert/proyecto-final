@@ -1,6 +1,7 @@
 <script setup>
 import { computed } from 'vue';
 
+// Se contempla cambiar los colores de secondary, danger y success y utilizarlo más adelante
 
 const props = defineProps({
     buttonStyle: {

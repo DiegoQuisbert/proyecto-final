@@ -1,8 +1,12 @@
 <script setup>
+//Todo el código de UserProfile.vue, no se usa para nada actualmente este Layout, solo está contemplado para ideas futuras
+
+import { useRoute } from 'vue-router';
+
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
-import { RouterLink, useRoute } from 'vue-router';
+
 import useUserProfile from '../composables/useUserProfile';
 
 const route = useRoute();

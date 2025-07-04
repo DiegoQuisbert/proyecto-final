@@ -1,46 +1,20 @@
 <script setup>
-import {
-    onMounted,
-    ref,
-    onUnmounted
-} from "vue";
 import MainLoader from "../components/MainLoader.vue";
 import MainPost from "../components/MainPost.vue";
 import MainButton from "../components/MainButton.vue";
-import {
-    getLastPosts,
-    listenForPost,
-    savePost,
-    handleDeletePost,
-} from "../services/posts";
-import {
-    getUserProfileById
-} from "../services/user-profiles.js";
-import {
-    getFileUrl,
-    uploadFile,
-    deleteFile
-} from "../services/storage.js";
-import useAuthUserState from "../composables/useAuthUserState.js";
 import Layout from "../components/Layout.vue";
 import MainLabel from "../components/MainLabel.vue";
-import MainH1 from "../components/MainH1.vue";
 
-const {
-    user
-} = useAuthUserState();
-const {
-    newPost,
-    imageFile,
-    editing,
-    handleFileChange,
-    sendPost
-} = usePostsForm(user);
-const {
-    posts,
-    loadingPost,
-    deletePostById
-} = usePosts();
+import { onMounted, ref, onUnmounted } from "vue";
+import { getLastPosts, listenForPost, savePost, handleDeletePost } from "../services/posts";
+import { getUserProfileById } from "../services/user-profiles.js";
+import { getFileUrl, uploadFile, deleteFile } from "../services/storage.js";
+
+import useAuthUserState from "../composables/useAuthUserState.js";
+
+const { user } = useAuthUserState();
+const { newPost, imageFile, handleFileChange, sendPost } = usePostsForm(user);
+const { posts, loadingPost, deletePostById } = usePosts();
 
 function usePosts() {
     const posts = ref([]);
@@ -57,6 +31,7 @@ function usePosts() {
                     const userProfile = await getUserProfileById(post.sender_id);
 
                     let avatarURL = null;
+
                     if (userProfile?.avatar) {
                         avatarURL = getFileUrl(userProfile.avatar);
                     }
@@ -75,6 +50,7 @@ function usePosts() {
                     };
                 })
             );
+
             posts.value = postsWithNames.sort(
                 (a, b) => new Date(b.created_at) - new Date(a.created_at)
             );
@@ -83,11 +59,13 @@ function usePosts() {
                 const userProfile = await getUserProfileById(receivedPost.sender_id);
 
                 let avatarURL = null;
+
                 if (userProfile?.avatar) {
                     avatarURL = getFileUrl(userProfile.avatar);
                 }
 
                 let mediaUrl = null;
+
                 if (receivedPost.multimedia) {
                     mediaUrl = getFileUrl(`post/${receivedPost.multimedia}`,
                         'post-multimedia');
@@ -110,12 +88,15 @@ function usePosts() {
     async function deletePostById(id) {
         try {
             const postToDelete = posts.value.find(p => p.id === id);
+
             if (postToDelete?.multimedia) {
                 await deleteFile(`post/${postToDelete.multimedia}`, 'post-multimedia');
             }
 
             await handleDeletePost(id);
+
             posts.value = posts.value.filter(p => p.id !== id);
+
         } catch (error) {
             console.error(error);
         }
@@ -189,6 +170,8 @@ function usePostsForm(user) {
 
 <template>
     <Layout>
+
+        <!-- El uso del ul es méramente estético -->
         <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex">
             <li class="w-full focus-within:z-10">
                 <a href="#"
@@ -201,8 +184,8 @@ function usePostsForm(user) {
                     aria-current="page">Siguiendo</a>
             </li>
         </ul>
-
-        <form @submit.prevent="sendPost" class="mt-3 mb-3 rounded p-4 bg-white max-w-3xl mx-auto">
+        
+        <form @submit.prevent="sendPost" class="max-w-4xl mx-auto p-4 mt-3 mb-3 rounded bg-white">
 
             <div class="flex items-start gap-4 mb-4">
                 <div

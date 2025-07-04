@@ -1,6 +1,7 @@
 <script setup>
-import { useRouter } from 'vue-router';
-import { logout } from '../services/auth';
+
+//Los svg fueron primero tomados por mí y re-adaptados para que encajen por medio de ChatGPT
+
 import useAuthUserState from '../composables/useAuthUserState';
 import SideBar from './SideBar.vue';
 import Logo from "../assets/images/Logo_500x500.png";
@@ -12,34 +13,22 @@ defineProps({
     },
 });
 
-const router = useRouter();
-const {
-    handleLogout
-} = useLogout(router);
 const {
     user
 } = useAuthUserState();
 
-function useLogout(router) {
-    function handleLogout() {
-        logout();
-        router.push('/');
-    }
-
-    return {
-        handleLogout,
-    };
-}
 </script>
 
 <template>
     <div class="flex">
-        <nav class="sticky flex-col w-82 bg-[#2d3c7d] text-gray-900 border-gray-200 p-4 h-screen">
-            <RouterLink to="/posts" class="mb-3 flex justify-center items-center w-[120px] h-[120px]">
+
+    <!-- Navegador del lado izquierdo -->
+        <nav class="fixed left-0 w-92 h-screen bg-[#2d3c7d] p-4">
+            <RouterLink to="/posts" class="mb-3 flex justify-center items-center w-[100px] h-[100px]">
                 <img :src="Logo" alt="Logo" class="object-contain" />
             </RouterLink>
 
-            <ul class="flex flex-col text-xl font-semibold">
+            <ul class="flex flex-col text-lg font-semibold">
                 <li class="mb-2">
                     <RouterLink to="/posts"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition group">
@@ -164,12 +153,12 @@ function useLogout(router) {
             </ul>
         </nav>
 
-        <main class="flex-1 min-h-screen overflow-y-auto">
+    <!-- Contenido principal -->
+        <main class="flex-1 min-h-screen pl-[23rem] pr-[23rem]">
             <slot />
         </main>
-
-        <aside v-if="showAside"
-            class="w-82 border-gray-200 p-3 bg-gray-50 h-screen sticky">
+    <!-- Buscador del lado derecho  -->
+        <aside v-if="showAside" class="fixed right-0 w-92 h-screen border-gray-200 p-3 bg-gray-50">
             <SideBar />
         </aside>
     </div>

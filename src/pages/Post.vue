@@ -138,8 +138,8 @@ onMounted(async () => {
 
 <template>
     <Layout>
-        <div class="max-w-1xl mx-auto p-6 bg-white border-gray-200 rounded-xl space-y-6">
-            <div class="flex items-center justify-between mb-3">
+        <div class="max-w-4xl mx-auto px-4 py-6 bg-white border-gray-200 rounded-xl space-y-6">
+            <div class="top-0 flex items-center justify-between mb-3">
                 <div class="flex items-center gap-2">
                     <RouterLink to="/posts" class="text-blue-600 hover:underline font-medium flex items-center mb-4"
                         aria-label="Volver a posts">
@@ -153,8 +153,6 @@ onMounted(async () => {
 
                     <MainH1>Post</MainH1>
                 </div>
-                
-                <Dropdown v-if="post && user.id" :post="post" :currentUserId="user.id" @deletePost="onDeletePost" />
             </div>
 
             <MainLoader v-if="loading" />
@@ -163,10 +161,8 @@ onMounted(async () => {
 
                 <div class="flex items-center mb-3">
                     <RouterLink :to="`/usuario/${post.sender_id}`" class="flex items-center gap-3 flex-shrink-0">
-                        <div
-                            class="w-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
-                            <img v-if="post.avatarURL" :src="post.avatarURL" alt="Avatar"
-                                class="w-full object-cover" />
+                        <div class="w-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                            <img v-if="post.avatarURL" :src="post.avatarURL" alt="Avatar" class="w-full object-cover" />
                             <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24"
                                 class="w-8 h-8">
                                 <circle cx="12" cy="8" r="4" />
@@ -174,18 +170,17 @@ onMounted(async () => {
                             </svg>
                         </div>
                         <div class="flex gap-2 hover:underline items-center">
-                            <span class="font-semibold text-gray-900 text-lg">{{ post.display_name
-                                }}</span>
+                            <span class="font-semibold text-gray-900 text-lg">{{ post.display_name }}</span>
                             <span class="text-gray-500 text-sm truncate max-w-xs">{{ post.email }}</span>
                         </div>
                     </RouterLink>
+                    <Dropdown v-if="post && user.id" :post="post" :currentUserId="user.id" @deletePost="onDeletePost" />
                 </div>
 
                 <p class="text-gray-800 text-lg leading-relaxed whitespace-pre-line">{{ post.body }}</p>
 
                 <div v-if="post.mediaUrl" class="w-full overflow-hidden rounded-xl">
-                    <img :src="post.mediaUrl" alt="Imagen del post"
-                        class="w-full h-45 object-contain mx-auto" />
+                    <img :src="post.mediaUrl" alt="Imagen del post" class="object-contain mx-auto" />
                 </div>
 
                 <span class="text-gray-500 text-sm">{{ new Date(post.created_at).toLocaleString() }}</span>
@@ -196,10 +191,10 @@ onMounted(async () => {
                 <textarea v-model="newReply" id="reply" rows="2" placeholder="Responder..."
                     class="w-full p-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-400 resize-y focus:border-blue-500 outline-none transition-all leading-normal text-sm"></textarea>
 
-                    <div v-if="replyImageFile.preview" class="mt-2 flex justify-center">
-                        <img :src="replyImageFile.preview" alt="Vista previa de la imagen"
-                            class="max-h-[30vh] rounded border border-gray-300" />
-                    </div>
+                <div v-if="replyImageFile.preview" class="mt-2 flex justify-center">
+                    <img :src="replyImageFile.preview" alt="Vista previa de la imagen"
+                        class="h-85 rounded"/>
+                </div>
                 <div class="flex items-center justify-between">
                     <label for="replyFileInput" class="cursor-pointer inline-block text-gray-700 hover:text-blue-600"
                         title="Subir una imagen">
@@ -216,9 +211,9 @@ onMounted(async () => {
                 <MainLabel for="replyFileInput" class="sr-only">Subir una imagen</MainLabel>
                 <input type="file" id="replyFileInput" class="hidden" accept="image/*"
                     @change="handleReplyFileChange" />
-                    <MainReply :replies="replies" />
+                <MainReply :replies="replies" />
             </form>
-            
+
 
         </div>
     </Layout>

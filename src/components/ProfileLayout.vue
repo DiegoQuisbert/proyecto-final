@@ -1,10 +1,14 @@
 <script setup>
-import { RouterLink } from "vue-router";
+
+//Eventualmente será actualizado, dependiendo del feedback y solución del profe
+
 import Layout from "../components/Layout.vue";
-import useAuthUserState from "../composables/useAuthUserState";
 import MainH1 from "./MainH1.vue";
 
+import useAuthUserState from "../composables/useAuthUserState";
+
 const { user } = useAuthUserState();
+
 </script>
 
 <template>

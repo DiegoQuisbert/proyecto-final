@@ -1,12 +1,14 @@
 <script setup>
 import { onUnmounted, ref } from 'vue';
+import { useRouter } from "vue-router";
+
+import Layout from '../components/Layout.vue';
 import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
-import { updateCurrentUserAvatar } from '../services/auth';
-import Layout from '../components/Layout.vue';
-import { RouterLink, useRouter } from "vue-router";
 import MainLoader from '../components/MainLoader.vue';
+
+import { updateCurrentUserAvatar } from '../services/auth';
 
 const { avatar, editing, handleFileChange, handleSubmit } = useProfileEditAvatarForm();
 

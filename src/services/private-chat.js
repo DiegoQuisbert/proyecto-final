@@ -7,6 +7,7 @@ if(localStorage.getItem('private-chat-ids')) {
 }
 
 /**
+ * Traemos el chat privado
  * 
  * @param {string} sender_id 
  * @param {string} receiver_id 
@@ -30,6 +31,7 @@ async function fetchPrivateChat(sender_id, receiver_id){
 }
 
 /**
+ * Creamos el chat privado
  * 
  * @param {string} sender_id 
  * @param {string} receiver_id 
@@ -55,12 +57,13 @@ async function createPrivateChat(sender_id, receiver_id) {
 }
 
 /**
+ * Obtenemos la id del chat privado
  * 
  * @param {*} sender_id 
  * @param {*} receiver_id 
- * @returns {Promise<number>}
+ * @returns
  */
-async function getPrivateChatId(sender_id, receiver_id){
+export async function getPrivateChatId(sender_id, receiver_id){
     const cacheKey = [sender_id, receiver_id].sort().join('_');
     if(privateChatIdsCache[cacheKey]) {
         return privateChatIdsCache[cacheKey];
@@ -79,6 +82,7 @@ async function getPrivateChatId(sender_id, receiver_id){
 }
 
 /**
+ * Mandamos un mensaje
  * 
  * @param {*} sender_id 
  * @param {*} receiver_id 
@@ -97,12 +101,13 @@ export async function savePrivateChatMessage(sender_id, receiver_id, body) {
         });
 
     if (error) {
-        console.error('[private-chat.js savePrivateChatMessage] Error al crear mensaje del chat privado: ', error);
+        console.error('[private-chat.js savePrivateChatMessage] Error al mandar un mensaje del chat privado: ', error);
         throw error;
     }
 }
 
 /**
+ * Escuchamos o mostramos el mensaje
  * 
  * @param {*} sender_id 
  * @param {*} receiver_id 
@@ -129,6 +134,7 @@ export async function listenForPrivateChatMessages(sender_id, receiver_id, callb
 }
 
 /**
+ * Mostramos los mensajes del chat
  * 
  * @param {string} sender_id 
  * @param {string} receiver_id 

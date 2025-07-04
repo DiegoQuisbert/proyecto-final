@@ -1,5 +1,7 @@
 <script setup>
-import { RouterLink } from 'vue-router';
+
+//Trabajar para que sea más reutilizable
+//Los svg fueron primero tomados por mí y re-adaptados para que encajen por medio de ChatGPT
 
 const props = defineProps({
     post: {
@@ -15,6 +17,8 @@ const props = defineProps({
 
 <template>
     <div class="flex gap-32">
+
+        <!-- Por ahora solo dirige a claro, la pantalla de post individual -->
         <RouterLink :to="`/posts/${props.post.id}`">
             <button
                 class="p-2 rounded-full cursor-pointer borde hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
@@ -27,6 +31,7 @@ const props = defineProps({
             </button>
         </RouterLink>
 
+        <!-- Sin función, eventualmente servirá para repostear -->
         <button
             class="p-2 rounded-full cursor-pointer borde hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
             aria-label="Repostear">
@@ -42,6 +47,7 @@ const props = defineProps({
             </svg>
         </button>
 
+        <!-- Sin función, eventualmente servirá para ser un botón de "fav" o "me gusta" -->
         <button
             class="p-2 rounded-full cursor-pointer borde hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
             aria-label="Me gusta">

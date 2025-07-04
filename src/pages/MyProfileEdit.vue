@@ -1,21 +1,20 @@
 <script setup>
+import { ref, onMounted } from 'vue';
+
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
 import MainLoader from '../components/MainLoader.vue';
 import AlertBox from '../components/AlertBox.vue';
+
 import { updateCurrentUserProfile } from '../services/auth';
 import useAuthUserState from '../composables/useAuthUserState';
-import { ref, onMounted } from 'vue';
 import Layout from '../components/Layout.vue';
-import { RouterLink, useRouter } from "vue-router";
-import SideBar from '../components/SideBar.vue';
 
 const { user } = useAuthUserState();
 const { profile, editing, feedback, handleSubmit } = useProfileEditForm(user);
 
 function useProfileEditForm(user) {
-    const router = useRouter();
     const profile = ref({
         bio: '',
         pronouns: '',
@@ -77,7 +76,7 @@ function useProfileEditForm(user) {
 
             <AlertBox v-if="feedback.message != null" :content="feedback" />
 
-            <div class>
+            <div>
                 <RouterLink to="/mi-perfil" class="text-sm text-blue-600 font-semibold hover:underline">
                     <- volver </RouterLink>
             </div>

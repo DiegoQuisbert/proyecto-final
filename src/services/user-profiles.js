@@ -1,6 +1,7 @@
 import supabase from "./supabase";
 
 /**
+ * Creamos el perfil de usuario
  * 
  * @param {{id: string, email: string}} data 
  */
@@ -18,6 +19,7 @@ export async function createUserProfile(data) {
 
 
 /**
+ * Actualizamos el perfil del usuario
  * 
  * @param {string} id 
  * @param {{bio?: string|null, display_name?: string|null}} data 
@@ -35,6 +37,7 @@ export async function updateUserProfile(id, data) {
 }
 
 /**
+ * Obtenemos perfiles de usuarios por su id
  * 
  * @param {string} id 
  */

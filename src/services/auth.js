@@ -22,14 +22,13 @@ if(localStorage.getItem('user')) {
 
 /**
  * 
- * @returns {Promise<void>}
+ * @returns
  */
 async function getCurrentAuthUser() {
     try {
         const { data, error } = await supabase.auth.getUser();
 
         if (error) {
-            // console.error('[auth.js getCurrentAuthUser] Error al obtener al usuario autenticado: ', error);
             return;
         }
 
@@ -48,7 +47,7 @@ async function getCurrentAuthUser() {
 }
 
 /**
- * @returns {Promise<void>}
+ * @returns
  */
 
 async function fetchCurrentUserExtendedProfile() {
@@ -62,13 +61,6 @@ async function fetchCurrentUserExtendedProfile() {
         location: profile.location,
         avatar: profile.avatar,
     });
-
-        // user = {
-        //     ...user,
-        //     bio: profile.bio,
-        //     display_name: profile.display_name,
-        // }
-        // notifyAll();
     } catch (error){
         //TODO...
     }
@@ -103,20 +95,11 @@ export async function register(email, password, display_name) {
         //TODO...
     }
 
-    // console.log('Usuario registrado y autenticado !', data);
-
     updateUser({
         id: data.user.id, 
         email: data.user.email,
         display_name,
     });
-
-    // user = {
-    //     ...user,
-    //     id: data.user.id,
-    //     email: data.user.email,
-    // }
-    // notifyAll();
 
     return data.user;
 }
@@ -135,7 +118,6 @@ export async function login(email, password) {
     });
 
     if(error) {
-        // console.error('[auth.js login] Error al iniciar sesión: ', error);
         throw error;
     }
 
@@ -143,13 +125,6 @@ export async function login(email, password) {
         id: data.user.id, 
         email: data.user.email,
     });
-
-    // user = {
-    //     ...user,
-    //     id: data.user.id,
-    //     email: data.user.email,
-    // }
-    // notifyAll();
 
     fetchCurrentUserExtendedProfile();
 
@@ -175,12 +150,6 @@ export async function logout() {
         location: null,
         avatar: null,
     });
-    // user = {
-    //     ...user,
-    //     id: null,
-    //     email: null,
-    // }
-    // notifyAll();
 }
 
 /**

@@ -2,7 +2,6 @@
 import { ref, onMounted } from 'vue';
 import useAuthUserState from '../composables/useAuthUserState';
 
-import MainH1 from '../components/MainH1.vue';
 import ProfileLayout from '../components/ProfileLayout.vue';
 import ProfileNav from '../components/ProfileNav.vue';
 import MainPost from '../components/MainPost.vue';

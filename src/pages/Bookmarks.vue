@@ -1,4 +1,6 @@
 <script setup>
+//Sin uso por ahora, acá se guardarán los posts que se marquen justamente como guardados (el ícono no se encuentra por ahora en MainPost.vue)
+
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';
 

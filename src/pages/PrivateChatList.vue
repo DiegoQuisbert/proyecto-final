@@ -1,14 +1,17 @@
 <script setup>
 import { ref, onMounted, computed } from 'vue';
+import { useRouter } from 'vue-router';
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainLoader from '../components/MainLoader.vue';
-import { useRouter } from 'vue-router';
+
+import supabase from '../services/supabase';
 import useAuthUserState from '../composables/useAuthUserState';
 import { getUserProfileById } from '../services/user-profiles';
 import { getFileUrl } from '../services/storage';
-import supabase from '../services/supabase';
+
+import { getPrivateChatId } from '../services/private-chat';
 
 const router = useRouter();
 const { user: currentUser } = useAuthUserState();
@@ -43,22 +46,23 @@ onMounted(async () => {
                     profile.avatarURL = getFileUrl(profile.avatar);
                 }
 
+                const chat_id = await getPrivateChatId(currentUser.value.id, receiverId);
+
                 const { data: messages, error: msgError } = await supabase
                     .from('private_messages')
                     .select('body, created_at')
-                    .eq('chat_id', chat.id)
+                    .eq('chat_id', chat_id)
                     .order('created_at', { ascending: false })
                     .limit(1);
 
                 if (msgError) throw msgError;
-
                 if (!messages || messages.length === 0) continue;
 
                 const lastMsg = messages[0];
 
                 chatList.push({
                     id: receiverId,
-                    chat_id: chat.id,
+                    chat_id,
                     profile,
                     lastMessage: lastMsg.body,
                     lastDate: lastMsg.created_at,
@@ -89,7 +93,6 @@ function goToChat(id) {
     router.push(`/mensajes/${id}/chat`);
 }
 </script>
-
 
 <template>
     <Layout :showAside="false">

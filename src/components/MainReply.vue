@@ -1,6 +1,7 @@
 <script setup>
-import { RouterLink } from 'vue-router';
-import MainActions from './MainActions.vue';
+//Eventualmente se incluirá el mismo dropdown que tiene MainPost.vue
+//Ya que las funciones de editar y borrar ya fueron creadas, pero se encuentran sin usar por ahora
+//Igualmente también se incluirán los botones que lleva MainPost.vue
 
 defineProps({
     replies: {
@@ -31,6 +32,7 @@ defineProps({
                         <div class="flex gap-2 items-center hover:underline">
                             <span class="font-semibold text-gray-900 text-lg">{{ reply.display_name }}</span>
                             <span class="text-gray-500 text-sm truncate max-w-xs">{{ reply.email }}</span>
+                            <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-white border border-gray-500">{{reply.pronouns}}</span>
                         </div>
                     </RouterLink>
                     <span class="text-gray-500 text-sm">
@@ -40,9 +42,8 @@ defineProps({
 
                 <p class="text-gray-800 whitespace-pre-line leading-relaxed">{{ reply.body }}</p>
 
-                <div v-if="reply.mediaUrl" class="rounded shadow mt-2">
-                    <img :src="reply.mediaUrl" alt="Imagen de la respuesta"
-                        class="max-w-full max-h-[30vh] object-contain rounded block" />
+                <div v-if="reply.mediaUrl" class="mt-2 flex">
+                    <img :src="reply.mediaUrl" alt="Imagen de la respuesta" class="h-85 rounded"/>
                 </div>
             </li>
         </ul>
