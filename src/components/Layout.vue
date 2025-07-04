@@ -33,7 +33,7 @@ function useLogout(router) {
 </script>
 
 <template>
-    <div class="flex min-h-screen">
+    <div class="flex">
         <nav class="sticky top-0 flex flex-col w-102 bg-[#2d3c7d] text-gray-900 border-r border-gray-200 p-6 h-screen">
             <RouterLink to="/posts" class="mb-10 flex justify-center items-center w-[180px] h-[180px]">
                 <img :src="Logo" alt="Logo" class="object-contain w-[180px] h-[180px]" />

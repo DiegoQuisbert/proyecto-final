@@ -8,7 +8,7 @@ defineProps({
 </script>
 
 <template>
-    <div id="alert-3" class="flex items-center p-4 mb-3 rounded-lg light:text-green-400" :class="{
+    <div id="alert-3" class="flex items-center p-4 m-3 rounded-lg light:text-green-400" :class="{
         'bg-green-200': content.type == 'success',
         'bg-red-200': content.type == 'error',
     }" role="alert">

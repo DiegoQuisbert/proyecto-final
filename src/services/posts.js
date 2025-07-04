@@ -1,6 +1,7 @@
 import supabase from "./supabase";
 
 /**
+ * Subimos un post
  * 
  * @param {{email: string, body: string}} data 
  */
@@ -19,6 +20,7 @@ export async function savePost(data){
 }
 
 /**
+ * Obtenemos los últimos posts publicados
  * 
  * @returns {Promise<{id: number, email: string, body: string, created_at: string}[]>}
  */
@@ -35,6 +37,12 @@ export async function getLastPosts() {
 
     return data;
 }
+
+/**
+ * Escucha en tiempo real de la publicación de nuevos posts
+ * 
+ * @param {(post: object) => void} callback 
+ */
 
 export async function listenForPost (callback){
     const postChannel = supabase.channel('post');
@@ -54,6 +62,12 @@ export async function listenForPost (callback){
     postChannel.subscribe();
 }
 
+/**
+ * Obtenemos el post por su id
+ * 
+ * @param {number} id 
+ * @returns 
+ */
 export async function getPostById(id) {
     const {data, error} = await supabase
     .from('post')
@@ -68,6 +82,12 @@ export async function getPostById(id) {
     return data;
 }
 
+/**
+ * Obtenemos los posts de un usuario por su id
+ * 
+ * @param {string} userId 
+ * @returns 
+ */
 export async function getPostsByUserId(userId) {
     const { data, error } = await supabase
         .from('post')
@@ -81,7 +101,12 @@ export async function getPostsByUserId(userId) {
     return data;
 }
 
-
+/**
+ * Eliminamos un post por su id
+ * 
+ * @param {*} id 
+ * @returns
+ */
 export async function handleDeletePost(id) {
     const { error } = await supabase
         .from('post')
@@ -94,6 +119,13 @@ export async function handleDeletePost(id) {
     }
 }
 
+/**
+ * Editamos un post
+ * 
+ * @param {*} id 
+ * @param {object} updatedData 
+ * @returns
+ */
 export async function EditPost(id, updatedData) {
     const { error } = await supabase
         .from('post')
@@ -106,7 +138,12 @@ export async function EditPost(id, updatedData) {
     }
 }
 
-
+/**
+ * Subimos una respuesta a un post
+ * 
+ * @param {object} data
+ * @returns 
+ */
 export async function saveReply(data) {
     const {error} = await supabase
     .from('post_replies')
@@ -120,21 +157,53 @@ export async function saveReply(data) {
     }
 }
 
+/**
+ * Obtenemos Las respuestas a un post por su id
+ * 
+ * @param {number} postId 
+ * @returns 
+ */
 export async function getRepliesByPostId(postId) {
     const {data, error} = await supabase
     .from('post_replies')
     .select('*')
     .eq('post_id', postId)
-    .order('created_at', {ascending: true});
 
     if(error) {
-        console.error('[posts.js getRepliesByPostId] Error al obtener la id de la respuesta: ', error);
+        console.error('[posts.js getRepliesByPostId] Error al obtener las respuestas del usuario: ', error);
         throw error; 
     }
     
     return data;
 }
 
+/**
+ * Obtenemos las respuestas en posts de un usuario en específico
+ * 
+ * @param {number} senderId 
+ * @returns 
+ */
+export async function getRepliesBySenderId(senderId) {
+    const { data, error } = await supabase
+        .from('post_replies')
+        .select('*')
+        .eq('sender_id', senderId)
+        .order('created_at', { ascending: false });
+
+    if (error) {
+        console.error('[posts.js getRepliesBySenderId] Error al obtener respuestas del usuario: ', error);
+        throw error;
+    }
+
+    return data;
+}
+
+/**
+ * Eliminamos la respuesta a un post
+ * 
+ * @param {number} id 
+ * @returns
+ */
 export async function handleDeleteReply(id) {
     const { error } = await supabase
         .from('post_replies')
@@ -147,6 +216,12 @@ export async function handleDeleteReply(id) {
     }
 }
 
+/**
+ * 
+ * @param {number} id 
+ * @param {object} updatedData 
+ * @returns
+ */
 export async function EditReply(id, updatedData) {
     const { error } = await supabase
         .from('post_replies')
@@ -158,35 +233,3 @@ export async function EditReply(id, updatedData) {
         throw error;
     }
 }
-
-// const postChannel = supabase.channel("post", {
-//     config: {
-//         broadcast: {
-//             self: true,
-//         },
-//     }
-// });
-
-// export async function savePost(data) {
-//     return postChannel.send({
-//         type: 'broadcast',
-//         event: 'new-post',
-//         payload: {...data},
-//     });
-// }
-
-// export async function listenForPost(callback) {
-//     postChannel.on(
-//     'broadcast',
-//     {
-//         event: 'new-post',
-//     },
-//     (data) => {
-//         console.log("la data recibida fue: ", data);
-
-//         callback(data.payload);
-//     }
-// );
-
-//     postChannel.subscribe();
-// }

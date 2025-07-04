@@ -6,6 +6,7 @@ import useAuthUserState from "../composables/useAuthUserState";
 import Layout from "../components/Layout.vue";
 import MainLoader from "../components/MainLoader.vue";
 import MainH1 from "../components/MainH1.vue";
+import MainLabel from "../components/MainLabel.vue";
 
 const { user } = useAuthUserState();
 const route = useRoute();
@@ -64,9 +65,8 @@ const handleEditPost = async () => {
 
                     <MainH1>Editar Post</MainH1>
                 </div>
-            <RouterLink to="/posts" class="text-[#2d3c7d] hover:underline"> <- Volver </RouterLink>
-            
-            <textarea v-model="post.body" rows="6"
+            <MainLabel for="edit"/>
+            <textarea id="edit" v-model="post.body" rows="6"
                 class="w-full p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all"></textarea>
 
             <div class="mt-4 text-right">

@@ -17,7 +17,7 @@ const props = defineProps({
     <div class="flex gap-32">
         <RouterLink :to="`/posts/${props.post.id}`">
             <button
-                class="p-2 rounded-full cursor-pointer border border-gray-300 hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
+                class="p-2 rounded-full cursor-pointer borde hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
                 aria-label="Ver comentarios">
                 <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
                     <path
@@ -28,7 +28,7 @@ const props = defineProps({
         </RouterLink>
 
         <button
-            class="p-2 rounded-full cursor-pointer border border-gray-300 hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
+            class="p-2 rounded-full cursor-pointer borde hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
             aria-label="Repostear">
             <svg fill="#000000" viewBox="0 0 24 24" class="w-6 h-6" xmlns="http://www.w3.org/2000/svg">
                 <path d="M6,14V9A6,6,0,0,1,16.89,5.54"
@@ -43,7 +43,7 @@ const props = defineProps({
         </button>
 
         <button
-            class="p-2 rounded-full cursor-pointer border border-gray-300 hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
+            class="p-2 rounded-full cursor-pointer borde hover:bg-gray-100 transition-colors w-10 h-10 flex items-center justify-center"
             aria-label="Me gusta">
             <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" class="w-6 h-6">
                 <path

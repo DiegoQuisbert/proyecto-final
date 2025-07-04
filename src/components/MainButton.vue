@@ -18,14 +18,14 @@ const buttonColor = computed(() => {
         case 'success':
             return "bg-green-600 hover:bg-green-500 focus:bg-green-500 active:bg-green-700";
         default:
-            return "bg-blue-600 hover:bg-blue-500 focus:bg-blue-500 active:bg-blue-700";
+            return "bg-[#2d3c7d] hover:bg-[#2d3c7d]/90 focus:bg-[#2d3c7d]/90 active:bg-[#2d3c7d]/70";
     }
 });
 
 </script>
 
 <template>
-    <button :class="`transition-color py-2 px-4 rounded ${buttonColor} text-white cursor-pointer`">
+    <button :class="`w-50 rounded-3xl transition-color py-2 px-4 ${buttonColor} text-white cursor-pointer`">
         <slot />
     </button>
 

@@ -20,6 +20,10 @@ if(localStorage.getItem('user')) {
     user = JSON.parse(localStorage.getItem('user'));
 }
 
+/**
+ * 
+ * @returns {Promise<void>}
+ */
 async function getCurrentAuthUser() {
     try {
         const { data, error } = await supabase.auth.getUser();
@@ -44,7 +48,7 @@ async function getCurrentAuthUser() {
 }
 
 /**
- * Carga los datos el perfil autenticado
+ * @returns {Promise<void>}
  */
 
 async function fetchCurrentUserExtendedProfile() {
@@ -74,6 +78,8 @@ async function fetchCurrentUserExtendedProfile() {
  * 
  * @param {string} email 
  * @param {string} password 
+ * @param {string} display_name
+ * @returns 
  */
 
 export async function register(email, password, display_name) {
@@ -150,6 +156,9 @@ export async function login(email, password) {
     return data.user;
 }
 
+/**
+ * @returns
+ */
 export async function logout() {
     const { error } = await supabase.auth.signOut();
 
@@ -175,7 +184,7 @@ export async function logout() {
 }
 
 /**
- * @param {{bio?: string|null, display_name?: string|null, avatar?: string|null}} data
+ * @param {{bio?: string|null, display_name?: string|null, pronouns?: string|null, location?: string|null, avatar?: string|null}} data
  */
 export async function updateCurrentUserProfile(data) {
     try {
@@ -244,7 +253,7 @@ function notifyAll() {
 
 /**
  * 
- * @param {{id?: string/null, email?: string/null, display_name?: string/null, bio?:string/null}} data 
+ * @param {{id?: string|null, email?: string|null, display_name?: string|null, bio?:string|null, pronouns?:string|null, location?:string|null, avatar?:string|null}} data 
  */
 
 function updateUser(data) {

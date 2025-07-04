@@ -38,7 +38,7 @@ function useLogout(router) {
 
 <template>
     <Layout>
-        <div class="flex items-center gap-2">
+        <div class="flex items-center gap-2 m-3">
             <RouterLink to="/posts" class="text-blue-600 hover:underline font-medium flex items-center mb-4"
                 aria-label="Volver a posts">
                 <svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg" fill="#2d3c7d" class="w-7 h-7 mr-1"

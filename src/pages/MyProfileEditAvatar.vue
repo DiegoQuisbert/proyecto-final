@@ -70,10 +70,9 @@ function useProfileEditAvatarForm() {
             <form action="#" class="flex flex-col md:flex-row mt-4" @submit.prevent="handleSubmit">
                 <div class="md:w-1/2">
                     <div class="mb-4">
-                        <label class="block mb-2 text-sm font-medium text-gray-900 light:text-white"
-                            for="avatar">Nueva imágen</label>
+                        <MainLabel for="avatar" class="mb-3">Editar imágen</MainLabel>
                         <input
-                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 light:text-gray-400 focus:outline-none light:bg-gray-700 light:border-gray-600 light:placeholder-gray-400"
+                            class="block w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 light:text-gray-400 focus:outline-none light:border-gray-600 light:placeholder-gray-400"
                             id="avatar" type="file" @change="handleFileChange">
 
                     </div>

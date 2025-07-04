@@ -36,8 +36,9 @@ function handleDeletePost(id) {
 
                 <div class="flex gap-2 items-center">
                     <span class="font-semibold hover:underline text-gray-900 text-lg">{{ props.post.display_name
-                        }}</span>
+                    }}</span>
                     <span class="text-gray-500 text-sm truncate max-w-xs">{{ props.post.email }}</span>
+                    <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-white border border-gray-500">{{props.post.pronouns}}</span>
                     <span>{{ new Date(props.post.created_at).toLocaleString() }}</span>
                 </div>
             </RouterLink>
@@ -45,7 +46,6 @@ function handleDeletePost(id) {
             <Dropdown :post="props.post" :currentUserId="props.currentUserId" @deletePost="handleDeletePost" />
 
         </div>
-        
         <RouterLink :to="`/posts/${props.post.id}`" class="block">
             <p class="text-gray-800 mb-3">{{ props.post.body }}</p>
             <div v-if="props.post.mediaUrl" class="rounded-[1vw] overflow-hidden shadow mb-3 max-h-80">

@@ -155,9 +155,21 @@ function usePostsForm(user) {
 
 <template>
     <Layout>
+        <ul
+            class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex">
+            <li class="w-full focus-within:z-10">
+                <a href="#"
+                    class="inline-block w-full p-4 text-gray-900 border-r border-gray-200 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none"
+                    aria-current="page">Para tí</a>
+            </li>
+            <li class="w-full focus-within:z-10">
+                <a href="#"
+                    class="inline-block w-full p-4 text-gray-900 border-r border-gray-200 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none"
+                    aria-current="page">Siguiendo</a>
+            </li>
+        </ul>
 
-        <form @submit.prevent="sendPost"
-            class="mt-8 mb-8 border border-gray-300 rounded p-4 bg-white shadow w-full max-w-3xl mx-auto">
+        <form @submit.prevent="sendPost" class="mt-8 mb-8 rounded p-4 bg-white w-full max-w-3xl mx-auto">
 
             <div class="flex items-start gap-4 mb-4">
                 <div
@@ -172,12 +184,16 @@ function usePostsForm(user) {
                         </svg>
                     </RouterLink>
                 </div>
-                <MainLabel class="sr-only">Subir una publicación</MainLabel>
+                <MainLabel for="body" class="sr-only">Subir una publicación</MainLabel>
                 <textarea v-model="newPost.body" id="body" placeholder="¿Qué vas a subir hoy?"
                     class="w-full h-13 p-3 border border-gray-300 rounded resize-none focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                    rows="3" />
+                    rows="3"></textarea>
             </div>
-            <MainLabel class="sr-only">Subir una imágen</MainLabel>
+            <div class="mt-4 flex justify-center" v-if="imageFile.preview">
+                <img :src="imageFile.preview" alt="Vista previa"
+                    class="max-h-60 rounded border border-gray-300 object-contain" />
+            </div>
+            <MainLabel for="fileInput" class="sr-only">Subir una imágen</MainLabel>
             <input type="file" id="fileInput" class="hidden" @change="handleFileChange" />
             <div class="flex items-center justify-between mt-4 gap-4">
                 <label for="fileInput" class="cursor-pointer text-[#2d3c7d] hover:text-[#2d3c7d]/50 pl-[4rem]">
@@ -189,15 +205,9 @@ function usePostsForm(user) {
                     </svg>
                 </label>
 
-                <MainButton class="w-50 rounded-3xl" type="submit"> Subir </MainButton>
+                <MainButton type="submit"> Subir </MainButton>
             </div>
-
-
-            <div class="mt-4 flex justify-center" v-if="imageFile.preview">
-                <img :src="imageFile.preview" alt="Vista previa"
-                    class="max-h-60 rounded border border-gray-300 object-contain" />
-            </div>
-
+            <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
         </form>
 
         <section class="w-full max-w-3xl mx-auto">

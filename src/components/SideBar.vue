@@ -38,11 +38,12 @@ watch(search, async (nuevoTexto) => {
 </script>
 
 <template>
-    <div class="p-4">
+    <div>
         <div class="flex justify-center">
-            <MainLabel class="sr-only"> Buscar usuarios </MainLabel>
-            <input v-model="search" type="text" placeholder="Buscar" name="search"
-                class="w-78 h-15 px-3 py-1 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#2d3c7d] focus:border-[#2d3c7d]/50 transition-all" />
+            <MainLabel>
+                <input v-model="search" type="text" placeholder="Buscar" name="search"
+                    class="w-78 h-15 px-3 py-1 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#2d3c7d] focus:border-[#2d3c7d]/50 transition-all" aria-label="search" />
+            </MainLabel>
         </div>
 
         <div v-if="loading" class="mt-2 text-sm text-gray-500">Buscando...</div>
