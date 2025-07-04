@@ -81,7 +81,7 @@ function useProfileEditAvatarForm() {
                             <MainLoader />
                         </template>
                         <template v-else>
-                            Actualizar mi imagen de perfil
+                            Actualizar mi foto de perfil
                         </template>
                     </MainButton>
                 </div>

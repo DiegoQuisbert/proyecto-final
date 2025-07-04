@@ -23,9 +23,9 @@ function handleDeletePost(id) {
 
 <template>
     <li class="border border-gray-300 rounded p-4 shadow bg-white relative">
-        <div class="flex items-center gap-3 mb-3">
+        <div class="flex items-center mb-3">
             <RouterLink :to="`/usuario/${props.post.sender_id}`" class="flex items-center gap-3 flex-shrink-0">
-                <div class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
+                <div class="h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                     <img v-if="props.post.avatarURL" :src="props.post.avatarURL" alt="Avatar"
                         class="w-full h-full object-cover" />
                     <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24" class="w-8 h-8">
@@ -37,7 +37,7 @@ function handleDeletePost(id) {
                 <div class="flex gap-2 items-center">
                     <span class="font-semibold hover:underline text-gray-900 text-lg">{{ props.post.display_name
                     }}</span>
-                    <span class="text-gray-500 text-sm truncate max-w-xs">{{ props.post.email }}</span>
+                    <span class="text-gray-500 hover:underline text-sm truncate max-w-xs">{{ props.post.email }}</span>
                     <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-white border border-gray-500">{{props.post.pronouns}}</span>
                     <span>{{ new Date(props.post.created_at).toLocaleString() }}</span>
                 </div>

@@ -1,5 +1,9 @@
 <script setup>
-import { onMounted, ref, onUnmounted } from "vue";
+import {
+    onMounted,
+    ref,
+    onUnmounted
+} from "vue";
 import MainLoader from "../components/MainLoader.vue";
 import MainPost from "../components/MainPost.vue";
 import MainButton from "../components/MainButton.vue";
@@ -9,16 +13,34 @@ import {
     savePost,
     handleDeletePost,
 } from "../services/posts";
-import { getUserProfileById } from "../services/user-profiles.js";
-import { getFileUrl, uploadFile, deleteFile } from "../services/storage.js";
+import {
+    getUserProfileById
+} from "../services/user-profiles.js";
+import {
+    getFileUrl,
+    uploadFile,
+    deleteFile
+} from "../services/storage.js";
 import useAuthUserState from "../composables/useAuthUserState.js";
 import Layout from "../components/Layout.vue";
 import MainLabel from "../components/MainLabel.vue";
 import MainH1 from "../components/MainH1.vue";
 
-const { user } = useAuthUserState();
-const { newPost, imageFile, editing, handleFileChange, sendPost } = usePostsForm(user);
-const { posts, loadingPost, deletePostById } = usePosts();
+const {
+    user
+} = useAuthUserState();
+const {
+    newPost,
+    imageFile,
+    editing,
+    handleFileChange,
+    sendPost
+} = usePostsForm(user);
+const {
+    posts,
+    loadingPost,
+    deletePostById
+} = usePosts();
 
 function usePosts() {
     const posts = ref([]);
@@ -67,7 +89,8 @@ function usePosts() {
 
                 let mediaUrl = null;
                 if (receivedPost.multimedia) {
-                    mediaUrl = getFileUrl(`post/${receivedPost.multimedia}`, 'post-multimedia');
+                    mediaUrl = getFileUrl(`post/${receivedPost.multimedia}`,
+                        'post-multimedia');
                 }
 
                 receivedPost.display_name = userProfile?.display_name || '';
@@ -106,14 +129,22 @@ function usePosts() {
 }
 
 function usePostsForm(user) {
-    const newPost = ref({ body: "" });
-    const imageFile = ref({ file: null, preview: null });
+    const newPost = ref({
+        body: ""
+    });
+    const imageFile = ref({
+        file: null,
+        preview: null
+    });
 
     function handleFileChange(event) {
         const selected = event.target.files[0];
         if (!selected) {
             if (imageFile.value.preview) URL.revokeObjectURL(imageFile.value.preview);
-            imageFile.value = { file: null, preview: null };
+            imageFile.value = {
+                file: null,
+                preview: null
+            };
             return;
         }
         imageFile.value.file = selected;
@@ -141,7 +172,10 @@ function usePostsForm(user) {
         });
 
         newPost.value.body = "";
-        imageFile.value = { file: null, preview: null };
+        imageFile.value = {
+            file: null,
+            preview: null
+        };
     }
 
     return {
@@ -155,8 +189,7 @@ function usePostsForm(user) {
 
 <template>
     <Layout>
-        <ul
-            class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex">
+        <ul class="hidden text-sm font-medium text-center text-gray-500 rounded-lg shadow-sm sm:flex">
             <li class="w-full focus-within:z-10">
                 <a href="#"
                     class="inline-block w-full p-4 text-gray-900 border-r border-gray-200 rounded-s-lg focus:ring-4 focus:ring-blue-300 active focus:outline-none"
@@ -210,12 +243,10 @@ function usePostsForm(user) {
             <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
         </form>
 
-        <section class="w-full max-w-3xl mx-auto">
-            <MainLoader v-if="loadingPost" />
-            <ol v-else class="flex flex-col gap-4">
-                <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"
-                    @handleDeletePost="deletePostById" />
-            </ol>
-        </section>
+        <MainLoader v-if="loadingPost" />
+        <ol v-else class="flex flex-col gap-4">
+            <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"
+                @handleDeletePost="deletePostById" />
+        </ol>
     </Layout>
 </template>

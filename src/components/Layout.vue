@@ -34,13 +34,13 @@ function useLogout(router) {
 
 <template>
     <div class="flex">
-        <nav class="sticky top-0 flex flex-col w-102 bg-[#2d3c7d] text-gray-900 border-r border-gray-200 p-6 h-screen">
-            <RouterLink to="/posts" class="mb-10 flex justify-center items-center w-[180px] h-[180px]">
-                <img :src="Logo" alt="Logo" class="object-contain w-[180px] h-[180px]" />
+        <nav class="sticky top-0 flex flex-col w-82 bg-[#2d3c7d] text-gray-900 border-r border-gray-200 p-6 h-screen">
+            <RouterLink to="/posts" class="mb-3 flex justify-center items-center w-[120px] h-[120px]">
+                <img :src="Logo" alt="Logo" class="object-contain w-[120px] h-[120px]" />
             </RouterLink>
 
-            <ul class="flex flex-col gap-4 text-xl font-semibold">
-                <li>
+            <ul class="flex flex-col text-xl font-semibold">
+                <li class="mb-2">
                     <RouterLink to="/posts"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition group">
                         <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none"
@@ -53,7 +53,7 @@ function useLogout(router) {
                         Inicio
                     </RouterLink>
                 </li>
-                <li>
+                <li class="mb-2">
                     <RouterLink to="/mi-perfil"
                         class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition group">
                         <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none"
@@ -84,7 +84,7 @@ function useLogout(router) {
                         Perfil
                     </RouterLink>
                 </li>
-                <li>
+                <li class="mb-2">
                     <RouterLink to="/notificaciones"
                         class=" px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition flex items-center space-x-2">
                         <svg width="32px" height="32px" viewBox="0 0 24 24" fill="none"
@@ -102,7 +102,7 @@ function useLogout(router) {
                     </RouterLink>
                 </li>
 
-                <li>
+                <li class="mb-2">
                     <RouterLink to="/mensajes"
                         class=" px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition flex items-center space-x-2">
 
@@ -120,7 +120,7 @@ function useLogout(router) {
                     </RouterLink>
                 </li>
 
-                <li>
+                <li class="mb-2">
                     <RouterLink to="/guardados"
                         class=" px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition flex items-center space-x-2">
 
@@ -138,7 +138,7 @@ function useLogout(router) {
                     </RouterLink>
                 </li>
 
-                <li>
+                <li class="mb-2">
                     <RouterLink to="/configuraciones"
                         class=" px-4 py-3 rounded-lg hover:bg-[#2d3c7d]/50 text-purple-200 hover:text-yellow-400 transition flex items-center space-x-2">
                         <svg width="32px" height="32px" viewBox="-0.5 0 25 25" fill="none"
@@ -155,7 +155,7 @@ function useLogout(router) {
                         <span>Configuración</span>
                     </RouterLink>
                 </li>
-                <li>
+                <li class="mb-2">
                     <RouterLink to="/mi-perfil"
                         class="block px-4 py-3 rounded-lg bg-[#dcdaed] hover:bg-[#eaa944] text-gray-800 hover:text-[#2d3c7d] transition">
                         {{ user.display_name }}
@@ -169,7 +169,7 @@ function useLogout(router) {
         </main>
 
         <aside v-if="showAside"
-            class="w-102 border-l border-gray-200 p-6 bg-gray-50 h-screen overflow-y-auto sticky top-0">
+            class="w-82 border-l border-gray-200 p-6 bg-gray-50 h-screen sticky top-0">
             <SideBar />
         </aside>
     </div>
