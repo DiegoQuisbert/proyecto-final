@@ -17,7 +17,7 @@ export default function useAuthUserState() {
 
     onMounted(() => unsubAuth = subscribeToAuthUserChanges(newUserData => {
         user.value = newUserData;
-        user.value.avatarURL = user.value.avatar ? getFileUrl(user.value.avatar) : null;
+        user.value.avatarURL = user.value.avatar ? getFileUrl(user.value.avatar, 'avatars') : null;
     }));
 
     onUnmounted(() => unsubAuth());

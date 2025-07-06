@@ -8,7 +8,7 @@ import MainLabel from '../components/MainLabel.vue';
 import MainLoader from '../components/MainLoader.vue';
 import MainButton from '../components/MainButton.vue';
 import Layout from '../components/Layout.vue';
-import Dropdown from '../components/Dropdown.vue';
+import Dropdown from '../components/PostDropdown.vue';
 import MainReply from '../components/MainReply.vue';
 
 import { getPostById, saveReply, getRepliesByPostId, handleDeletePost } from "../services/posts";
@@ -104,7 +104,7 @@ onMounted(async () => {
         if (postData) {
             const userProfile = await getUserProfileById(postData.sender_id);
             postData.display_name = userProfile?.display_name || '';
-            postData.avatarURL = userProfile?.avatar ? getFileUrl(userProfile.avatar) : null;
+            postData.avatarURL = userProfile?.avatar ? getFileUrl(userProfile.avatar, 'avatars') : null;
 
             if (postData.multimedia) {
                 postData.mediaUrl = getFileUrl(`post/${postData.multimedia}`, 'post-multimedia');
@@ -121,10 +121,12 @@ onMounted(async () => {
             try {
                 const replyProfile = await getUserProfileById(reply.sender_id);
                 reply.display_name = replyProfile?.display_name || '';
-                reply.avatarURL = replyProfile?.avatar ? getFileUrl(replyProfile.avatar) : null;
+                reply.pronouns = replyProfile?.pronouns || '';
+                reply.avatarURL = replyProfile?.avatar ? getFileUrl(replyProfile.avatar, 'avatars') : null;
             } catch {
                 reply.avatarURL = null;
                 reply.display_name = '';
+                reply.pronouns = '';
             }
             return reply;
         }));
@@ -171,7 +173,7 @@ onMounted(async () => {
                         </div>
                         <div class="flex gap-2 hover:underline items-center">
                             <span class="font-semibold text-gray-900 text-lg">{{ post.display_name }}</span>
-                            <span class="text-gray-500 text-sm truncate max-w-xs">{{ post.email }}</span>
+                            <span class="text-gray-500 text-sm truncate max-w-xs">@{{ post.email?.split('@')[0] }}</span>
                         </div>
                     </RouterLink>
                     <Dropdown v-if="post && user.id" :post="post" :currentUserId="user.id" @deletePost="onDeletePost" />

@@ -27,7 +27,7 @@ onMounted(async () => {
 
                 let avatarURL = null;
                 if (userProfile?.avatar) {
-                    avatarURL = getFileUrl(userProfile.avatar);
+                    avatarURL = getFileUrl(userProfile.avatar, 'avatars');
                 }
 
                 let mediaUrl = null;

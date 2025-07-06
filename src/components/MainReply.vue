@@ -31,7 +31,7 @@ defineProps({
                         </div>
                         <div class="flex gap-2 items-center hover:underline">
                             <span class="font-semibold text-gray-900 text-lg">{{ reply.display_name }}</span>
-                            <span class="text-gray-500 text-sm truncate max-w-xs">{{ reply.email }}</span>
+                            <span class="text-gray-500 text-sm truncate max-w-xs">@{{ reply.email?.split('@')[0] }}</span>
                             <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-white border border-gray-500">{{reply.pronouns}}</span>
                         </div>
                     </RouterLink>

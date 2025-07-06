@@ -27,7 +27,7 @@ onMounted(async () => {
 
                 let avatarURL = null;
                 if (userProfile?.avatar) {
-                    avatarURL = getFileUrl(userProfile.avatar);
+                    avatarURL = getFileUrl(userProfile.avatar, 'avatars');
                 }
 
                 let mediaUrl = null;
@@ -75,10 +75,10 @@ async function deletePostById(id) {
         <ProfileNav class="mb-6"/>
         <section class="max-w-xl mx-auto">
             <MainLoader v-if="loading" />
-            <ol v-else class="flex flex-col gap-4">
+            <ul v-else class="flex flex-col gap-4">
                 <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"
                     @handleDeletePost="deletePostById" />
-            </ol>
+            </ul>
         </section>
     </ProfileLayout>
 </template>

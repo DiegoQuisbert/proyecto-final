@@ -32,7 +32,7 @@ watch(search, async (search) => {
     } else {
         results.value = data.map(u => ({
             ...u,
-            avatarURL: u.avatar ? getFileUrl(u.avatar) : null,
+            avatarURL: u.avatar ? getFileUrl(u.avatar, 'avatars') : null,
         }));
     }
 
@@ -66,7 +66,7 @@ watch(search, async (search) => {
 
                     <div>
                         <div class="font-semibold">{{ user.display_name }}</div>
-                        <div class="text-sm text-gray-500">{{ user.email }}</div>
+                        <div class="text-sm text-gray-500">@{{ user.email?.split('@')[0] }}</div>
                     </div>
                 </RouterLink>
             </li>

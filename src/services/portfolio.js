@@ -3,15 +3,13 @@ import supabase from "./supabase";
 /**
  * Subimos el portfolio a la tabla de supabase
  * 
- * @param {{sender_id: string, title: string, body: string, image?: string}} data
+ * @param {{sender_id: string, title: string, body: string, media?: string}} data
  * @returns
  */
 export async function savePortfolio(data){
     const { error } = await supabase
         .from('portfolio')
-        .insert([
-            ...data
-        ]);
+        .insert([data]);
 
     if(error){
         console.error('[portfolio.js savePortfolio] Error al subir el portfolio: ', error);
@@ -43,7 +41,7 @@ export async function getPortfolioByUserId(userId) {
  * Editamos una entrada del portfolio
  * 
  * @param {number} id 
- * @param {{ title?: string, body?: string, media_url?: string }} updatedData 
+ * @param {{ title?: string, body?: string, media?: string }} updatedData 
  * @returns {Promise<void>}
  */
 export async function EditPortfolio(id, updatedData) {

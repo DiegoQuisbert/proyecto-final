@@ -52,7 +52,7 @@ function handleDelete() {
                         </RouterLink>
                     </li>
                 </template>
-                <li>
+                <li v-if="props.currentUserId !== props.post.sender_id" >
                     <RouterLink :to="`/mensajes/${props.post.sender_id}/chat`"
                         class="block cursor-pointer px-4 py-2 hover:bg-[#DCDAED] hover:text-[#7f7f7f]">
                         Mensajear

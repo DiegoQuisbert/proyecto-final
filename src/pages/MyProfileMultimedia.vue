@@ -10,7 +10,6 @@ import ProfileNav from '../components/ProfileNav.vue';
 
         <ProfileNav></ProfileNav>
 
-        <MainH1 class="mt-6 text-center">Multimedia</MainH1>
 
 
     </ProfileLayout>

@@ -28,7 +28,7 @@ export default function useUserProfile(id) {
             user.value = await getUserProfileById(id);
             
             if (user.value.avatar) {
-                user.value.avatarURL = getFileUrl(user.value.avatar);
+                user.value.avatarURL = getFileUrl(user.value.avatar, 'avatars');
             }
         } catch (error) {
             //TODO...

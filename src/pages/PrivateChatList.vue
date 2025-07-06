@@ -43,7 +43,7 @@ onMounted(async () => {
                 if (!profile) continue;
 
                 if (profile.avatar) {
-                    profile.avatarURL = getFileUrl(profile.avatar);
+                    profile.avatarURL = getFileUrl(profile.avatar, 'avatars');
                 }
 
                 const chat_id = await getPrivateChatId(currentUser.value.id, receiverId);

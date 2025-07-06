@@ -33,7 +33,7 @@ function usePosts() {
                     let avatarURL = null;
 
                     if (userProfile?.avatar) {
-                        avatarURL = getFileUrl(userProfile.avatar);
+                        avatarURL = getFileUrl(userProfile.avatar, 'avatars');
                     }
 
                     let mediaUrl = null;
@@ -61,7 +61,7 @@ function usePosts() {
                 let avatarURL = null;
 
                 if (userProfile?.avatar) {
-                    avatarURL = getFileUrl(userProfile.avatar);
+                    avatarURL = getFileUrl(userProfile.avatar, 'avatars');
                 }
 
                 let mediaUrl = null;
@@ -184,16 +184,14 @@ function usePostsForm(user) {
                     aria-current="page">Siguiendo</a>
             </li>
         </ul>
-        
+
         <form @submit.prevent="sendPost" class="max-w-4xl mx-auto p-4 mt-3 mb-3 rounded bg-white">
 
             <div class="flex items-start gap-4 mb-4">
                 <div
                     class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center flex-shrink-0">
                     <RouterLink to="/mi-perfil">
-                        <img v-if="user.avatar"
-                            :src="user.avatar.startsWith('http') ? user.avatar : getFileUrl(user.avatar)" alt="Avatar"
-                            class="w-full h-full object-cover" />
+                        <img v-if="user.avatar" :src="getFileUrl(user.avatar, 'avatars')" alt="Avatar" />
                         <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24" class="w-8 h-8">
                             <circle cx="12" cy="8" r="4" />
                             <path d="M4 20c0-4 8-4 8-4s8 0 8 4v2H4v-2z" />
@@ -223,13 +221,14 @@ function usePostsForm(user) {
 
                 <MainButton type="submit"> Subir </MainButton>
             </div>
-            <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
-
+        </form>
+        <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
+        <div class="max-w-4xl mx-auto p-4 mt-3 mb-3 rounded">
             <MainLoader v-if="loadingPost" />
             <ul v-else class="flex flex-col gap-4">
                 <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"
                     @handleDeletePost="deletePostById" />
             </ul>
-        </form>
+        </div>
     </Layout>
 </template>

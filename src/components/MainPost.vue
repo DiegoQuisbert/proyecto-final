@@ -1,5 +1,5 @@
 <script setup>
-import Dropdown from './Dropdown.vue';
+import Dropdown from './PostDropdown.vue';
 import MainActions from './MainActions.vue';
 
 const props = defineProps({
@@ -36,7 +36,7 @@ function handleDeletePost(id) {
                 <div class="flex gap-2 items-center">
                     <span class="font-semibold hover:underline text-gray-900 text-lg">{{ props.post.display_name
                     }}</span>
-                    <span class="text-gray-500 hover:underline text-sm truncate max-w-xs">{{ props.post.email }}</span>
+                    <span class="text-gray-500 hover:underline text-sm truncate max-w-xs">@{{ props.post.email?.split('@')[0] }}</span>
                     <span class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-white border border-gray-500">{{props.post.pronouns}}</span>
                     <span class="text-gray-500 text-sm">{{ new Date(props.post.created_at).toLocaleString() }}</span>
                 </div>
