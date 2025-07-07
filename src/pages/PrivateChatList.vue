@@ -125,6 +125,10 @@ function goToChat(id) {
                         @click="goToChat(chat.id)">
                         <img v-if="chat.profile.avatarURL" :src="chat.profile.avatarURL" alt="Avatar"
                             class="w-12 h-12 rounded-full object-cover" />
+                        <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24" class="w-12 h-8">
+                            <circle cx="12" cy="8" r="4" />
+                            <path d="M4 20c0-4 8-4 8-4s8 0 8 4v2H4v-2z" />
+                        </svg>
                         <div class="flex-1">
                             <div class="text-sm font-semibold text-gray-900">
                                 {{ chat.profile.display_name }}
