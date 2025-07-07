@@ -27,7 +27,7 @@ function handleDeletePost(id) {
                 <div class="h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                     <img v-if="props.post.avatarURL" :src="props.post.avatarURL" alt="Avatar"
                         class="w-full h-full object-cover" />
-                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24" class="w-8 h-8">
+                    <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24" class="w-12 h-8">
                         <circle cx="12" cy="8" r="4" />
                         <path d="M4 20c0-4 8-4 8-4s8 0 8 4v2H4v-2z" />
                     </svg>
