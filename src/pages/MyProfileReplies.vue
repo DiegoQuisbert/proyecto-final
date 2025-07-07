@@ -60,7 +60,7 @@ onMounted(async () => {
     <ProfileLayout>
         <ProfileNav class="mb-6" />
 
-        <section class="max-w-xl mx-auto">
+        <section class="max-w-3xl mx-auto">
             <MainLoader v-if="loading" />
             <MainReply v-else :replies="replies" />
         </section>

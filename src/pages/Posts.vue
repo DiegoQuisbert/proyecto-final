@@ -223,7 +223,7 @@ function usePostsForm(user) {
             </div>
         </form>
         <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
-        <div class="max-w-4xl mx-auto p-4 mt-3 mb-3 rounded">
+        <div class="max-w-3xl mx-auto p-4 mt-3 mb-3 rounded">
             <MainLoader v-if="loadingPost" />
             <ul v-else class="flex flex-col gap-4">
                 <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"

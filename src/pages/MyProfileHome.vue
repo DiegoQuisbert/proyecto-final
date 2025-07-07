@@ -73,7 +73,7 @@ async function deletePostById(id) {
 <template>
     <ProfileLayout>
         <ProfileNav class="mb-6"/>
-        <section class="max-w-xl mx-auto">
+        <section class="max-w-3xl mx-auto">
             <MainLoader v-if="loading" />
             <ul v-else class="flex flex-col gap-4">
                 <MainPost v-for="post in posts" :key="post.id" :post="post" :currentUserId="user.id"

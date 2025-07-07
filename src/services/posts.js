@@ -168,6 +168,7 @@ export async function getRepliesByPostId(postId) {
     .from('post_replies')
     .select('*')
     .eq('post_id', postId)
+    .order('created_at', { ascending: false });
 
     if(error) {
         console.error('[posts.js getRepliesByPostId] Error al obtener las respuestas del usuario: ', error);

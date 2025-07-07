@@ -151,7 +151,6 @@ async function handleDeletePortfolio(id) {
         </section>
         <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
         <section class="max-w-4xl mx-auto space-y-6">
-
             <MainLoader v-if="loading" />
             <ul v-else class="flex flex-col gap-4">
                 <MainPortFolio v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio"
