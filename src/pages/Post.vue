@@ -106,6 +106,7 @@ onMounted(async () => {
         if (postData) {
             const userProfile = await getUserProfileById(postData.sender_id);
             postData.display_name = userProfile?.display_name || '';
+            postData.pronouns = userProfile?.pronouns || '';
             postData.avatarURL = userProfile?.avatar ? getFileUrl(userProfile.avatar, 'avatars') : null;
 
             if (postData.multimedia) {
@@ -178,7 +179,10 @@ onMounted(async () => {
                         <div class="flex gap-2 hover:underline items-center">
                             <span class="font-semibold text-gray-900 text-lg">{{ post.display_name }}</span>
                             <span class="text-gray-500 text-sm truncate max-w-xs">@{{ post.email?.split('@')[0]
-                            }}</span>
+                                }}</span>
+                            <span
+                                class="bg-gray-100 text-gray-800 text-xs font-medium me-2 px-2.5 py-0.5 rounded-sm dark:bg-gray-700 dark:text-white border border-gray-500">{{ post.pronouns }}</span>
+
                         </div>
                     </RouterLink>
                     <Dropdown v-if="post && user.id" :post="post" :currentUserId="user.id" @deletePost="onDeletePost" />
