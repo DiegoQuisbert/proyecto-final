@@ -9,63 +9,13 @@ import AlertBox from '../components/AlertBox.vue';
 
 import { updateCurrentUserProfile } from '../services/auth';
 import useAuthUserState from '../composables/useAuthUserState';
+import useProfileEdit from '../composables/useProfileEdit';
+import useGlobalFeedback from '../composables/useGlobalFeedback';
 import Layout from '../components/Layout.vue';
 
 const { user } = useAuthUserState();
-const { profile, editing, feedback, handleSubmit } = useProfileEditForm(user);
-
-function useProfileEditForm(user) {
-    const profile = ref({
-        bio: '',
-        pronouns: '',
-        location: '',
-        display_name: '',
-    });
-    const editing = ref(false);
-    const feedback = ref({
-        message: null,
-        type: 'success',
-    });
-
-    async function handleSubmit() {
-        feedback.value.message = null;
-
-        try {
-            editing.value = true;
-            await updateCurrentUserProfile({
-                ...profile.value,
-            });
-
-            feedback.value = {
-                message: 'La información de perfil se actualizó con éxito',
-                type: 'success',
-            }
-        } catch (error) {
-            feedback.value = {
-                message: 'Ocurrió un error inesperado al tratar de actualizar la información de perfil',
-                type: 'error',
-            }
-        }
-        editing.value = false;
-    }
-
-    onMounted(() => {
-        profile.value = {
-            bio: user.value.bio,
-            display_name: user.value.display_name,
-            pronouns: user.value.pronouns,
-            bio: user.value.bio,
-            location: user.value.location
-        }
-    })
-
-    return {
-        profile,
-        editing,
-        feedback,
-        handleSubmit,
-    }
-}
+const { profile, editing, handleSubmit } = useProfileEdit(user);
+const { feedback } = useGlobalFeedback();
 </script>
 
 <template>

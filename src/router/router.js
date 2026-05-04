@@ -23,6 +23,8 @@ import Configuration from "../pages/Configuration.vue";
 import PostEdit from "../pages/PostEdit.vue";
 import Confirmation from "../pages/Confirmation.vue";
 
+import supabase from "../services/supabase";
+
 const routes = [
     {path: '/',                        component: Home,     },
     {path: '/iniciar-sesion',          component: Login,    },
@@ -57,9 +59,13 @@ let user = {
 
 subscribeToAuthUserChanges(newUserdata => user = newUserdata);
 
-router.beforeEach((to) => {
-    if(to.meta.requiresAuth && user.id === null) {
-        return '/iniciar-sesion';
+router.beforeEach(async (to) => {
+    if (to.meta.requiresAuth) {
+        const { data } = await supabase.auth.getUser();
+
+        if (!data.user) {
+            return '/iniciar-sesion';
+        }
     }
 });
 

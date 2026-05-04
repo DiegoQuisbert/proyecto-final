@@ -1,6 +1,5 @@
 <script setup>
-import { ref } from "vue";
-import { useRouter } from "vue-router";
+import { RouterLink } from "vue-router";
 
 import MainH1 from "../components/MainH1.vue";
 import MainLabel from "../components/MainLabel.vue";
@@ -8,50 +7,11 @@ import MainLoader from "../components/MainLoader.vue";
 import AlertBox from "../components/AlertBox.vue";
 import fondoForms from "../assets/images/fondoForms.png";
 
-import { register } from "../services/auth";
+import useRegister from "../composables/useRegister";
 
-const router = useRouter();
 const emit = defineEmits();
 
-const user = ref({
-    email: "",
-    password: "",
-    display_name: "",
-});
-const loading = ref(false);
-const feedback = ref({
-    message: null,
-    type: "success",
-});
-
-async function handleSubmit() {
-    feedback.value.message = null;
-
-    try {
-        loading.value = true;
-
-        await register(user.value.email, user.value.password, user.value.display_name);
-
-        const newFeedback = {
-            message: `¡Cuenta creada para ${user.value.email}!`,
-            type: "success",
-        };
-
-        localStorage.setItem("feedback", JSON.stringify(newFeedback));
-        emit("changeFeedback", newFeedback);
-
-        setTimeout(() => {
-            router.push("/posts");
-        }, 1000);
-    } catch (error) {
-        feedback.value = {
-            message: "No se pudo crear la cuenta. Verificá los datos.",
-            type: "error",
-        };
-    } finally {
-        loading.value = false;
-    }
-}
+const { user, loading, feedback, handleSubmit } = useRegister(emit);
 </script>
 
 <template>

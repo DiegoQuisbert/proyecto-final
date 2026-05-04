@@ -6,108 +6,19 @@ import Layout from "../components/Layout.vue";
 import MainLabel from "../components/MainLabel.vue";
 
 import { onMounted, ref, onUnmounted } from "vue";
-import { getLastPosts, listenForPost, savePost, handleDeletePost } from "../services/posts";
-import { getUserProfileById } from "../services/user-profiles.js";
-import { getFileUrl, uploadFile, deleteFile } from "../services/storage.js";
+import { savePost } from "../services/posts";
+import { uploadFile, getFileUrl } from "../services/storage.js";
 
 import useAuthUserState from "../composables/useAuthUserState.js";
+import usePosts from "../composables/usePosts.js";
 
 const { user } = useAuthUserState();
+const { posts, loadingPost, deletePostById, fetchPosts } = usePosts();
 const { newPost, imageFile, handleFileChange, sendPost } = usePostsForm(user);
-const { posts, loadingPost, deletePostById } = usePosts();
 
-function usePosts() {
-    const posts = ref([]);
-    const loadingPost = ref(false);
-
-    onMounted(async () => {
-        loadingPost.value = true;
-
-        try {
-            const rawPosts = await getLastPosts();
-
-            const postsWithNames = await Promise.all(
-                rawPosts.map(async (post) => {
-                    const userProfile = await getUserProfileById(post.sender_id);
-
-                    let avatarURL = null;
-
-                    if (userProfile?.avatar) {
-                        avatarURL = getFileUrl(userProfile.avatar, 'avatars');
-                    }
-
-                    let mediaUrl = null;
-                    if (post.multimedia) {
-                        mediaUrl = getFileUrl(`post/${post.multimedia}`, 'post-multimedia');
-                    }
-
-                    return {
-                        ...post,
-                        display_name: userProfile?.display_name || "",
-                        pronouns: userProfile?.pronouns || "",
-                        avatarURL,
-                        mediaUrl,
-                    };
-                })
-            );
-
-            posts.value = postsWithNames.sort(
-                (a, b) => new Date(b.created_at) - new Date(a.created_at)
-            );
-
-            listenForPost(async (receivedPost) => {
-                const userProfile = await getUserProfileById(receivedPost.sender_id);
-
-                let avatarURL = null;
-
-                if (userProfile?.avatar) {
-                    avatarURL = getFileUrl(userProfile.avatar, 'avatars');
-                }
-
-                let mediaUrl = null;
-
-                if (receivedPost.multimedia) {
-                    mediaUrl = getFileUrl(`post/${receivedPost.multimedia}`,
-                        'post-multimedia');
-                }
-
-                receivedPost.display_name = userProfile?.display_name || '';
-                receivedPost.pronouns = userProfile?.pronouns || '';
-                receivedPost.avatarURL = avatarURL;
-                receivedPost.mediaUrl = mediaUrl;
-
-                posts.value.unshift(receivedPost);
-            });
-        } catch (error) {
-            console.error(error);
-        } finally {
-            loadingPost.value = false;
-        }
-    });
-
-    async function deletePostById(id) {
-        try {
-            const postToDelete = posts.value.find(p => p.id === id);
-
-            if (postToDelete?.multimedia) {
-                await deleteFile(`post/${postToDelete.multimedia}`, 'post-multimedia');
-            }
-
-            await handleDeletePost(id);
-
-            posts.value = posts.value.filter(p => p.id !== id);
-
-        } catch (error) {
-            console.error(error);
-        }
-    }
-
-    return {
-        posts,
-        loadingPost,
-        deletePostById,
-    };
-}
+onMounted(() => {
+    fetchPosts();
+});
 
 function usePostsForm(user) {
     const newPost = ref({

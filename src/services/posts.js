@@ -60,6 +60,8 @@ export async function listenForPost (callback){
     );
 
     postChannel.subscribe();
+
+    return () => postChannel.unsubscribe();
 }
 
 /**

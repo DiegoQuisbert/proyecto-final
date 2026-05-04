@@ -1,7 +1,6 @@
 <script setup>
 
-import { ref } from "vue";
-import { RouterLink, useRouter } from "vue-router";
+import { RouterLink } from "vue-router";
 
 import MainH1 from "../components/MainH1.vue";
 import MainLabel from "../components/MainLabel.vue";
@@ -10,56 +9,11 @@ import AlertBox from "../components/AlertBox.vue";
 
 import fondoForms from "../assets/images/fondoForms.png";
 
-import { login } from "../services/auth";
+import useLogin from "../composables/useLogin";
 
-const router = useRouter();
 const emit = defineEmits();
 
-const { user, loading, feedback, handleSubmit } = useLoginForm(router);
-
-function useLoginForm(router) {
-    const user = ref({ email: "", password: "" });
-    const loading = ref(false);
-    const feedback = ref({
-        message: null,
-        type: 'success',
-    });
-
-    async function handleSubmit() {
-        feedback.value.message = null;
-
-        try {
-            loading.value = true;
-
-            await login(user.value.email, user.value.password);
-
-            const newFeedback = {
-                message: `¡Hola de nuevo, ${user.value.email}!`,
-                type: 'success',
-            };
-
-            localStorage.setItem("feedback", JSON.stringify(newFeedback));
-
-            emit('changeFeedback', newFeedback);
-            router.push("/posts");
-
-        } catch (error) {
-            feedback.value = {
-                message: 'Las credenciales ingresadas no coinciden.',
-                type: 'error',
-            };
-        } finally {
-            loading.value = false;
-        }
-    }
-
-    return {
-        user,
-        loading,
-        feedback,
-        handleSubmit,
-    };
-}
+const { user, loading, feedback, handleSubmit } = useLogin(emit);
 </script>
 
 

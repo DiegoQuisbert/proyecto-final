@@ -1,6 +1,8 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue';
 import useAuthUserState from '../composables/useAuthUserState';
+import usePortfolio from '../composables/usePortfolio';
+import useGlobalFeedback from '../composables/useGlobalFeedback';
 
 import ProfileLayout from '../components/ProfileLayout.vue';
 import ProfileNav from '../components/ProfileNav.vue';
@@ -8,25 +10,19 @@ import MainLoader from '../components/MainLoader.vue';
 import MainPortFolio from '../components/MainPortFolio.vue';
 import AlertBox from '../components/AlertBox.vue';
 
-import { getPortfolioByUserId, savePortfolio, deletePortfolioItem } from '../services/portfolio';
 import { uploadFile, getFileUrl } from '../services/storage';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
 
 const { user } = useAuthUserState();
-const portfolios = ref([]);
-const loading = ref(true);
+const { portfolios, loading, fetchPortfolios, submitPortfolio, deletePortfolio } = usePortfolio();
+const { feedback } = useGlobalFeedback();
 
 const portfolioForm = ref({
     title: '',
     body: '',
     file: null,
     preview: null
-});
-
-const feedback = ref({
-    message: null,
-    type: 'success',
 });
 
 function handleFileChange(event) {
@@ -45,69 +41,12 @@ onUnmounted(() => {
     if (portfolioForm.value.preview) URL.revokeObjectURL(portfolioForm.value.preview);
 });
 
-async function submitPortfolio() {
-    const { title, body, file } = portfolioForm.value;
-    if (!title.trim() || !body.trim()) return;
-
-    feedback.value.message = null;
-
-    try {
-        let fileName = null;
-
-        if (file) {
-            fileName = `${Date.now()}-${file.name}`;
-            await uploadFile(`portfolio/${fileName}`, file, 'user-portfolio');
-        }
-
-        await savePortfolio({
-            sender_id: user.value.id,
-            title: title.trim(),
-            body: body.trim(),
-            media: fileName
-        });
-
-        portfolioForm.value = { title: '', body: '', file: null, preview: null };
-        await fetchPortfolios();
-
-        feedback.value = {
-            message: 'Portfolio subido correctamente.',
-            type: 'success'
-        };
-    } catch (error) {
-        console.error(error);
-        feedback.value = {
-            message: 'Ocurrió un error al subir el portfolio.',
-            type: 'error'
-        };
-    }
+async function handleSubmitPortfolio() {
+    await submitPortfolio(user.value.id, portfolioForm.value);
+    portfolioForm.value = { title: '', body: '', file: null, preview: null };
 }
 
-async function fetchPortfolios() {
-    loading.value = true;
-    try {
-        portfolios.value = await Promise.all(
-            (await getPortfolioByUserId(user.value.id)).map(p => ({
-                ...p,
-                mediaUrl: p.media ? getFileUrl(`portfolio/${p.media}`, 'user-portfolio') : null
-            }))
-        );
-    } catch (error) {
-        console.error(error);
-    } finally {
-        loading.value = false;
-    }
-}
-onMounted(fetchPortfolios);
-
-async function handleDeletePortfolio(id) {
-    try {
-        await deletePortfolioItem(id);
-        portfolios.value = portfolios.value.filter(p => p.id !== id);
-    } catch (error) {
-        console.error('Error al eliminar portfolio:', error);
-    }
-}
-
+onMounted(() => fetchPortfolios(user.value.id));
 </script>
 
 <template>
@@ -143,7 +82,7 @@ async function handleDeletePortfolio(id) {
                     </MainLabel>
                     <textarea id="details" v-model="portfolioForm.body" rows="5" placeholder="Descripción"
                         class="p-2 border rounded border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-300 resize-y"></textarea>
-                    <MainButton @click="submitPortfolio">
+                    <MainButton @click="handleSubmitPortfolio">
                         Subir portfolio
                     </MainButton>
                 </div>
@@ -154,7 +93,7 @@ async function handleDeletePortfolio(id) {
             <MainLoader v-if="loading" />
             <ul v-else class="flex flex-col gap-4">
                 <MainPortFolio v-for="portfolio in portfolios" :key="portfolio.id" :portfolio="portfolio"
-                    :currenUserId="user.id" @handleDeletePortfolio="handleDeletePortfolio" />
+                    :currenUserId="user.id" @handleDeletePortfolio="deletePortfolio" />
             </ul>
         </section>
     </ProfileLayout>
