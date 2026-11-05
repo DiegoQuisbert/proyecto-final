@@ -36,7 +36,7 @@ export default function useProfileEdit(user) {
                 message: 'La información de perfil se actualizó con éxito',
                 type: 'success',
             });
-        } catch (err) {
+        } catch {
             updateFeedback({
                 message: 'Ocurrió un error inesperado al tratar de actualizar la información de perfil',
                 type: 'error',

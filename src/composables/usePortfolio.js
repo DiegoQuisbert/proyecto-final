@@ -1,6 +1,6 @@
-import { ref, onMounted } from 'vue';
+import { ref } from 'vue';
 import { getPortfolioByUserId, savePortfolio, deletePortfolioItem } from '../services/portfolio';
-import { uploadFile, getFileUrl, deleteFile } from '../services/storage';
+import { uploadFile, getFileUrl } from '../services/storage';
 import useGlobalFeedback from './useGlobalFeedback';
 
 export default function usePortfolio() {

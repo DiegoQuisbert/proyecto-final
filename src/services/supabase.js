@@ -1,8 +1,12 @@
 import { createClient } from '@supabase/supabase-js';
 
-const SUPABASE_URL = "https://crrrlgpxhutxisjwsrxd.supabase.co";
+const SUPABASE_URL = import.meta.env.VITE_SUPABASE_URL;
 
-const SUPABASE_KEY = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImNycnJsZ3B4aHV0eGlzandzcnhkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjI4OTcxOTQsImV4cCI6MjA3ODQ3MzE5NH0.JTaDuSQcOxmVGANTs8FaMRGV6ds8gKCpkuRlj1TQhcg";
+const SUPABASE_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
+
+if (!SUPABASE_URL || !SUPABASE_KEY) {
+	throw new Error('Faltan VITE_SUPABASE_URL o VITE_SUPABASE_ANON_KEY en .env.local');
+}
 
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 

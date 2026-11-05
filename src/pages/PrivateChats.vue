@@ -1,9 +1,10 @@
 <script setup>
-import { nextTick, onMounted, ref } from 'vue';
+import { nextTick, onMounted, onUnmounted, ref } from 'vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
+import AlertBox from '../components/AlertBox.vue';
 import { getPrivateChatLastMessages, listenForPrivateChatMessages, savePrivateChatMessage } from '../services/private-chat';
 import useUserProfile from '../composables/useUserProfile';
 import useAuthUserState from '../composables/useAuthUserState';
@@ -12,15 +13,18 @@ import PrivateChatList from './PrivateChatList.vue';
 
 const route = useRoute();
 const { user: userAuth } = useAuthUserState();
-const { user: userChat, loadingUser } = useUserProfile(route.params.id);
+const { user: userChat, loadingUser, error: profileError } = useUserProfile(route.params.id);
 
-const { newMessage, sendMessage } = usePrivateChatForm(userAuth, userChat);
-const { messages, loadingMessages } = usePrivateChatMessages(userAuth, userChat);
+const { newMessage, sendMessage, sendError } = usePrivateChatForm(userAuth, userChat);
+const { messages, loadingMessages, messagesError } = usePrivateChatMessages(userAuth, userChat);
 
 function usePrivateChatMessages(userAuth, userChat) {
     const messages = ref([]);
     const loadingMessages = ref(false);
+    const messagesError = ref(null);
     const container = ref(null);
+    let unsubscribe = () => {};
+    let isUnmounted = false;
 
     async function scrollToBottom() {
         await nextTick();
@@ -30,34 +34,53 @@ function usePrivateChatMessages(userAuth, userChat) {
     }
 
     onMounted(async () => {
+        messagesError.value = null;
         try {
             loadingMessages.value = true;
-            messages.value = await getPrivateChatLastMessages(userAuth.value.id, userChat.value.id);
+            const initialMessages = await getPrivateChatLastMessages(userAuth.value.id, userChat.value.id);
+            if (isUnmounted) return;
+
+            messages.value = initialMessages;
             await scrollToBottom();
 
-            listenForPrivateChatMessages(userAuth.value.id, userChat.value.id, async newMessage => {
+            const stopListening = await listenForPrivateChatMessages(userAuth.value.id, userChat.value.id, async newMessage => {
                 messages.value.push(newMessage);
                 await scrollToBottom();
             });
+
+            if (isUnmounted) {
+                stopListening();
+            } else {
+                unsubscribe = stopListening;
+            }
         } catch (error) {
-            // TODO
+            console.error('[PrivateChats] Error al cargar los mensajes:', error);
+            messagesError.value = 'No se pudieron cargar los mensajes. Intentá nuevamente.';
         } finally {
             loadingMessages.value = false;
         }
     });
 
+    onUnmounted(() => {
+        isUnmounted = true;
+        unsubscribe();
+    });
+
     return {
         messages,
         loadingMessages,
+        messagesError,
         container,
     };
 }
 
 function usePrivateChatForm(userAuth, userChat) {
     const newMessage = ref({ body: '' });
+    const sendError = ref(null);
 
     async function sendMessage() {
         if (!newMessage.value.body.trim()) return;
+        sendError.value = null;
         try {
             await savePrivateChatMessage(
                 userAuth.value.id,
@@ -66,13 +89,15 @@ function usePrivateChatForm(userAuth, userChat) {
             );
             newMessage.value.body = '';
         } catch (error) {
-            // TODO
+            console.error('[PrivateChats] Error al enviar el mensaje:', error);
+            sendError.value = 'No se pudo enviar el mensaje. Intentá nuevamente.';
         }
     }
 
     return {
         newMessage,
         sendMessage,
+        sendError,
     };
 }
 </script>
@@ -80,7 +105,8 @@ function usePrivateChatForm(userAuth, userChat) {
 
 <template>
     <PrivateChatList>
-        <template v-if="!loadingUser">
+        <AlertBox v-if="profileError" :content="{ message: profileError, type: 'error' }" />
+        <template v-else-if="!loadingUser">
             <div class="flex items-center gap-2">
                 <RouterLink to="/mensajes" class="text-blue-600 hover:underline font-medium flex items-center mb-4"
                     aria-label="Volver a mensajes">
@@ -95,6 +121,7 @@ function usePrivateChatForm(userAuth, userChat) {
                 <MainH1>Chat con {{ userChat.display_name }} </MainH1>
             </div>
 
+            <AlertBox v-if="messagesError" :content="{ message: messagesError, type: 'error' }" />
             <div ref="chatContainer"
                 class="flex flex-col h-[75vh] p-4 mb-6 border border-gray-300 rounded-lg bg-white shadow-inner">
                 <h2 class="sr-only">Lista de mensajes</h2>
@@ -113,6 +140,7 @@ function usePrivateChatForm(userAuth, userChat) {
                 <MainLoader v-else />
 
             </div>
+            <AlertBox v-if="sendError" :content="{ message: sendError, type: 'error' }" />
             <form action="#" class="flex items-end gap-4" @submit.prevent="sendMessage">
                 <div class="w-full">
                     <MainLabel for="body" class="sr-only">Mensaje</MainLabel>

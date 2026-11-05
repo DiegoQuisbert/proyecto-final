@@ -1,7 +1,7 @@
-import { ref, onMounted, onUnmounted } from 'vue';
+import { ref } from 'vue';
 import { getRepliesBySenderId, handleDeleteReply } from '../services/posts';
 import { getUserProfileById } from '../services/user-profiles';
-import { getFileUrl, deleteFile } from '../services/storage';
+import { getFileUrl } from '../services/storage';
 
 export default function useReplies() {
     const replies = ref([]);

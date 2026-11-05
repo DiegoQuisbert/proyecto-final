@@ -1,13 +1,10 @@
 <script setup>
-import { ref, onMounted } from 'vue';
-
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
 import MainLoader from '../components/MainLoader.vue';
 import AlertBox from '../components/AlertBox.vue';
 
-import { updateCurrentUserProfile } from '../services/auth';
 import useAuthUserState from '../composables/useAuthUserState';
 import useProfileEdit from '../composables/useProfileEdit';
 import useGlobalFeedback from '../composables/useGlobalFeedback';
@@ -28,7 +25,7 @@ const { feedback } = useGlobalFeedback();
 
             <div>
                 <RouterLink to="/mi-perfil" class="text-sm text-blue-600 font-semibold hover:underline">
-                    <- volver </RouterLink>
+                    &larr; volver </RouterLink>
             </div>
             <form action="#" @submit.prevent="handleSubmit" class="space-y-5 mt-4">
                 <div>
@@ -41,7 +38,7 @@ const { feedback } = useGlobalFeedback();
                 <div>
                     <MainLabel for="bio" class="block text-gray-700 font-semibold">Biografía</MainLabel>
                     <textarea v-model="profile.bio" id="bio"
-                        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500" />
+                        class="w-full p-3 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"></textarea>
                 </div>
 
 

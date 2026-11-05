@@ -30,7 +30,7 @@ export default function useLogin(emit) {
             emit('changeFeedback', newFeedback);
             router.push("/posts");
 
-        } catch (error) {
+        } catch {
             feedback.value = {
                 message: 'Las credenciales ingresadas no coinciden.',
                 type: 'error',

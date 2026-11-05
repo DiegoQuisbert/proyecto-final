@@ -14,55 +14,62 @@ let user = {
 
 let observers = [];
 
-getCurrentAuthUser();
+supabase.auth.onAuthStateChange((_event, session) => {
+    const authUser = session?.user;
 
-if(localStorage.getItem('user')) {
-    user = JSON.parse(localStorage.getItem('user'));
-}
+    if (!authUser) {
+        updateUser({
+            id: null,
+            email: null,
+            bio: null,
+            display_name: null,
+            pronouns: null,
+            location: null,
+            avatar: null,
+        });
+        return;
+    }
+
+    const userChanged = user.id !== authUser.id;
+
+    updateUser({
+        id: authUser.id,
+        email: authUser.email,
+    });
+
+    if (userChanged) {
+        setTimeout(() => fetchCurrentUserExtendedProfile(authUser.id), 0);
+    }
+});
 
 /**
  * 
  * @returns
  */
-async function getCurrentAuthUser() {
-    try {
-        const { data, error } = await supabase.auth.getUser();
-
-        if (error) {
-            return;
-        }
-
-        updateUser({
-            id: data.user.id,
-            email: data.user.email,
-            display_name: data.user.display_name,
-        });
-
-        fetchCurrentUserExtendedProfile();
-
-        return data.user;
-    } catch (error) {
-        console.error('[auth.js getCurrentAuthUser] Error al obtener al usuario: ', error);
-    }
-}
-
 /**
  * @returns
  */
+async function fetchCurrentUserExtendedProfile(userId = user.id) {
+    if (!userId) {
+        return;
+    }
 
-async function fetchCurrentUserExtendedProfile() {
     try {
-        const profile = await getUserProfileById(user.id); 
+        const profile = await getUserProfileById(userId);
+
+        if (!profile || user.id !== userId) {
+            return;
+        }
     
-    updateUser({
-        bio: profile.bio,
-        display_name: profile.display_name, 
-        pronouns: profile.pronouns,
-        location: profile.location,
-        avatar: profile.avatar,
-    });
+        updateUser({
+            bio: profile.bio,
+            display_name: profile.display_name,
+            pronouns: profile.pronouns,
+            location: profile.location,
+            avatar: profile.avatar,
+        });
     } catch (error){
-        //TODO...
+        console.error('[auth.js fetchCurrentUserExtendedProfile] Error al cargar el perfil del usuario: ', error);
     }
 }
 
@@ -91,8 +98,11 @@ export async function register(email, password, display_name) {
             email,
             display_name,
         });
-    } catch (error) {
-        //TODO...
+    } catch (profileCreationError) {
+        console.error('[auth.js register] Error al crear el perfil de usuario: ', profileCreationError);
+        const error = new Error('No se pudo crear el perfil de usuario.');
+        error.code = 'PROFILE_CREATION_FAILED';
+        throw error;
     }
 
     updateUser({
@@ -126,7 +136,7 @@ export async function login(email, password) {
         email: data.user.email,
     });
 
-    fetchCurrentUserExtendedProfile();
+    fetchCurrentUserExtendedProfile(data.user.id);
 
     return data.user;
 }
@@ -156,13 +166,7 @@ export async function logout() {
  * @param {{bio?: string|null, display_name?: string|null, pronouns?: string|null, location?: string|null, avatar?: string|null}} data
  */
 export async function updateCurrentUserProfile(data) {
-    try {
-        await updateUserProfile(user.id, data);
-        updateUser(data);
-    } catch (error){
-        throw error;
-    }
-
+    await updateUserProfile(user.id, data);
     updateUser({...data});
 }
 
@@ -172,15 +176,11 @@ export async function updateCurrentUserProfile(data) {
  */
 
 export async function updateCurrentUserAvatar(file) {
-    try {
-        const photoName = `${user.id}/${crypto.randomUUID()}.jpg`;
+    const photoName = `${user.id}/${crypto.randomUUID()}.jpg`;
 
-        await uploadFile(photoName, file, 'avatars');
+    await uploadFile(photoName, file, 'avatars');
 
-        await updateCurrentUserProfile({avatar: photoName});
-    } catch (error) {
-        //TODO...
-    }
+    await updateCurrentUserProfile({avatar: photoName});
 }
 
 /**
@@ -231,10 +231,4 @@ function updateUser(data) {
         ...data,
     }
     notifyAll();
-
-    if(user.id) {
-        localStorage.setItem('user', JSON.stringify(user));
-    } else {
-        localStorage.removeItem('user');
-    }
 }

@@ -9,7 +9,7 @@ import fondoForms from "../assets/images/fondoForms.png";
 
 import useRegister from "../composables/useRegister";
 
-const emit = defineEmits();
+const emit = defineEmits(['changeFeedback']);
 
 const { user, loading, feedback, handleSubmit } = useRegister(emit);
 </script>

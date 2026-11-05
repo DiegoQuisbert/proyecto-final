@@ -19,25 +19,36 @@ export default function useUserProfile(id) {
         avatarURL: null,
     });
 
-    const loadingUser = ref(false);
+    const loadingUser = ref(true);
+    const error = ref(null);
 
 
     onMounted(async () => {
+        error.value = null;
         try {
-            loadingUser.value = true;
-            user.value = await getUserProfileById(id);
+            const profile = await getUserProfileById(id);
+
+            if (!profile) {
+                error.value = 'No se encontró el perfil solicitado.';
+                return;
+            }
+
+            user.value = profile;
             
             if (user.value.avatar) {
                 user.value.avatarURL = getFileUrl(user.value.avatar, 'avatars');
             }
-        } catch (error) {
-            //TODO...
+        } catch (requestError) {
+            console.error('[useUserProfile] Error al cargar el perfil:', requestError);
+            error.value = 'No se pudo cargar el perfil. Intentá nuevamente.';
+        } finally {
+            loadingUser.value = false;
         }
-        loadingUser.value = false;
     });
 
     return {
         user,
         loadingUser,
+        error,
     }
 }

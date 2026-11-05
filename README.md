@@ -17,6 +17,8 @@ En Bzzign ahora mismo tenés la posibilidad de crear una cuenta o iniciar sesió
 
 ## Instalación
 
+Para ejecutar `npm run lint`, necesitás Node.js 20.19 o superior dentro de la rama 20, Node.js 22.13 o superior dentro de la rama 22, o Node.js 24 o superior.
+
 Las instrucciones a tomar a la hora de querer arrancar el proyecto son las siguientes
 
 ```bash
@@ -36,6 +38,15 @@ npm i
 npm run dev
 
 ```
+
+## Validación
+
+```bash
+npm test
+npm run lint
+npm run build
+```
+
 # Uso de la página
 
 ``` bash

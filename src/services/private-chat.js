@@ -1,10 +1,6 @@
 import supabase from "./supabase";
 
-let privateChatIdsCache = {};
-
-if(localStorage.getItem('private-chat-ids')) {
-    privateChatIdsCache = JSON.parse(localStorage.getItem('private-chat-ids'));
-}
+const privateChatIdsCache = new Map();
 
 /**
  * Traemos el chat privado
@@ -65,8 +61,8 @@ async function createPrivateChat(sender_id, receiver_id) {
  */
 export async function getPrivateChatId(sender_id, receiver_id){
     const cacheKey = [sender_id, receiver_id].sort().join('_');
-    if(privateChatIdsCache[cacheKey]) {
-        return privateChatIdsCache[cacheKey];
+    if(privateChatIdsCache.has(cacheKey)) {
+        return privateChatIdsCache.get(cacheKey);
     }
 
     let chat_id = await fetchPrivateChat(sender_id, receiver_id);
@@ -75,8 +71,7 @@ export async function getPrivateChatId(sender_id, receiver_id){
         chat_id = await createPrivateChat(sender_id, receiver_id);
     }
 
-    privateChatIdsCache[cacheKey] = chat_id;
-    localStorage.setItem('private-chat-ids', JSON.stringify(privateChatIdsCache));
+    privateChatIdsCache.set(cacheKey, chat_id);
 
     return chat_id;
 }
@@ -131,6 +126,8 @@ export async function listenForPrivateChatMessages(sender_id, receiver_id, callb
         }
     );
     privateChatChannel.subscribe();
+
+    return () => privateChatChannel.unsubscribe();
 }
 
 /**

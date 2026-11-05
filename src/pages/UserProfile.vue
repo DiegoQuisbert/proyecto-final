@@ -4,16 +4,18 @@ import { useRoute } from 'vue-router';
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
+import AlertBox from '../components/AlertBox.vue';
 
 import useUserProfile from '../composables/useUserProfile';
 
 const route = useRoute();
-const { user, loadingUser } = useUserProfile(route.params.id);
+const { user, loadingUser, error } = useUserProfile(route.params.id);
 </script>
 
 <template>
     <Layout>
-        <MainLoader v-if="loadingUser" />
+        <AlertBox v-if="error" :content="{ message: error, type: 'error' }" />
+        <MainLoader v-else-if="loadingUser" />
 
         <div v-else>
             <div class="flex items-center gap-2 m-3">

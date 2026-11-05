@@ -11,7 +11,7 @@ import fondoForms from "../assets/images/fondoForms.png";
 
 import useLogin from "../composables/useLogin";
 
-const emit = defineEmits();
+const emit = defineEmits(['changeFeedback']);
 
 const { user, loading, feedback, handleSubmit } = useLogin(emit);
 </script>

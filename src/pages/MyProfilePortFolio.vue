@@ -10,7 +10,6 @@ import MainLoader from '../components/MainLoader.vue';
 import MainPortFolio from '../components/MainPortFolio.vue';
 import AlertBox from '../components/AlertBox.vue';
 
-import { uploadFile, getFileUrl } from '../services/storage';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
 

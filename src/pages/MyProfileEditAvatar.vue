@@ -7,6 +7,7 @@ import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainLoader from '../components/MainLoader.vue';
+import AlertBox from '../components/AlertBox.vue';
 
 import { updateCurrentUserAvatar } from '../services/auth';
 
@@ -19,16 +20,20 @@ function useProfileEditAvatarForm() {
         preview: null,
     });
     const editing = ref(false);
+    const error = ref(null);
 
     async function handleSubmit() {
+        error.value = null;
         try {
             editing.value = true;
             await updateCurrentUserAvatar(avatar.value.file);
             router.push("/mi-perfil");
-        } catch (error) {
-            console.error('Error al actualizar avatar:', error);
+        } catch (requestError) {
+            console.error('Error al actualizar avatar:', requestError);
+            error.value = 'No se pudo actualizar la foto de perfil. Intentá nuevamente.';
+        } finally {
+            editing.value = false;
         }
-        editing.value = false;
     }
 
     function handleFileChange(event) {
@@ -60,6 +65,7 @@ function useProfileEditAvatarForm() {
                 ← Volver
             </RouterLink>
 
+            <AlertBox v-if="error" :content="{ message: error, type: 'error' }" />
             <form @submit.prevent="handleSubmit" class="flex flex-col items-center gap-6 mt-6">
 
                 <div class="w-full max-w-xs">

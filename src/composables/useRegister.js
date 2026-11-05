@@ -37,7 +37,9 @@ export default function useRegister(emit) {
             }, 1000);
         } catch (error) {
             feedback.value = {
-                message: "No se pudo crear la cuenta. Verificá los datos.",
+                message: error.code === 'PROFILE_CREATION_FAILED'
+                    ? 'La cuenta ya fue creada, pero no se pudo guardar el perfil. No vuelvas a registrarte con este correo; intentá iniciar sesión o contactá al administrador.'
+                    : "No se pudo crear la cuenta. Verificá los datos.",
                 type: "error",
             };
         } finally {
