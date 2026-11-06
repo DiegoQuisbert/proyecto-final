@@ -1,5 +1,5 @@
 <script setup>
-import { nextTick, onMounted, onUnmounted, ref } from 'vue';
+import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
 import MainLabel from '../components/MainLabel.vue';
@@ -13,7 +13,7 @@ import PrivateChatList from './PrivateChatList.vue';
 
 const route = useRoute();
 const { user: userAuth } = useAuthUserState();
-const { user: userChat, loadingUser, error: profileError } = useUserProfile(route.params.id);
+const { user: userChat, loadingUser, error: profileError } = useUserProfile(computed(() => route.params.id));
 
 const { newMessage, sendMessage, sendError } = usePrivateChatForm(userAuth, userChat);
 const { messages, loadingMessages, messagesError } = usePrivateChatMessages(userAuth, userChat);
@@ -25,6 +25,7 @@ function usePrivateChatMessages(userAuth, userChat) {
     const container = ref(null);
     let unsubscribe = () => {};
     let isUnmounted = false;
+    let requestId = 0;
 
     async function scrollToBottom() {
         await nextTick();
@@ -33,33 +34,47 @@ function usePrivateChatMessages(userAuth, userChat) {
         }
     }
 
-    onMounted(async () => {
+    watch(() => [userAuth.value.id, userChat.value.id], async ([senderId, receiverId]) => {
+        const currentRequestId = ++requestId;
+        unsubscribe();
+        unsubscribe = () => {};
+        messages.value = [];
         messagesError.value = null;
+        loadingMessages.value = Boolean(senderId && receiverId);
+
+        if (!senderId || !receiverId) {
+            return;
+        }
+
         try {
-            loadingMessages.value = true;
-            const initialMessages = await getPrivateChatLastMessages(userAuth.value.id, userChat.value.id);
-            if (isUnmounted) return;
+            const initialMessages = await getPrivateChatLastMessages(senderId, receiverId);
+            if (isUnmounted || currentRequestId !== requestId) return;
 
             messages.value = initialMessages;
             await scrollToBottom();
 
-            const stopListening = await listenForPrivateChatMessages(userAuth.value.id, userChat.value.id, async newMessage => {
+            const stopListening = await listenForPrivateChatMessages(senderId, receiverId, async newMessage => {
+                if (isUnmounted || currentRequestId !== requestId) return;
                 messages.value.push(newMessage);
                 await scrollToBottom();
             });
 
-            if (isUnmounted) {
+            if (isUnmounted || currentRequestId !== requestId) {
                 stopListening();
             } else {
                 unsubscribe = stopListening;
             }
         } catch (error) {
+            if (isUnmounted || currentRequestId !== requestId) return;
+
             console.error('[PrivateChats] Error al cargar los mensajes:', error);
             messagesError.value = 'No se pudieron cargar los mensajes. Intentá nuevamente.';
         } finally {
-            loadingMessages.value = false;
+            if (currentRequestId === requestId) {
+                loadingMessages.value = false;
+            }
         }
-    });
+    }, { immediate: true });
 
     onUnmounted(() => {
         isUnmounted = true;
@@ -122,7 +137,7 @@ function usePrivateChatForm(userAuth, userChat) {
             </div>
 
             <AlertBox v-if="messagesError" :content="{ message: messagesError, type: 'error' }" />
-            <div ref="chatContainer"
+            <div ref="container"
                 class="flex flex-col h-[75vh] p-4 mb-6 border border-gray-300 rounded-lg bg-white shadow-inner">
                 <h2 class="sr-only">Lista de mensajes</h2>
 

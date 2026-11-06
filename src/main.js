@@ -1,4 +1,5 @@
 import './style.css';
+import 'flowbite-vue/index.css';
 import { createApp } from 'vue';
 
 

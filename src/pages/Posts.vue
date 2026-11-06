@@ -13,7 +13,7 @@ import useAuthUserState from "../composables/useAuthUserState.js";
 import usePosts from "../composables/usePosts.js";
 
 const { user } = useAuthUserState();
-const { posts, loadingPost, deletePostById, fetchPosts } = usePosts();
+const { posts, loading: loadingPost, deletePost: deletePostById, fetchPosts } = usePosts();
 const { newPost, imageFile, handleFileChange, sendPost } = usePostsForm(user);
 
 onMounted(() => {

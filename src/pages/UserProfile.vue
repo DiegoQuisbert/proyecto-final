@@ -1,4 +1,5 @@
 <script setup>
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import Layout from '../components/Layout.vue';
@@ -9,7 +10,7 @@ import AlertBox from '../components/AlertBox.vue';
 import useUserProfile from '../composables/useUserProfile';
 
 const route = useRoute();
-const { user, loadingUser, error } = useUserProfile(route.params.id);
+const { user, loadingUser, error } = useUserProfile(computed(() => route.params.id));
 </script>
 
 <template>

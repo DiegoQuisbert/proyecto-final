@@ -1,6 +1,7 @@
 <script setup>
 //Todo el código de UserProfile.vue, no se usa para nada actualmente este Layout, solo está contemplado para ideas futuras
 
+import { computed } from 'vue';
 import { useRoute } from 'vue-router';
 
 import Layout from '../components/Layout.vue';
@@ -10,7 +11,7 @@ import MainLoader from '../components/MainLoader.vue';
 import useUserProfile from '../composables/useUserProfile';
 
 const route = useRoute();
-const { user, loadingUser } = useUserProfile(route.params.id);
+const { user, loadingUser } = useUserProfile(computed(() => route.params.id));
 </script>
 
 <template>

@@ -32,7 +32,15 @@ supabase.auth.onAuthStateChange((_event, session) => {
 
     const userChanged = user.id !== authUser.id;
 
-    updateUser({
+    updateUser(userChanged ? {
+        id: authUser.id,
+        email: authUser.email,
+        bio: null,
+        display_name: null,
+        pronouns: null,
+        location: null,
+        avatar: null,
+    } : {
         id: authUser.id,
         email: authUser.email,
     });
