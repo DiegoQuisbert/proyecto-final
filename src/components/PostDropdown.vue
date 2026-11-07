@@ -7,7 +7,7 @@ const props = defineProps({
     currentUserId: { type: String, required: true },
 });
 
-const emit = defineEmits(['deletePost', 'editPost']);
+const emit = defineEmits(['deletePost']);
 const isOpen = ref(false);
 
 function handleDelete() {

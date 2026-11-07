@@ -1,13 +1,13 @@
 <script setup>
-import { computed, nextTick, onUnmounted, ref, watch } from 'vue';
+import { computed } from 'vue';
 import MainH1 from '../components/MainH1.vue';
 import MainLoader from '../components/MainLoader.vue';
 import MainLabel from '../components/MainLabel.vue';
 import MainButton from '../components/MainButton.vue';
 import AlertBox from '../components/AlertBox.vue';
-import { getPrivateChatLastMessages, listenForPrivateChatMessages, savePrivateChatMessage } from '../services/private-chat';
 import useUserProfile from '../composables/useUserProfile';
 import useAuthUserState from '../composables/useAuthUserState';
+import usePrivateChat from '../composables/usePrivateChat';
 import { useRoute } from 'vue-router';
 import PrivateChatList from './PrivateChatList.vue';
 
@@ -15,106 +15,15 @@ const route = useRoute();
 const { user: userAuth } = useAuthUserState();
 const { user: userChat, loadingUser, error: profileError } = useUserProfile(computed(() => route.params.id));
 
-const { newMessage, sendMessage, sendError } = usePrivateChatForm(userAuth, userChat);
-const { messages, loadingMessages, messagesError } = usePrivateChatMessages(userAuth, userChat);
-
-function usePrivateChatMessages(userAuth, userChat) {
-    const messages = ref([]);
-    const loadingMessages = ref(false);
-    const messagesError = ref(null);
-    const container = ref(null);
-    let unsubscribe = () => {};
-    let isUnmounted = false;
-    let requestId = 0;
-
-    async function scrollToBottom() {
-        await nextTick();
-        if (container.value) {
-            container.value.scrollTop = container.value.scrollHeight;
-        }
-    }
-
-    watch(() => [userAuth.value.id, userChat.value.id], async ([senderId, receiverId]) => {
-        const currentRequestId = ++requestId;
-        unsubscribe();
-        unsubscribe = () => {};
-        messages.value = [];
-        messagesError.value = null;
-        loadingMessages.value = Boolean(senderId && receiverId);
-
-        if (!senderId || !receiverId) {
-            return;
-        }
-
-        try {
-            const initialMessages = await getPrivateChatLastMessages(senderId, receiverId);
-            if (isUnmounted || currentRequestId !== requestId) return;
-
-            messages.value = initialMessages;
-            await scrollToBottom();
-
-            const stopListening = await listenForPrivateChatMessages(senderId, receiverId, async newMessage => {
-                if (isUnmounted || currentRequestId !== requestId) return;
-                messages.value.push(newMessage);
-                await scrollToBottom();
-            });
-
-            if (isUnmounted || currentRequestId !== requestId) {
-                stopListening();
-            } else {
-                unsubscribe = stopListening;
-            }
-        } catch (error) {
-            if (isUnmounted || currentRequestId !== requestId) return;
-
-            console.error('[PrivateChats] Error al cargar los mensajes:', error);
-            messagesError.value = 'No se pudieron cargar los mensajes. Intentá nuevamente.';
-        } finally {
-            if (currentRequestId === requestId) {
-                loadingMessages.value = false;
-            }
-        }
-    }, { immediate: true });
-
-    onUnmounted(() => {
-        isUnmounted = true;
-        unsubscribe();
-    });
-
-    return {
-        messages,
-        loadingMessages,
-        messagesError,
-        container,
-    };
-}
-
-function usePrivateChatForm(userAuth, userChat) {
-    const newMessage = ref({ body: '' });
-    const sendError = ref(null);
-
-    async function sendMessage() {
-        if (!newMessage.value.body.trim()) return;
-        sendError.value = null;
-        try {
-            await savePrivateChatMessage(
-                userAuth.value.id,
-                userChat.value.id,
-                newMessage.value.body,
-            );
-            newMessage.value.body = '';
-        } catch (error) {
-            console.error('[PrivateChats] Error al enviar el mensaje:', error);
-            sendError.value = 'No se pudo enviar el mensaje. Intentá nuevamente.';
-        }
-    }
-
-    return {
-        newMessage,
-        sendMessage,
-        sendError,
-    };
-}
+const {
+    messages,
+    loadingMessages,
+    messagesError,
+    container,
+    newMessage,
+    sendMessage,
+    sendError,
+} = usePrivateChat(userAuth, userChat);
 </script>
 
 

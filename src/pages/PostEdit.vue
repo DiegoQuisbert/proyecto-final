@@ -1,59 +1,27 @@
 <script setup>
-import { onMounted, ref } from "vue";
-import { useRoute, useRouter } from "vue-router";
-import { getPostById, EditPost } from "../services/posts";
+import { computed } from 'vue';
+import { useRoute } from 'vue-router';
 
 import useAuthUserState from "../composables/useAuthUserState";
+import usePostEdit from '../composables/usePostEdit';
 
 import Layout from "../components/Layout.vue";
 import MainLoader from "../components/MainLoader.vue";
 import MainH1 from "../components/MainH1.vue";
 import MainLabel from "../components/MainLabel.vue";
+import AlertBox from '../components/AlertBox.vue';
 
 const { user } = useAuthUserState();
 const route = useRoute();
-const router = useRouter();
-
-const post = ref({
-    id: null,
-    body: "",
-    sender_id: null,
-});
-
-const editingPost = ref(false);
-
-onMounted(async () => {
-    try {
-        const postData = await getPostById(route.params.id);
-        if (postData.sender_id !== user.value.id) {
-            router.push("/posts");
-        }
-        post.value = postData;
-    } catch (error) {
-        console.error("Error al cargar el post: ", error);
-        router.push("/posts");
-    }
-});
-
-const handleEditPost = async () => {
-    try {
-        editingPost.value = true;
-        await EditPost(post.value.id, {
-            body: post.value.body
-        });
-        router.push("/posts");
-    } catch (error) {
-        console.error("Error al editar el post: ", error);
-    } finally {
-        editingPost.value = false;
-    }
-};
+const { post, loadingPost, editingPost, error, handleEditPost } = usePostEdit(computed(() => route.params.id), user);
 </script>
 
 
 <template>
     <Layout>
-        <div class="max-w-xl mx-auto mt-8">
+        <MainLoader v-if="loadingPost" />
+        <AlertBox v-else-if="error" :content="{ message: error, type: 'error' }" />
+        <div v-else class="max-w-xl mx-auto mt-8">
             <div class="flex items-center gap-2">
                     <RouterLink to="/posts" class="text-blue-600 hover:underline font-medium flex items-center mb-4"
                         aria-label="Volver a posts">
@@ -73,7 +41,7 @@ const handleEditPost = async () => {
 
             <div class="mt-4 text-right">
                 <button @click="handleEditPost" :disabled="editingPost"
-                    class="px-4 py-2 cursor-pointer bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-[150px]">
+                    class="px-4 py-2 cursor-pointer bg-blue-500 text-white rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2 min-w-37.5">
                     <template v-if="editingPost">
                         <MainLoader />
                     </template>

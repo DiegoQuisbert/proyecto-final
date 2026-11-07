@@ -1,7 +1,4 @@
 <script setup>
-import { onUnmounted, ref } from 'vue';
-import { useRouter } from "vue-router";
-
 import Layout from '../components/Layout.vue';
 import MainButton from '../components/MainButton.vue';
 import MainH1 from '../components/MainH1.vue';
@@ -9,50 +6,9 @@ import MainLabel from '../components/MainLabel.vue';
 import MainLoader from '../components/MainLoader.vue';
 import AlertBox from '../components/AlertBox.vue';
 
-import { updateCurrentUserAvatar } from '../services/auth';
+import useProfileEditAvatar from '../composables/useProfileEditAvatar';
 
-const { avatar, editing, handleFileChange, handleSubmit } = useProfileEditAvatarForm();
-
-function useProfileEditAvatarForm() {
-    const router = useRouter();
-    const avatar = ref({
-        file: null,
-        preview: null,
-    });
-    const editing = ref(false);
-    const error = ref(null);
-
-    async function handleSubmit() {
-        error.value = null;
-        try {
-            editing.value = true;
-            await updateCurrentUserAvatar(avatar.value.file);
-            router.push("/mi-perfil");
-        } catch (requestError) {
-            console.error('Error al actualizar avatar:', requestError);
-            error.value = 'No se pudo actualizar la foto de perfil. Intentá nuevamente.';
-        } finally {
-            editing.value = false;
-        }
-    }
-
-    function handleFileChange(event) {
-        const selectedFile = event.target.files[0];
-        if (!selectedFile) {
-            if (avatar.value.preview) URL.revokeObjectURL(avatar.value.preview);
-            avatar.value = { file: null, preview: null };
-            return;
-        }
-        avatar.value.file = selectedFile;
-        avatar.value.preview = URL.createObjectURL(selectedFile);
-    }
-
-    onUnmounted(() => {
-        if (avatar.value.preview) URL.revokeObjectURL(avatar.value.preview);
-    });
-
-    return { avatar, editing, handleFileChange, handleSubmit };
-}
+const { avatar, editing, error, handleFileChange, handleSubmit } = useProfileEditAvatar();
 </script>
 
 <template>

@@ -5,78 +5,20 @@ import MainButton from "../components/MainButton.vue";
 import Layout from "../components/Layout.vue";
 import MainLabel from "../components/MainLabel.vue";
 
-import { onMounted, ref, onUnmounted } from "vue";
-import { savePost } from "../services/posts";
-import { uploadFile, getFileUrl } from "../services/storage.js";
+import { onMounted } from "vue";
+import { getFileUrl } from "../services/storage.js";
 
 import useAuthUserState from "../composables/useAuthUserState.js";
 import usePosts from "../composables/usePosts.js";
+import usePostForm from "../composables/usePostForm.js";
 
 const { user } = useAuthUserState();
 const { posts, loading: loadingPost, deletePost: deletePostById, fetchPosts } = usePosts();
-const { newPost, imageFile, handleFileChange, sendPost } = usePostsForm(user);
+const { newPost, imageFile, handleFileChange, sendPost } = usePostForm(user);
 
 onMounted(() => {
     fetchPosts();
 });
-
-function usePostsForm(user) {
-    const newPost = ref({
-        body: ""
-    });
-    const imageFile = ref({
-        file: null,
-        preview: null
-    });
-
-    function handleFileChange(event) {
-        const selected = event.target.files[0];
-        if (!selected) {
-            if (imageFile.value.preview) URL.revokeObjectURL(imageFile.value.preview);
-            imageFile.value = {
-                file: null,
-                preview: null
-            };
-            return;
-        }
-        imageFile.value.file = selected;
-        imageFile.value.preview = URL.createObjectURL(selected);
-    }
-
-    onUnmounted(() => {
-        if (imageFile.value.preview) URL.revokeObjectURL(imageFile.value.preview);
-    });
-
-    async function sendPost() {
-        if (!newPost.value.body.trim()) return;
-
-        let fileName = null;
-        if (imageFile.value.file) {
-            fileName = `${Date.now()}-${imageFile.value.file.name}`;
-            await uploadFile(`post/${fileName}`, imageFile.value.file, 'post-multimedia');
-        }
-
-        await savePost({
-            sender_id: user.value.id,
-            email: user.value.email,
-            body: newPost.value.body,
-            multimedia: fileName,
-        });
-
-        newPost.value.body = "";
-        imageFile.value = {
-            file: null,
-            preview: null
-        };
-    }
-
-    return {
-        newPost,
-        imageFile,
-        handleFileChange,
-        sendPost,
-    };
-}
 </script>
 
 <template>
@@ -100,7 +42,7 @@ function usePostsForm(user) {
 
             <div class="flex items-start gap-4 mb-4">
                 <div
-                    class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center flex-shrink-0">
+                    class="w-12 h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center shrink-0">
                     <RouterLink to="/mi-perfil">
                         <img v-if="user.avatar" :src="getFileUrl(user.avatar, 'avatars')" alt="Avatar" />
                         <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24" class="w-8 h-8">
@@ -121,7 +63,7 @@ function usePostsForm(user) {
             <MainLabel for="fileInput" class="sr-only">Subir una imágen</MainLabel>
             <input type="file" id="fileInput" class="hidden" @change="handleFileChange" />
             <div class="flex items-center justify-between mt-4 gap-4">
-                <label for="fileInput" class="cursor-pointer text-[#2d3c7d] hover:text-[#2d3c7d]/50 pl-[4rem]">
+                <label for="fileInput" class="cursor-pointer text-[#2d3c7d] hover:text-[#2d3c7d]/50 pl-16">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />

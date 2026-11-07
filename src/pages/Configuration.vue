@@ -17,19 +17,13 @@ defineProps({
 });
 
 const router = useRouter();
-const {
-    handleLogout
-} = useLogout(router);
-
-function useLogout(router) {
-    function handleLogout() {
-        logout();
+async function handleLogout() {
+    try {
+        await logout();
         router.push('/');
+    } catch (error) {
+        console.error('[Configuration] Error al cerrar sesión:', error);
     }
-
-    return {
-        handleLogout,
-    };
 }
 </script>
 

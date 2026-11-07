@@ -1,7 +1,8 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
+import { onMounted } from 'vue';
 import useAuthUserState from '../composables/useAuthUserState';
 import usePortfolio from '../composables/usePortfolio';
+import usePortfolioForm from '../composables/usePortfolioForm';
 import useGlobalFeedback from '../composables/useGlobalFeedback';
 
 import ProfileLayout from '../components/ProfileLayout.vue';
@@ -17,33 +18,7 @@ const { user } = useAuthUserState();
 const { portfolios, loading, fetchPortfolios, submitPortfolio, deletePortfolio } = usePortfolio();
 const { feedback } = useGlobalFeedback();
 
-const portfolioForm = ref({
-    title: '',
-    body: '',
-    file: null,
-    preview: null
-});
-
-function handleFileChange(event) {
-    const selected = event.target.files[0];
-    if (!selected) {
-        if (portfolioForm.value.preview) URL.revokeObjectURL(portfolioForm.value.preview);
-        portfolioForm.value = { title: '', body: '', file: null, preview: null };
-        return;
-    }
-
-    portfolioForm.value.file = selected;
-    portfolioForm.value.preview = URL.createObjectURL(selected);
-}
-
-onUnmounted(() => {
-    if (portfolioForm.value.preview) URL.revokeObjectURL(portfolioForm.value.preview);
-});
-
-async function handleSubmitPortfolio() {
-    await submitPortfolio(user.value.id, portfolioForm.value);
-    portfolioForm.value = { title: '', body: '', file: null, preview: null };
-}
+const { portfolioForm, handleFileChange, handleSubmitPortfolio } = usePortfolioForm(user, submitPortfolio);
 
 onMounted(() => fetchPortfolios(user.value.id));
 </script>

@@ -23,10 +23,9 @@ const { feedback } = useGlobalFeedback();
 
             <AlertBox v-if="feedback.message != null" :content="feedback" />
 
-            <div>
-                <RouterLink to="/mi-perfil" class="text-sm text-blue-600 font-semibold hover:underline">
-                    &larr; volver </RouterLink>
-            </div>
+            <RouterLink to="/mi-perfil" class="block text-sm text-blue-600 font-semibold hover:underline">
+                &larr; volver
+            </RouterLink>
             <form action="#" @submit.prevent="handleSubmit" class="space-y-5 mt-4">
                 <div>
                     <MainLabel for="display_name" class="block text-gray-700 font-semibold">Nombre de usuario

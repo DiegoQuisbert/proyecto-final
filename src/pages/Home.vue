@@ -9,10 +9,8 @@ import fondo from "../assets/images/fondo.png";
     <div class="relative min-h-screen flex">
         <div class="absolute inset-0 bg-cover bg-center" :style="{ backgroundImage: `url(${fondo})` }"></div>
 
-        <div class="relative z-10 flex w-full">
-            <div class="w-1/2 flex items-center justify-center"></div>
-
-            <div class="w-1/2 flex flex-col items-center justify-center p-8 space-y-5">
+        <div class="relative z-10 grid w-full grid-cols-1 md:grid-cols-2">
+            <div class="flex flex-col items-center justify-center space-y-5 p-8 md:col-start-2">
                 <div class="flex flex-col items-center text-center space-y-3">
                     <MainH1 class="text-yellow-400">¡Diseñá, expresate y compartí en Bzzign!</MainH1>
                     <h2 class="text-3x1 font-bold text-purple-200">¿Qué esperás para unirte?</h2>

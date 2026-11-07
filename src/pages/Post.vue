@@ -1,7 +1,6 @@
 <script setup>
-import { ref, onMounted, onUnmounted } from 'vue';
-import { useRoute, useRouter, RouterLink } from 'vue-router';
-import { getFileUrl, uploadFile } from "../services/storage.js";
+import { computed } from 'vue';
+import { useRoute, RouterLink } from 'vue-router';
 
 import MainH1 from '../components/MainH1.vue';
 import MainLabel from '../components/MainLabel.vue';
@@ -11,138 +10,22 @@ import Layout from '../components/Layout.vue';
 import Dropdown from '../components/PostDropdown.vue';
 import MainReply from '../components/MainReply.vue';
 
-import { getPostById, saveReply, getRepliesByPostId, handleDeletePost } from "../services/posts";
-import { getUserProfileById } from "../services/user-profiles";
-import { subscribeToAuthUserChanges } from '../services/auth';
+import useAuthUserState from '../composables/useAuthUserState';
+import usePostDetail from '../composables/usePostDetail';
 
 const route = useRoute();
-const router = useRouter();
-
-const post = ref(null);
-const replies = ref([]);
-const newReply = ref('');
-const loading = ref(true);
-const user = ref({ id: null, email: null });
-
-const replyImageFile = ref({ file: null, preview: null });
-
-function handleReplyFileChange(event) {
-    const selected = event.target.files[0];
-    if (!selected) {
-        if (replyImageFile.value.preview) URL.revokeObjectURL(replyImageFile.value.preview);
-        replyImageFile.value = { file: null, preview: null };
-        return;
-    }
-    replyImageFile.value.file = selected;
-    replyImageFile.value.preview = URL.createObjectURL(selected);
-}
-
-onUnmounted(() => {
-    if (replyImageFile.value.preview) URL.revokeObjectURL(replyImageFile.value.preview);
-});
-
-async function onDeletePost(postId) {
-    try {
-        await handleDeletePost(postId);
-        router.push('/posts');
-    } catch (error) {
-        console.error("Error eliminando post:", error);
-    }
-}
-
-async function sendReply() {
-    if (!newReply.value.trim()) return;
-
-    let fileName = null;
-    if (replyImageFile.value.file) {
-        fileName = `${Date.now()}-${replyImageFile.value.file.name}`;
-        await uploadFile(`post_replies/${fileName}`, replyImageFile.value.file, 'post-multimedia');
-    }
-
-    try {
-        await saveReply({
-            post_id: post.value.id,
-            sender_id: user.value.id,
-            email: user.value.email,
-            body: newReply.value,
-            multimedia: fileName,
-        });
-
-        const freshReplies = await getRepliesByPostId(post.value.id);
-        replies.value = await Promise.all(freshReplies.map(async reply => {
-            if (reply.multimedia) {
-                reply.mediaUrl = getFileUrl(`post_replies/${reply.multimedia}`, 'post-multimedia');
-            }
-            try {
-                const replyProfile = await getUserProfileById(reply.sender_id);
-                reply.display_name = replyProfile?.display_name || '';
-                reply.avatarURL = replyProfile?.avatar ? getFileUrl(replyProfile.avatar, 'avatars') : null;
-                reply.pronouns = replyProfile?.pronouns || '';
-            } catch {
-                reply.avatarURL = null;
-                reply.display_name = '';
-                reply.pronouns = '';
-            }
-            return reply;
-        }));
-
-        newReply.value = '';
-        if (replyImageFile.value.preview) URL.revokeObjectURL(replyImageFile.value.preview);
-        replyImageFile.value = { file: null, preview: null };
-    } catch (error) {
-        console.error(error);
-    }
-}
-
-onMounted(async () => {
-    const postId = route.params.id;
-
-    subscribeToAuthUserChanges(authUser => {
-        user.value = authUser;
-    });
-
-    try {
-        const postData = await getPostById(postId);
-        if (postData) {
-            const userProfile = await getUserProfileById(postData.sender_id);
-            postData.display_name = userProfile?.display_name || '';
-            postData.pronouns = userProfile?.pronouns || '';
-            postData.avatarURL = userProfile?.avatar ? getFileUrl(userProfile.avatar, 'avatars') : null;
-
-            if (postData.multimedia) {
-                postData.mediaUrl = getFileUrl(`post/${postData.multimedia}`, 'post-multimedia');
-            }
-
-            post.value = postData;
-        }
-
-        const fetchedReplies = await getRepliesByPostId(postId);
-        replies.value = await Promise.all(fetchedReplies.map(async reply => {
-            if (reply.multimedia) {
-                reply.mediaUrl = getFileUrl(`post_replies/${reply.multimedia}`, 'post-multimedia');
-            }
-            try {
-                const replyProfile = await getUserProfileById(reply.sender_id);
-                reply.display_name = replyProfile?.display_name || '';
-                reply.pronouns = replyProfile?.pronouns || '';
-                reply.avatarURL = replyProfile?.avatar ? getFileUrl(replyProfile.avatar, 'avatars') : null;
-            } catch {
-                reply.avatarURL = null;
-                reply.display_name = '';
-                reply.pronouns = '';
-            }
-            return reply;
-        }));
-
-        replies.value.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
-    } catch (error) {
-        console.error(error);
-    } finally {
-        loading.value = false;
-    }
-});
+const { user } = useAuthUserState();
+const {
+    post,
+    replies,
+    newReply,
+    loading,
+    replyImageFile,
+    handleReplyFileChange,
+    sendReply,
+    deletePost,
+} = usePostDetail(computed(() => route.params.id), user);
 </script>
-
 <template>
     <Layout>
         <div class="max-w-4xl mx-auto px-4 py-6 bg-white border-gray-200 rounded-xl space-y-6">
@@ -167,7 +50,7 @@ onMounted(async () => {
             <div v-else-if="post" class="space-y-3 relative">
 
                 <div class="flex items-center mb-3">
-                    <RouterLink :to="`/usuario/${post.sender_id}`" class="flex items-center gap-3 flex-shrink-0">
+                    <RouterLink :to="`/usuario/${post.sender_id}`" class="flex items-center gap-3 shrink-0">
                         <div class="w-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                             <img v-if="post.avatarURL" :src="post.avatarURL" alt="Avatar" class="w-full object-cover" />
                             <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24"
@@ -185,7 +68,7 @@ onMounted(async () => {
 
                         </div>
                     </RouterLink>
-                    <Dropdown v-if="post && user.id" :post="post" :currentUserId="user.id" @deletePost="onDeletePost" />
+                    <Dropdown v-if="post && user.id" :post="post" :currentUserId="user.id" @deletePost="deletePost" />
                 </div>
 
                 <p class="text-gray-800 text-lg leading-relaxed whitespace-pre-line">{{ post.body }}</p>

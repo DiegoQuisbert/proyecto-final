@@ -1,21 +1,13 @@
 <script setup>
-import { ref, onMounted } from 'vue';
+import { onMounted } from 'vue';
 
 import AlertBox from '../components/AlertBox.vue';
 import Layout from '../components/Layout.vue';
 import MainH1 from '../components/MainH1.vue';
+import useGlobalFeedback from '../composables/useGlobalFeedback';
 
-const feedback = ref({
-    message: null,
-    type: 'success',
-});
-
-onMounted(() => {
-    const saved = localStorage.getItem("feedback");
-    if (saved) {
-        feedback.value = JSON.parse(saved);
-    }
-});
+const { feedback, restoreFeedback } = useGlobalFeedback();
+onMounted(restoreFeedback);
 
 </script>
 
