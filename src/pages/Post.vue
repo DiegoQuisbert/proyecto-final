@@ -28,7 +28,7 @@ const {
 </script>
 <template>
     <Layout>
-        <div class="max-w-4xl mx-auto px-4 py-6 bg-white border-gray-200 rounded-xl space-y-6">
+        <div class="max-w-4xl mx-auto px-4 py-6 border-gray-200 rounded-xl space-y-6">
             <div class="top-0 flex items-center justify-between mb-3">
                 <div class="flex items-center gap-2">
                     <RouterLink to="/posts" class="text-blue-600 hover:underline font-medium flex items-center mb-4"
@@ -50,7 +50,7 @@ const {
             <div v-else-if="post" class="space-y-3 relative">
 
                 <div class="flex items-center mb-3">
-                    <RouterLink :to="`/usuario/${post.sender_id}`" class="flex items-center gap-3 shrink-0">
+                    <RouterLink :to="`/perfil/${post.sender_id}`" class="flex items-center gap-3 shrink-0">
                         <div class="w-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                             <img v-if="post.avatarURL" :src="post.avatarURL" alt="Avatar" class="w-full object-cover" />
                             <svg v-else xmlns="http://www.w3.org/2000/svg" fill="gray" viewBox="0 0 24 24"

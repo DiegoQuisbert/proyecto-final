@@ -31,9 +31,17 @@ export default function usePortfolioForm(user, submitPortfolio) {
         portfolioForm.value.preview = URL.createObjectURL(selectedFile);
     }
 
+    const loading = ref(false); // <--- Add loading
+
     async function handleSubmitPortfolio() {
-        await submitPortfolio(user.value.id, portfolioForm.value);
-        resetPortfolioForm();
+        if (loading.value) return; // Prevenir múltiples envíos
+        loading.value = true;
+        try {
+            await submitPortfolio(user.value.id, portfolioForm.value);
+            resetPortfolioForm();
+        } finally {
+            loading.value = false;
+        }
     }
 
     onUnmounted(() => {
@@ -46,5 +54,6 @@ export default function usePortfolioForm(user, submitPortfolio) {
         portfolioForm,
         handleFileChange,
         handleSubmitPortfolio,
+        loading, // Añadir loading
     };
 }

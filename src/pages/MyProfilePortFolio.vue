@@ -18,7 +18,7 @@ const { user } = useAuthUserState();
 const { portfolios, loading, fetchPortfolios, submitPortfolio, deletePortfolio } = usePortfolio();
 const { feedback } = useGlobalFeedback();
 
-const { portfolioForm, handleFileChange, handleSubmitPortfolio } = usePortfolioForm(user, submitPortfolio);
+const { portfolioForm, handleFileChange, handleSubmitPortfolio, loading: isUploading } = usePortfolioForm(user, submitPortfolio);
 
 onMounted(() => fetchPortfolios(user.value.id));
 </script>
@@ -56,13 +56,13 @@ onMounted(() => fetchPortfolios(user.value.id));
                     </MainLabel>
                     <textarea id="details" v-model="portfolioForm.body" rows="5" placeholder="Descripción"
                         class="p-2 border rounded border-gray-300 w-full focus:outline-none focus:ring-2 focus:ring-blue-300 resize-y"></textarea>
-                    <MainButton @click="handleSubmitPortfolio">
-                        Subir portfolio
+                    <MainButton @click="handleSubmitPortfolio" :disabled="isUploading">
+                        {{ isUploading ? 'Subiendo...' : 'Subir portfolio' }}
                     </MainButton>
                 </div>
             </div>
         </section>
-        <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
+        <hr class="w-full h-1 mx-auto my-4 border-0 rounded-sm">
         <section class="max-w-4xl mx-auto space-y-6">
             <MainLoader v-if="loading" />
             <ul v-else class="flex flex-col gap-4">

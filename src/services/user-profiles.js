@@ -55,3 +55,33 @@ export async function getUserProfileById(id) {
 
     return data[0];
 }
+
+export async function getUserProfileByEmailPrefix(emailPrefix) {
+    const { data, error } = await supabase
+        .from('user_profiles')
+        .select()
+        .ilike('email', emailPrefix + '%');
+
+    if(error) {
+        console.error('[user-profiles.js] Error al buscar perfil por prefijo de email: ', error);
+        throw error;
+    }
+
+    return data[0];
+}
+
+/**
+ * Resuelve un ID o prefijo de email retornando siempre la ID (UUID) correspondiente.
+ * 
+ * @param {string} idOrPrefix 
+ * @returns {Promise<string|null>}
+ */
+export async function resolveUserId(idOrPrefix) {
+    if (!idOrPrefix) return null;
+    // Regex para validar UUID de Supabase
+    const uuidRegex = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+    if (uuidRegex.test(idOrPrefix)) return idOrPrefix;
+
+    const profile = await getUserProfileByEmailPrefix(idOrPrefix);
+    return profile?.id || null;
+}

@@ -1,6 +1,6 @@
 import { ref, onMounted, onUnmounted } from 'vue';
 import { getLastPosts, getPostsByUserId, handleDeletePost, listenForPost } from '../services/posts';
-import { getUserProfileById } from '../services/user-profiles';
+import { getUserProfileById, resolveUserId } from '../services/user-profiles';
 import { getFileUrl, deleteFile } from '../services/storage';
 
 export default function usePosts() {
@@ -53,11 +53,17 @@ export default function usePosts() {
         }
     };
 
-    // Fetch posts de un usuario específico
-    const fetchUserPosts = async (userId) => {
+    // Fetch posts de un usuario específico (acepta ID UUID o prefijo de email)
+    const fetchUserPosts = async (userIdOrPrefix) => {
         loading.value = true;
         error.value = null;
         try {
+            const userId = await resolveUserId(userIdOrPrefix);
+            if (!userId) {
+                console.warn('[usePosts.js] No se pudo resolver la ID de usuario para:', userIdOrPrefix);
+                posts.value = [];
+                return;
+            }
             const rawPosts = await getPostsByUserId(userId);
             const enrichedPosts = await Promise.all(rawPosts.map(enrichPost));
             posts.value = enrichedPosts.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));

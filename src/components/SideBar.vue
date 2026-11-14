@@ -45,7 +45,7 @@ watch(search, async (search) => {
         <div class="flex justify-center">
             <MainLabel>
                 <input v-model="search" type="text" placeholder="Buscar" name="search"
-                    class="w-78 h-15 px-3 py-1 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-[#2d3c7d] focus:border-[#2d3c7d]/50 transition-all" aria-label="search" />
+                    class="w-78 h-15 px-3 py-1 border border-gray-300 rounded-full focus:outline-none focus:ring-2 focus:ring-blue focus:border-blue/50 transition-all" aria-label="search" />
             </MainLabel>
         </div>
 
@@ -54,7 +54,7 @@ watch(search, async (search) => {
         <ul v-else class="mt-4 space-y-2">
             <li v-for="user in results" :key="user.id"
                 class="flex items-center gap-3 p-2 hover:bg-gray-100 rounded">
-                <RouterLink :to="`/usuario/${user.id}`" class="flex items-center gap-3">
+                <RouterLink :to="`/perfil/${user.id}`" class="flex items-center gap-3">
                     <div class="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                         <img v-if="user.avatarURL" :src="user.avatarURL" alt="avatar"
                             class="w-full h-full object-cover" />

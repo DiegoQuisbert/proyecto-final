@@ -1,7 +1,26 @@
 @import "tailwindcss";
 
-@import "flowbite/src/themes/default";
+/* stylelint-disable-next-line */
 
-@plugin "flowbite/plugin";
-@source "../node_modules/flowbite";
-@source "../node_modules/flowbite-vue";
+@theme {
+  --font-heading: "Clear Sans", sans-serif;
+  --font-sans: "Open Sans", sans-serif;
+  --color-brand-yellow: #eaa844;
+  --color-brand-blue: #2f3b7c;
+  --color-brand-white: #dcdaed;
+  --color-brand-gray: #1b1c1a;
+  --color-blue: #2f3b7c;
+  --color-white: #ffffff;
+  --width-sidebar: 23rem;
+}
+
+@layer base {
+  body {
+    font-family: var(--font-sans);
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading);
+  }
+}
+

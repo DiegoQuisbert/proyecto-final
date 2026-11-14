@@ -15,10 +15,10 @@ defineProps({
     <div class="p-4 border-gray-200 space-y-6">
 
         <ul class="space-y-4">
-            <li v-for="reply in replies" :key="reply.id" class="border border-gray-300 rounded p-4 bg-white relative">
+            <li v-for="reply in replies" :key="reply.id" class="border border-gray-300 rounded p-4 relative">
 
                 <div class="flex items-center gap-3 mb-3">
-                    <RouterLink :to="`/usuario/${reply.sender_id}`" class="flex items-center gap-3 flex-shrink-0">
+                    <RouterLink :to="`/perfil/${reply.sender_id}`" class="flex items-center gap-3 shrink-0">
                         <div
                             class="w-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                             <img v-if="reply.avatarURL" :src="reply.avatarURL" alt="Avatar"

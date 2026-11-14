@@ -27,7 +27,7 @@ const { user } = useAuthUserState();
 
             <MainH1> {{ user.display_name }} </MainH1>
         </div>
-        <div class="max-w-2xl mx-auto bg-white border border-gray-200 rounded-lg mb-3">
+        <div class="max-w-2xl mx-auto border border-gray-200 rounded-lg mb-3">
             <div class="flex justify-end space-x-3 p-4">
                 <RouterLink to="/mi-perfil/editar" class="text-sm text-blue-600 font-semibold hover:underline">
                     Editar

@@ -21,7 +21,7 @@ const { user, loading, feedback, handleSubmit } = useLogin(emit);
     <div class="relative min-h-screen flex items-center justify-center">
         <div class="absolute inset-0 bg-cover bg-center" :style="{ backgroundImage: `url(${fondoForms})` }"></div>
 
-        <div class="relative max-w-lg w-full p-12 bg-[#2d3c7d] rounded-lg shadow-md">
+        <div class="relative max-w-lg w-full p-12 bg-(--color-blue) rounded-lg shadow-md">
             <MainH1 class="text-center text-yellow-400">Ingresar a mi cuenta</MainH1>
 
             <AlertBox v-if="feedback.message" :content="feedback" />
@@ -34,19 +34,19 @@ const { user, loading, feedback, handleSubmit } = useLogin(emit);
                 <div>
                     <MainLabel for="email" class="text-purple-200">Email</MainLabel>
                     <input v-model="user.email" type="email" id="email"
-                        class="w-full px-4 py-2 border bg-[#dcdaed] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        class="w-full px-4 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                         placeholder="ejemplo@correo.com"/>
                 </div>
 
                 <div>
                     <MainLabel for="password" class="text-purple-200">Contraseña</MainLabel>
                     <input v-model="user.password" type="password" id="password"
-                        class="w-full px-4 py-2 border bg-[#dcdaed] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        class="w-full px-4 py-2 border bg-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                         placeholder="••••••••"/>
                 </div>
 
                 <button
-                    class="text-[#2d3c7d] cursor-pointer hover:text-white border border-yellow-400 bg-[#eaa944] hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center w-full p-3"
+                    class="text-blue cursor-pointer hover:text-white border border-yellow-400 bg-brand-yellow hover:bg-yellow-500 focus:ring-4 focus:outline-none focus:ring-yellow-300 font-medium rounded-full text-sm px-5 py-2.5 text-center w-full p-3"
                     type="submit">
                     <template v-if="!loading">Iniciar sesión</template>
                     <MainLoader v-else />
@@ -66,3 +66,5 @@ const { user, loading, feedback, handleSubmit } = useLogin(emit);
         </div>
     </div>
 </template>
+
+

@@ -6,6 +6,8 @@ export default function usePostForm(user) {
     const newPost = ref({ body: '' });
     const imageFile = ref({ file: null, preview: null });
 
+    const loading = ref(false); // <--- Add this
+
     function clearImageFile() {
         if (imageFile.value.preview) {
             URL.revokeObjectURL(imageFile.value.preview);
@@ -27,22 +29,30 @@ export default function usePostForm(user) {
 
     async function sendPost() {
         if (!newPost.value.body.trim()) return;
+        
+        loading.value = true; // <--- Bloquear botón
 
-        let fileName = null;
-        if (imageFile.value.file) {
-            fileName = `${Date.now()}-${imageFile.value.file.name}`;
-            await uploadFile(`post/${fileName}`, imageFile.value.file, 'post-multimedia');
+        try {
+            let fileName = null;
+            if (imageFile.value.file) {
+                fileName = `${Date.now()}-${imageFile.value.file.name}`;
+                await uploadFile(`post/${fileName}`, imageFile.value.file, 'post-multimedia');
+            }
+
+            await savePost({
+                sender_id: user.value.id,
+                email: user.value.email,
+                body: newPost.value.body,
+                multimedia: fileName,
+            });
+
+            newPost.value.body = '';
+            clearImageFile();
+        } catch (error) {
+            console.error('Error al subir el post:', error);
+        } finally {
+            loading.value = false; // <--- Desbloquear
         }
-
-        await savePost({
-            sender_id: user.value.id,
-            email: user.value.email,
-            body: newPost.value.body,
-            multimedia: fileName,
-        });
-
-        newPost.value.body = '';
-        clearImageFile();
     }
 
     onUnmounted(clearImageFile);
@@ -52,5 +62,6 @@ export default function usePostForm(user) {
         imageFile,
         handleFileChange,
         sendPost,
+        loading, // <--- Retornar loading
     };
 }

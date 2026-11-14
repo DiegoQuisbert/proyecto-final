@@ -37,7 +37,12 @@ const routes = [
     {path: '/mi-perfil/respuestas',    component: MyProfileReplies,    meta: { requiresAuth: true,  }, },
     {path: '/mi-perfil/editar',        component: MyProfileEdit,       meta: { requiresAuth: true,  }, },
     {path: '/mi-perfil/editar/avatar', component: MyProfileEditAvatar, meta: { requiresAuth: true,  }, },
-    {path: '/usuario/:id',             component: UserProfile,         meta: { requiresAuth: false, }, },
+    {path: '/perfil/:id',              component: UserProfile, meta: { requiresAuth: true }, children: [
+        { path: '', component: () => import('../pages/UserProfilePosts.vue') },
+        { path: 'portfolio', component: () => import('../pages/UserProfilePortfolio.vue') },
+        { path: 'multimedia', component: () => import('../pages/UserProfileMultimedia.vue') },
+        { path: 'respuestas', component: () => import('../pages/UserProfileReplies.vue') }
+    ]},
     {path: '/notificaciones',          component: Notifications,       meta: { requiresAuth: true,  }, },
     {path: '/mensajes',                component: PrivateChatList,     meta: { requiresAuth: true,  }, },
     {path: '/mensajes/:id/chat',       component: PrivateChats,        meta: { requiresAuth: true,  }, },

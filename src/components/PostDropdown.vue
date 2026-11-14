@@ -46,20 +46,20 @@ function handleDelete() {
             <template v-if="props.currentUserId === props.post.sender_id">
                 <li>
                     <button type="button" @click="handleDelete"
-                        class="w-full cursor-pointer text-left block px-4 py-2 text-[#ff5757] hover:bg-[#DCDAED]">
+                        class="w-full cursor-pointer text-left block px-4 py-2 text-[#ff5757] hover:bg-[#white]">
                         Eliminar
                     </button>
                 </li>
                 <li>
                     <RouterLink :to="`/posts/${props.post.id}/editar`"
-                        class="w-full cursor-pointer text-left block px-4 py-2 hover:bg-[#DCDAED] hover:text-gray-900">
+                        class="w-full cursor-pointer text-left block px-4 py-2 hover:bg-[#white] hover:text-gray-900">
                         Editar
                     </RouterLink>
                 </li>
             </template>
             <li v-else>
                 <RouterLink :to="`/mensajes/${props.post.sender_id}/chat`"
-                    class="block cursor-pointer px-4 py-2 hover:bg-[#DCDAED] hover:text-gray-900">
+                    class="block cursor-pointer px-4 py-2 hover:bg-[#white] hover:text-gray-900">
                     Mensajear
                 </RouterLink>
             </li>

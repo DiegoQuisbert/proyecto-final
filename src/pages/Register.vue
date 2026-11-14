@@ -31,21 +31,21 @@ const { user, loading, feedback, handleSubmit } = useRegister(emit);
                 <div>
                     <MainLabel class="text-purple-200" for="display_name">Nombre</MainLabel>
                     <input v-model="user.display_name" type="text" id="display_name"
-                        class="w-full px-4 py-2 border bg-[#dcdaed] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        class="w-full px-4 py-2 border bg-brand-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                         placeholder="ejemplo123" />
                 </div>
 
                 <div>
                     <MainLabel class="text-purple-200" for="email">Email</MainLabel>
                     <input v-model="user.email" type="email" id="email" name="email"
-                        class="w-full px-4 py-2 border bg-[#dcdaed] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        class="w-full px-4 py-2 border bg-brand-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                         placeholder="ejemplo@correo.com" />
                 </div>
 
                 <div>
                     <MainLabel class="text-purple-200" for="password">Contraseña</MainLabel>
                     <input v-model="user.password" type="password" id="password"
-                        class="w-full px-4 py-2 border bg-[#dcdaed] border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
+                        class="w-full px-4 py-2 border bg-brand-white border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-yellow-400"
                         placeholder="••••••••" />
                 </div>
 

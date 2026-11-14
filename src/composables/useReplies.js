@@ -1,6 +1,6 @@
 import { ref } from 'vue';
 import { getRepliesBySenderId, handleDeleteReply } from '../services/posts';
-import { getUserProfileById } from '../services/user-profiles';
+import { getUserProfileById, resolveUserId } from '../services/user-profiles';
 import { getFileUrl } from '../services/storage';
 
 export default function useReplies() {
@@ -36,11 +36,16 @@ export default function useReplies() {
         }
     };
 
-    // Fetch replies de un usuario específico
-    const fetchUserReplies = async (userId) => {
+    // Fetch replies de un usuario específico (acepta ID UUID o prefijo de email)
+    const fetchUserReplies = async (userIdOrPrefix) => {
         loading.value = true;
         error.value = null;
         try {
+            const userId = await resolveUserId(userIdOrPrefix);
+            if (!userId) {
+                replies.value = [];
+                return;
+            }
             const rawReplies = await getRepliesBySenderId(userId);
             const enrichedReplies = await Promise.all(rawReplies.map(enrichReply));
             replies.value = enrichedReplies.sort((a, b) => new Date(b.created_at) - new Date(a.created_at));

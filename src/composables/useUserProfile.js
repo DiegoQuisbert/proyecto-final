@@ -1,6 +1,6 @@
 
 import { ref, toValue, watch } from "vue";
-import { getUserProfileById } from "../services/user-profiles";
+import { getUserProfileById, getUserProfileByEmailPrefix } from "../services/user-profiles";
 import { getFileUrl } from "../services/storage";
 
 /**
@@ -25,8 +25,10 @@ export default function useUserProfile(id) {
 
     watch(() => toValue(id), async profileId => {
         const currentRequestId = ++requestId;
+        const isUUID = profileId && profileId.length > 20;
+
         user.value = {
-            id: profileId,
+            id: isUUID ? profileId : null,
             email: null,
             bio: null,
             display_name: null,
@@ -44,7 +46,11 @@ export default function useUserProfile(id) {
         }
 
         try {
-            const profile = await getUserProfileById(profileId);
+            // Verificamos si es un UUID (longitud aproximada)
+            const isUUID = profileId.length > 20; 
+            const profile = isUUID 
+                ? await getUserProfileById(profileId) 
+                : await getUserProfileByEmailPrefix(profileId);
 
             if (currentRequestId !== requestId) return;
 

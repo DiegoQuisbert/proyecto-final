@@ -14,7 +14,7 @@ import usePostForm from "../composables/usePostForm.js";
 
 const { user } = useAuthUserState();
 const { posts, loading: loadingPost, deletePost: deletePostById, fetchPosts } = usePosts();
-const { newPost, imageFile, handleFileChange, sendPost } = usePostForm(user);
+const { newPost, imageFile, handleFileChange, sendPost, loading } = usePostForm(user);
 
 onMounted(() => {
     fetchPosts();
@@ -38,7 +38,7 @@ onMounted(() => {
             </li>
         </ul>
 
-        <form @submit.prevent="sendPost" class="max-w-4xl mx-auto p-4 mt-3 mb-3 rounded bg-white">
+        <form @submit.prevent="sendPost" class="max-w-4xl mx-auto p-4 mt-3 mb-3 rounded">
 
             <div class="flex items-start gap-4 mb-4">
                 <div
@@ -63,7 +63,7 @@ onMounted(() => {
             <MainLabel for="fileInput" class="sr-only">Subir una imágen</MainLabel>
             <input type="file" id="fileInput" class="hidden" @change="handleFileChange" />
             <div class="flex items-center justify-between mt-4 gap-4">
-                <label for="fileInput" class="cursor-pointer text-[#2d3c7d] hover:text-[#2d3c7d]/50 pl-16">
+                <label for="fileInput" class="cursor-pointer text-blue hover:text-blue/50 pl-16">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6" viewBox="0 0 24 24">
                         <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
@@ -72,10 +72,12 @@ onMounted(() => {
                     </svg>
                 </label>
 
-                <MainButton type="submit"> Subir </MainButton>
+                <MainButton type="submit" :disabled="loading">
+                    {{ loading ? 'Subiendo...' : 'Subir' }}
+                </MainButton>
             </div>
         </form>
-        <hr class="w-full h-1 mx-auto my-4 bg-[#DCDAED] border-0 rounded-sm">
+        <hr class="w-full h-1 mx-auto my-4 bg-white border-0 rounded-sm">
         <div class="max-w-3xl mx-auto p-4 mt-3 mb-3 rounded">
             <MainLoader v-if="loadingPost" />
             <ul v-else class="flex flex-col gap-4">

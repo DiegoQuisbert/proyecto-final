@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { getPortfolioByUserId, savePortfolio, deletePortfolioItem } from '../services/portfolio';
 import { uploadFile, getFileUrl } from '../services/storage';
+import { resolveUserId } from '../services/user-profiles';
 import useGlobalFeedback from './useGlobalFeedback';
 
 export default function usePortfolio() {
@@ -9,10 +10,15 @@ export default function usePortfolio() {
     const error = ref(null);
     const { updateFeedback } = useGlobalFeedback();
 
-    // Fetch portfolios de un usuario
-    const fetchPortfolios = async (userId) => {
+    // Fetch portfolios de un usuario (acepta ID UUID o prefijo de email)
+    const fetchPortfolios = async (userIdOrPrefix) => {
         loading.value = true;
         try {
+            const userId = await resolveUserId(userIdOrPrefix);
+            if (!userId) {
+                portfolios.value = [];
+                return;
+            }
             const rawPortfolios = await getPortfolioByUserId(userId);
             portfolios.value = rawPortfolios.map(p => ({
                 ...p,

@@ -18,7 +18,7 @@ import fondo from "../assets/images/fondo.png";
 
                 <div class="flex flex-col gap-3 items-center">
                     <button type="button"
-                        class="w-56 cursor-pointer flex items-center justify-center text-gray-800 bg-[#dcdaed] hover:bg-[#dcdaed]/90 focus:ring-4 focus:outline-none focus:ring-[#dcdaed]/50 font-medium rounded-full text-sm px-5 py-2.5">
+                        class="w-56 cursor-pointer flex items-center justify-center text-gray-800 bg-brand-white hover:bg-brand-white/90 focus:ring-4 focus:outline-none focus:ring-brand-white/50 font-medium rounded-full text-sm px-5 py-2.5">
                         <svg class="w-5 h-5 mr-3" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 18 19">
                             <path fill-rule="evenodd"
@@ -29,7 +29,7 @@ import fondo from "../assets/images/fondo.png";
                     </button>
 
                     <button type="button"
-                        class="w-56 cursor-pointer flex items-center justify-center text-gray-800 bg-[#dcdaed] hover:bg-[#dcdaed]/90 focus:ring-4 focus:outline-none focus:ring-[#dcdaed]/50 font-medium rounded-full text-sm px-5 py-2.5">
+                        class="w-56 cursor-pointer flex items-center justify-center text-gray-800 bg-brand-white hover:bg-brand-white/90 focus:ring-4 focus:outline-none focus:ring-brand-white/50 font-medium rounded-full text-sm px-5 py-2.5">
                         <svg class="w-5 h-5 mr-3 scale-125" xmlns="http://www.w3.org/2000/svg" fill="currentColor"
                             viewBox="0 0 30 30">
                             <path
@@ -45,7 +45,7 @@ import fondo from "../assets/images/fondo.png";
 
                 <div class="flex flex-col gap-3 items-center">
                     <RouterLink
-                        class="w-56 py-2.5 px-5 text-sm font-medium text-gray-900 bg-[#dcdaed] rounded-full border border-gray-300 hover:bg-[#dcdaed]/90 focus:ring-4 focus:ring-gray-100"
+                        class="w-56 py-2.5 px-5 text-sm font-medium text-gray-900 bg-brand-white rounded-full border border-gray-300 hover:bg-brand-white/90 focus:ring-4 focus:ring-gray-100"
                         to="crear-cuenta">
                         Crear cuenta
                     </RouterLink>

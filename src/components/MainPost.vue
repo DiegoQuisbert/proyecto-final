@@ -21,9 +21,9 @@ function handleDeletePost(id) {
 </script>
 
 <template>
-    <li class="border border-gray-300 rounded p-4 bg-white relative">
+    <li class="border border-gray-300 rounded p-4 relative">
         <div class="flex items-center mb-3">
-            <RouterLink :to="`/usuario/${props.post.sender_id}`" class="flex items-center gap-3 flex-shrink-0">
+            <RouterLink :to="`/perfil/${props.post.email?.split('@')[0] || props.post.sender_id}`" class="flex items-center gap-3 shrink-0">
                 <div class="h-12 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center">
                     <img v-if="props.post.avatarURL" :src="props.post.avatarURL" alt="Avatar"
                         class="w-full h-full object-cover" />
